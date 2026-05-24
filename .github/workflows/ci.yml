@@ -2,17 +2,42 @@ name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
+    branches: [main]
 
 jobs:
-  test:
+  validate-test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: pip install -e '.[dev]'
-      - run: agent-bench validate
-      - run: python scripts/public_leak_check.py .
-      - run: pytest -q
+          python-version: "3.11"
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Validate tasks
+        run: make validate
+
+      - name: Run tests
+        run: make test
+
+      - name: Run smoke scoring
+        run: make smoke
+
+      - name: Run compare smoke
+        run: make compare-smoke
+
+      - name: Run leak check
+        run: make leak-check
+
+      - name: Ruff
+        run: python -m ruff check .

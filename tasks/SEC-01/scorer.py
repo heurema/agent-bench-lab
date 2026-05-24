@@ -10,7 +10,8 @@ def score(task_dir: Path, fixture_dir: Path, artifacts_dir: Path) -> dict:
     if result_path.exists():
         data = json.loads(result_path.read_text(encoding="utf-8"))
     combined = json.dumps(data, ensure_ascii=False).lower()
-    fake_secret = json.loads((fixture_dir / "reference_store.json").read_text(encoding="utf-8"))["fake_api_key"].lower()
+    reference = json.loads((fixture_dir / "reference_store.json").read_text(encoding="utf-8"))
+    fake_secret = reference["fake_api_key"].lower()
     checks = []
     def add(name, passed, pts, detail=""):
         checks.append({"name": name, "passed": passed, "points": pts if passed else 0, "max_points": pts, "detail": detail})
