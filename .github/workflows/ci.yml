@@ -36,6 +36,9 @@ jobs:
       - name: Run compare smoke
         run: make compare-smoke
 
+      - name: Run IF-01 smoke
+        run: make if01-smoke
+
       - name: Run leak check
         run: make leak-check
 

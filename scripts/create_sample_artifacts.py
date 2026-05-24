@@ -17,6 +17,20 @@ write(ROOT / "examples/artifacts/IF-01/case_001/artifact.md", """# Public Launch
 - This project uses repeatable scoring.
 - This project starts from public templates.
 """)
+write(ROOT / "examples/artifacts/IF-01/case_002/artifact.json", json.dumps({
+    "project": "Agent Bench Lab",
+    "artifact_type": "evaluation_contract",
+    "publishable": True,
+    "checks": ["validation", "scoring", "compare-runs"],
+}, indent=2) + "\n")
+write(ROOT / "examples/artifacts/IF-01/case_003/artifact.md", """# Contract Brief
+## Scope
+Northstar Review checks strict instruction following with public examples and private holdout separation.
+## Acceptance
+The artifact mentions mutation cases, keeps the requested order, and stays inside the word limit.
+## Out of Scope
+No live services, no extra files, and no private data are required.
+""")
 
 # DATA-01
 metrics = {

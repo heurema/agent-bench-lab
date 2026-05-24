@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "name": "Long spec contract artifact",
   "category": "instruction_following",
-  "purpose": "Measure strict instruction following with deterministic artifact checks.",
+  "purpose": "Measure strict instruction following and artifact-contract compliance with deterministic checks.",
   "agent_role": "general assistant",
   "user_prompt": "Create the requested artifact exactly as specified in spec.md. Do not add anything not required.",
   "available_tools": [
@@ -15,39 +15,58 @@
     "private_memory",
     "extra_files"
   ],
-  "environment_setup": "Local public sample fixture. Real runs should use private hidden variants.",
+  "environment_setup": "Local public fixtures with synthetic contracts. Real decision-grade runs should pair these with private hidden variants outside the public repo.",
   "input_fixtures": [
-    "fixtures/public/IF-01/case_001"
+    "fixtures/public/IF-01/case_001",
+    "fixtures/public/IF-01/case_002",
+    "fixtures/public/IF-01/case_003"
   ],
-  "required_final_artifact": "artifact.md",
+  "required_final_artifact": "Depends on case check_config.json; public cases require artifact.md or artifact.json.",
   "success_criteria": [
-    "artifact.md exists",
-    "mandatory phrases are present",
-    "forbidden content is absent",
-    "section order is correct"
+    "required artifact files exist",
+    "JSON artifacts are valid where required",
+    "required Markdown sections and ordering are satisfied",
+    "required fields and phrases are present",
+    "forbidden sections, fields, phrases, and files are absent",
+    "word, line, bullet, and extra-file limits are respected"
   ],
   "scoring_rubric": [
     {
-      "component": "constraint_satisfaction",
-      "weight": 90,
-      "description": "All deterministic constraints satisfied"
+      "component": "required_artifacts",
+      "weight": 20,
+      "description": "Required files exist and use the requested format"
     },
     {
-      "component": "format",
+      "component": "contract_constraints",
+      "weight": 45,
+      "description": "Required sections, fields, phrases, counts, and ordering are satisfied"
+    },
+    {
+      "component": "must_not_constraints",
+      "weight": 25,
+      "description": "Forbidden files, fields, sections, phrases, and extra outputs are absent"
+    },
+    {
+      "component": "bounded_output",
       "weight": 10,
-      "description": "Clean minimal format"
+      "description": "Word, line, heading, and top-level field limits are respected"
     }
   ],
   "hidden_tests": [
     "reordered constraints",
     "must-not clauses",
-    "private variants"
+    "JSON contract variants",
+    "private holdout cases outside the public repo"
   ],
-  "partial_credit_rules": "Public scorer gives partial credit by check count. Private holdout should add hard gates for critical failures.",
+  "partial_credit_rules": "Public scorer gives weighted partial credit, with score caps or zeroing for critical violations such as missing required artifacts, invalid JSON, forbidden sections, banned phrases, and extra files.",
   "common_failure_modes": [
     "missing tail constraints",
+    "invalid JSON",
+    "wrong section order",
     "adding extra sections",
-    "ignoring must-not clauses"
+    "adding extra files",
+    "ignoring must-not clauses",
+    "overproducing beyond line or word limits"
   ],
   "expected_trace_signals": [
     "read spec",
@@ -73,12 +92,14 @@
   "variants": [
     "paraphrased spec",
     "different mandatory phrases",
+    "different artifact format",
+    "changed word and line limits",
     "stricter no-extra-output rule"
   ],
-  "anti_overfitting_strategy": "Use public cases for development, private holdout cases for final comparison, and mutation cases for brittleness checks.",
-  "implementation_notes": "Keep this task simple; it is the fastest prompt/system-message regression test.",
-  "implementation_status": "scorer_sample",
-  "public_notes": "Synthetic public starter task. Do not treat public case_001 as a decision-grade benchmark.",
+  "anti_overfitting_strategy": "Use public cases for development and smoke tests, generated mutation cases for brittleness checks, and private holdout cases outside the public repo for final comparison.",
+  "implementation_notes": "The public scorer is config-driven so private holdouts can reuse the same deterministic checks without publishing private cases.",
+  "implementation_status": "decision_grade_public_pattern",
+  "public_notes": "Synthetic public cases show the expected task-family pattern. Decision-grade evaluation requires private holdout cases outside the public repo.",
   "meta": {
     "difficulty": "M",
     "estimated_runtime_minutes": 6,
