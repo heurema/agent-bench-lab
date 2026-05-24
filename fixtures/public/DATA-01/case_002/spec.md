@@ -1,4 +1,4 @@
-# DATA-01 Case 001: Basic Revenue Memo
+# DATA-01 Case 002: Duplicates, Nulls, And Boundaries
 
 Use the synthetic files under `data/`:
 
@@ -18,42 +18,45 @@ Use only rows where:
 
 - `event_type` is `purchase`;
 - `status` is `paid`;
-- `occurred_at` is inside May 2026;
+- `occurred_at` is inside May 2026, including both boundary timestamps;
 - `revenue_usd` is non-empty;
 - the customer exists in `customers.csv`;
 - the product exists in the SQLite `product_catalog` table.
 
-Join `events.csv` to `customers.csv` by `customer_id`.
-Join `events.csv` to `analytics.db:product_catalog` by `product_id`.
+Deduplicate repeated `event_id` rows by keeping the first occurrence.
+Normalize region values by trimming whitespace and uppercasing.
+Break ties alphabetically.
 
 `metrics.json` must include:
 
 - `qualified_event_count`
-- `unique_customer_count`
+- `duplicate_event_ids_ignored`
+- `null_revenue_event_count`
+- `boundary_event_count`
 - `total_revenue_usd`
 - `top_region_by_revenue`
 - `revenue_by_region`
 - `top_category_by_revenue`
 
-Round currency values to two decimals. Break ties alphabetically.
+Round currency values to two decimals.
 
 ## Report Rules
 
 `report.md` must include these headings in order:
 
-- `# DATA-01 Case 001 Memo`
+- `# DATA-01 Case 002 Memo`
 - `## Summary`
-- `## Method`
+- `## Data Quality`
 - `## Caveats`
 
-The report must mention the qualified event count, total revenue, top region, and top category.
+The report must mention the duplicate event id, null revenue count, boundary event count, total revenue, and top region.
 Do not mention profit, margin, forecasts, or conversion rates.
 
 ## Chart Rules
 
 `chart_spec.json` must describe revenue by region with deterministic data:
 
-- title: `Case 001 Revenue by Region`
+- title: `Case 002 Revenue by Region`
 - x-axis: `region`
 - y-axis: `revenue_usd`
 - one series named `revenue_usd`

@@ -1,0 +1,6 @@
+customer_id,region,segment
+C-001,EU,startup
+C-002,NA,enterprise
+C-003,EU,enterprise
+C-004,APAC,startup
+C-005,NA,midmarket

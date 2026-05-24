@@ -40,13 +40,49 @@ def test_sample_data01_score(tmp_path):
     artifact_dir = tmp_path / "artifacts"
     artifact_dir.mkdir()
     metrics = {
-        "paid_order_count": 4,
-        "total_paid_revenue_usd": 720.5,
-        "top_region_by_paid_revenue": "NA",
-        "active_customer_count": 4,
+        "qualified_event_count": 4,
+        "unique_customer_count": 4,
+        "total_revenue_usd": 820.5,
+        "top_region_by_revenue": "NA",
+        "revenue_by_region": {
+            "EU": 340.0,
+            "NA": 480.5,
+        },
+        "top_category_by_revenue": "subscription",
     }
     (artifact_dir / "metrics.json").write_text(json.dumps(metrics), encoding="utf-8")
-    (artifact_dir / "report.md").write_text("4 720.5 NA 4", encoding="utf-8")
+    (artifact_dir / "report.md").write_text(
+        "# DATA-01 Case 001 Memo\n"
+        "## Summary\n"
+        "- Qualified events: 4\n"
+        "- Total revenue: 820.50\n"
+        "- Top region: NA\n"
+        "- Top category: subscription\n"
+        "## Method\n"
+        "- Applied the public fixture rules.\n"
+        "## Caveats\n"
+        "- Public smoke fixture only.\n",
+        encoding="utf-8",
+    )
+    (artifact_dir / "chart_spec.json").write_text(
+        json.dumps(
+            {
+                "title": "Case 001 Revenue by Region",
+                "x_axis": "region",
+                "y_axis": "revenue_usd",
+                "series": [
+                    {
+                        "name": "revenue_usd",
+                        "points": [
+                            {"label": "NA", "value": 480.5},
+                            {"label": "EU", "value": 340.0},
+                        ],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
     result = score_task(root, "DATA-01", "case_001", artifact_dir)
     assert result["success"]
 

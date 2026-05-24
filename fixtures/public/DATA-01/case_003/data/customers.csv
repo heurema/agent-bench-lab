@@ -1,0 +1,7 @@
+customer_id,region,segment
+C-201,NA,enterprise
+C-202,EU,enterprise
+C-203,APAC,team
+C-204,NA,team
+C-205,EU,team
+C-206,LATAM,trial

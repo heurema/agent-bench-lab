@@ -1,0 +1,7 @@
+event_id,customer_id,product_id,occurred_at,event_type,status,revenue_usd
+E-1001,C-001,P-basic,2026-05-02T10:15:00,purchase,paid,120.00
+E-1002,C-002,P-pro,2026-05-04T12:00:00,purchase,paid,180.50
+E-1003,C-001,P-basic,2026-05-05T09:00:00,refund,refunded,-40.00
+E-1004,C-003,P-pro,2026-05-08T16:45:00,purchase,paid,220.00
+E-1005,C-004,P-addon,2026-05-09T08:30:00,purchase,pending,50.00
+E-1006,C-005,P-pro,2026-05-12T14:10:00,purchase,paid,300.00

@@ -12,8 +12,8 @@
 
 ## Phase 1: Working artifact scoring
 
-- [ ] make IF-01 scorer fully useful
-- [ ] make DATA-01 scorer fully useful
+- [x] make IF-01 scorer fully useful
+- [x] make DATA-01 scorer fully useful
 - [x] add smoke-test artifact generator
 - [x] add pytest coverage for registry loading, schema validation, and sample scorers
 
