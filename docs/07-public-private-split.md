@@ -40,6 +40,29 @@ private/
 
 `private/` is gitignored by default.
 
+## Three-boundary model
+
+Agent Bench Lab is the public or semipublic benchmark standard layer.
+
+Private Eval Layer is the protected boundary for hidden labels, private holdouts, canaries, answer keys, customer-specific checks, private rubrics, redaction rules, and private scorer configs.
+
+Consumer Application is any product, CLI, workflow, dashboard, or platform that runs benchmarks and presents results.
+
+```text
+Agent Bench Lab
+  public benchmark standards, task families, schemas, sample fixtures, scorer interfaces
+
+Private Eval Layer
+  protected holdouts, hidden labels, answer keys, canaries, private scorer configs, customer checks
+
+Consumer Application
+  UI, onboarding, agent setup management, task delivery, artifact upload, score reports
+```
+
+Agent Bench Lab should not store private eval secrets.
+Consumer applications should not expose scorer-only content to agents.
+The Private Eval Layer is a boundary, not a required implementation; it can be a gitignored local folder, private repo, encrypted bundle, customer-scoped storage, or enterprise eval service.
+
 ## Customer-specific private holdouts
 
 Customer-specific benchmark data must be treated as protected evaluation content.
@@ -64,7 +87,7 @@ private customer bundle:
   canary strings
 ```
 
-The agent should receive only the task inputs it is allowed to use. The scorer may receive protected rubrics, answer keys, and hidden checks. The product wrapper may store references and hashes, but not expose protected content to the agent.
+The agent should receive only the task inputs it is allowed to use. The scorer may receive protected rubrics, answer keys, and hidden checks. The consumer application may store references and hashes, but must not expose protected content to the agent.
 
 A run record may include:
 

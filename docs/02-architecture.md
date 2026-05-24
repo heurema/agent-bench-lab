@@ -24,32 +24,33 @@ task card + fixtures + runner + agent adapter + tools + trace logger + scorer + 
 
 Do not overbuild the runner before task scoring works. Start with direct artifact scoring, then add agent adapters.
 
-## Benchmark kernel vs product wrapper
+## Benchmark standard vs consumer application
 
 Agent Bench Lab should stay product-neutral.
 
-It defines the benchmark kernel:
+It defines the benchmark standard:
 
 ```text
-task registry
-fixtures
-scorers
+task registry conventions
+fixture conventions
+scorer interfaces
 run records
 trace format
 comparison reports
 public/private rules
 ```
 
-A product such as Baseline can wrap this kernel with:
+Consumer applications can wrap this standard with:
 
 ```text
-customer setup
-agent setup management
 UI
+onboarding
+agent setup management
 scheduled runs
-private bundle mounting
 permissions
-result dashboards
+customer-specific private bundle mounting
+dashboards
+recommendations
 ```
 
-Baseline should not create a separate benchmark taxonomy or scorer format. If a new task family is useful, define it in Agent Bench Lab first, then let Baseline consume it.
+Consumer applications should not create a separate benchmark taxonomy or scorer format. If a new task family is useful, define it in Agent Bench Lab first, then let consumer applications consume it.

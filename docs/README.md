@@ -4,7 +4,7 @@ Start here:
 
 1. [Concept](01-concept.md)
 2. [Architecture](02-architecture.md)
-3. [Canonical scope and Baseline boundary](canonical-scope-and-baseline-boundary.md)
+3. [Canonical scope and consumer boundary](canonical-scope-and-consumer-boundary.md)
 4. [Evaluation protocol](03-evaluation-protocol.md)
 5. [Anti-overfitting controls](04-anti-overfitting.md)
 6. [Task authoring](05-task-authoring.md)
