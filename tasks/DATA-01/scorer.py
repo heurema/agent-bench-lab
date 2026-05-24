@@ -43,4 +43,10 @@ def score(task_dir: Path, fixture_dir: Path, artifacts_dir: Path) -> dict:
     report_mentions = all(str(v) in report for v in expected.values())
     checks.append({"name": "report_mentions_metrics", "passed": report_mentions, "points": 0.2 if report_mentions else 0, "max_points": 0.2})
     total = round(sum(c["points"] for c in checks), 4)
-    return {"score": min(total, 1.0), "success": total >= 0.85, "checks": checks, "expected_public": expected}
+    return {
+        "score": min(total, 1.0),
+        "success": total >= 0.85,
+        "pass_threshold": 0.85,
+        "checks": checks,
+        "expected_public": expected,
+    }

@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from .run_records import build_score_record
+
 SCORER_PARAMETERS = ("task_dir", "fixture_dir", "artifacts_dir")
 
 
@@ -37,7 +39,14 @@ def load_scorer(task_dir: Path):
     return scorer
 
 
-def score_task(root: Path, task_id: str, case_id: str, artifacts_dir: Path) -> dict[str, Any]:
+def score_task(
+    root: Path,
+    task_id: str,
+    case_id: str,
+    artifacts_dir: Path,
+    agent_config_path: Path | None = None,
+    run_id: str | None = None,
+) -> dict[str, Any]:
     task_dir = root / "tasks" / task_id
     fixture_dir = root / "fixtures" / "public" / task_id / case_id
     if not task_dir.is_dir():
@@ -50,9 +59,15 @@ def score_task(root: Path, task_id: str, case_id: str, artifacts_dir: Path) -> d
     result = scorer(task_dir=task_dir, fixture_dir=fixture_dir, artifacts_dir=artifacts_dir)
     if not isinstance(result, dict):
         raise TypeError(f"{task_dir / 'scorer.py'} score() must return a dict")
-    result.setdefault("task_id", task_id)
-    result.setdefault("case_id", case_id)
-    return result
+    return build_score_record(
+        raw_result=result,
+        task_dir=task_dir,
+        artifacts_dir=artifacts_dir,
+        task_id=task_id,
+        case_id=case_id,
+        agent_config_path=agent_config_path,
+        run_id=run_id,
+    )
 
 
 def write_score(score: dict[str, Any], output_path: Path) -> None:

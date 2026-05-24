@@ -1,7 +1,7 @@
 PYTHON ?= python3
 PYTHONPATH ?= src
 
-.PHONY: validate list smoke leak-check test
+.PHONY: validate list smoke compare-smoke leak-check test
 
 validate:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m agent_bench_lab.cli validate
@@ -13,6 +13,10 @@ smoke:
 	$(PYTHON) scripts/create_sample_artifacts.py
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m agent_bench_lab.cli score --task IF-01 --case case_001 --artifacts examples/artifacts/IF-01/case_001
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m agent_bench_lab.cli score --task DATA-01 --case case_001 --artifacts examples/artifacts/DATA-01/case_001
+
+compare-smoke:
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) scripts/create_sample_runs.py
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m agent_bench_lab.cli compare --baseline runs/baseline --candidate runs/spec_first --out reports/generated/compare_baseline_vs_spec_first.md --csv reports/generated/compare_baseline_vs_spec_first.csv
 
 leak-check:
 	$(PYTHON) scripts/public_leak_check.py .

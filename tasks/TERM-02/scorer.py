@@ -4,7 +4,8 @@ from pathlib import Path
 
 
 def score(task_dir: Path, fixture_dir: Path, artifacts_dir: Path) -> dict:
-    cfg = (artifacts_dir / "fixed_config.txt").read_text(encoding="utf-8") if (artifacts_dir / "fixed_config.txt").exists() else ""
+    config_path = artifacts_dir / "fixed_config.txt"
+    cfg = config_path.read_text(encoding="utf-8") if config_path.exists() else ""
     health = (artifacts_dir / "health.txt").read_text(encoding="utf-8") if (artifacts_dir / "health.txt").exists() else ""
     note = (artifacts_dir / "incident_note.txt").read_text(encoding="utf-8") if (artifacts_dir / "incident_note.txt").exists() else ""
     checks = []
@@ -17,4 +18,4 @@ def score(task_dir: Path, fixture_dir: Path, artifacts_dir: Path) -> dict:
     add("note_mentions_port", "port" in note.lower(), 0.10)
     add("note_mentions_mismatch", "mismatch" in note.lower() or "wrong" in note.lower(), 0.10)
     total = round(sum(c["points"] for c in checks), 4)
-    return {"score": total, "success": total >= 0.85, "checks": checks}
+    return {"score": total, "success": total >= 0.85, "pass_threshold": 0.85, "checks": checks}

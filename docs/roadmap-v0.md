@@ -39,6 +39,7 @@
 ## Phase 5: Comparison reports
 
 - [ ] run manifests
-- [ ] run.json / score.json output
-- [ ] paired comparison report
-- [ ] leaderboard.csv
+- [x] score.json output
+- [x] paired comparison report
+- [x] comparison CSV
+- [ ] run.json manifest output

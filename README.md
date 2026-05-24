@@ -96,6 +96,27 @@ make leak-check
 
 The examples directory intentionally starts mostly empty. Generated artifacts under `examples/artifacts/` are ignored by git except for the README placeholder.
 
+## Compare two agent setups
+
+Create two local smoke-run directories and compare them:
+
+```bash
+make compare-smoke
+```
+
+Or run the commands directly:
+
+```bash
+python3 scripts/create_sample_runs.py
+agent-bench compare \
+  --baseline runs/baseline \
+  --candidate runs/spec_first \
+  --out reports/generated/compare_baseline_vs_spec_first.md \
+  --csv reports/generated/compare_baseline_vs_spec_first.csv
+```
+
+The comparison is paired: same task, same case, same scorer, different agent config. Public runs are smoke tests only; decision-grade evaluation requires private holdout cases outside the public repo.
+
 ## Initial core suite
 
 The recommended v0 core suite has six task families:
@@ -141,6 +162,8 @@ agent-bench-lab/
 - [Documentation index](docs/README.md)
 - [Task authoring](docs/05-task-authoring.md)
 - [Public/private split](docs/07-public-private-split.md)
+- [Run records](docs/09-run-records.md)
+- [Comparing setups](docs/10-comparing-setups.md)
 - [Public release checklist](docs/public-release-checklist.md)
 - [v0 roadmap](docs/roadmap-v0.md)
 

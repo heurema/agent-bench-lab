@@ -22,4 +22,10 @@ def score(task_dir: Path, fixture_dir: Path, artifacts_dir: Path) -> dict:
         check("no_extra_heading", text.count("#") == 1, 0.05),
     ]
     total = round(sum(c["points"] for c in checks), 4)
-    return {"score": total, "success": total >= 0.85, "checks": checks, "policy_violations": 0 if total >= 0.85 else 1}
+    return {
+        "score": total,
+        "success": total >= 0.85,
+        "pass_threshold": 0.85,
+        "checks": checks,
+        "policy_violations": 0 if total >= 0.85 else 1,
+    }

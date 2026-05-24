@@ -3,17 +3,42 @@
   "title": "AgentBenchScore",
   "type": "object",
   "required": [
+    "run_id",
     "task_id",
     "case_id",
-    "score",
+    "task_version",
+    "scorer_version",
+    "agent_config_id",
+    "agent_config_hash",
     "success",
-    "checks"
+    "score",
+    "pass_threshold",
+    "components",
+    "policy_violations",
+    "errors",
+    "artifact_hashes",
+    "metadata"
   ],
   "properties": {
+    "run_id": {
+      "type": "string"
+    },
     "task_id": {
       "type": "string"
     },
     "case_id": {
+      "type": "string"
+    },
+    "task_version": {
+      "type": "string"
+    },
+    "scorer_version": {
+      "type": "string"
+    },
+    "agent_config_id": {
+      "type": "string"
+    },
+    "agent_config_hash": {
       "type": "string"
     },
     "score": {
@@ -21,8 +46,16 @@
       "minimum": 0,
       "maximum": 1
     },
+    "pass_threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
     "success": {
       "type": "boolean"
+    },
+    "components": {
+      "type": "object"
     },
     "checks": {
       "type": "array",
@@ -31,7 +64,65 @@
       }
     },
     "policy_violations": {
-      "type": "integer"
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "artifact_hashes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "latency_seconds",
+        "cost_usd",
+        "tool_calls",
+        "model_calls",
+        "notes"
+      ],
+      "properties": {
+        "latency_seconds": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "cost_usd": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "tool_calls": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "model_calls": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
     },
     "notes": {
       "type": "string"

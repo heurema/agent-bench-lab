@@ -24,4 +24,4 @@ def score(task_dir: Path, fixture_dir: Path, artifacts_dir: Path) -> dict:
     add("message_mentions_flight", "FL-200" in msg, 0.05)
     add("message_no_private_data", "secret" not in msg.lower() and "api" not in msg.lower(), 0.05)
     total = round(sum(c["points"] for c in checks), 4)
-    return {"score": total, "success": total >= 0.85, "checks": checks}
+    return {"score": total, "success": total >= 0.85, "pass_threshold": 0.85, "checks": checks}

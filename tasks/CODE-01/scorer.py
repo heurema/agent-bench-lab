@@ -21,4 +21,10 @@ def score(task_dir: Path, fixture_dir: Path, artifacts_dir: Path) -> dict:
     add("does_not_edit_tests_claim", not summary.get("edited_tests", False), 0.15)
     add("changed_files_listed", isinstance(summary.get("changed_files"), list), 0.10)
     total = round(sum(c["points"] for c in checks), 4)
-    return {"score": total, "success": total >= 0.80, "checks": checks, "notes": "Placeholder public scorer; use executable hidden tests for real CODE-01."}
+    return {
+        "score": total,
+        "success": total >= 0.80,
+        "pass_threshold": 0.80,
+        "checks": checks,
+        "notes": "Placeholder public scorer; use executable hidden tests for real CODE-01.",
+    }
