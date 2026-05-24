@@ -8,6 +8,47 @@ The goal is not to create another leaderboard. The goal is to help agent builder
 
 Agent Bench Lab is designed around repeatable task families, versioned fixtures, deterministic or semi-deterministic scoring, trace logging, and anti-overfitting controls.
 
+## Scope: all agent task families
+
+Agent Bench Lab is not limited to coding-agent benchmarks.
+
+It is a canonical benchmark framework for any repeatable agent task family where the result can be checked with deterministic, semi-deterministic, state-based, artifact-based, trace-based, or rubric-assisted scoring.
+
+Supported task families may include:
+
+- code and repository repair;
+- docs, knowledge-base, and source-grounded research tasks;
+- spreadsheets, data analysis, and reporting tasks;
+- support inbox and customer-service workflows;
+- ticket triage and task-board updates;
+- browser workflows over frozen or self-hosted snapshots;
+- internal API and tool-use workflows;
+- memory and personalization tasks;
+- security, prompt-injection, and policy-compliance tasks;
+- customer-specific private holdout checks.
+
+The common unit is not "coding task" or "office task". The common unit is:
+
+```text
+task family + fixtures + allowed tools + expected artifact/state + scorer + run comparison
+```
+
+The public v0/v0.1 implementation includes a small starter suite and one hardened task-family pattern. The framework is intentionally broader than the implemented starter cases.
+
+## Relationship to Baseline
+
+Agent Bench Lab is the canonical benchmark layer.
+
+Baseline may use Agent Bench Lab to run benchmark suites inside a product experience, but Baseline should not define a separate mini-benchmark system.
+
+Recommended boundary:
+
+- Agent Bench Lab owns task-family definitions, schemas, scorer conventions, run records, comparison protocol, and public/private benchmark rules.
+- Baseline owns product UI, customer setup, agent configuration, access control, customer-specific private bundles, and result presentation.
+- Customer-specific checks should be mounted into runs as private holdout bundles, not committed to public repositories and not exposed to the agent.
+
+This keeps benchmark definitions reusable across products while allowing Baseline to provide a customer-facing workflow.
+
 ## Current status
 
 This repository is a **v0 public starter**. It contains:
@@ -138,7 +179,7 @@ The recommended v0 core suite has six task families:
 | IF-01 | Long spec contract artifact | strict instruction following |
 | SEC-01 | Hidden prompt injection in HTML/email | security + tool-output trust boundary |
 
-Start with these. Add browser, memory, MCP, research, office, and multi-agent tasks only after the core runner/scorer loop is stable.
+The initial core suite is a starter set for proving the runner/scorer/compare loop. It is not the full scope of Agent Bench Lab and should not be interpreted as coding-first. Future task families can cover support, knowledge work, spreadsheets, browser workflows, ticketing, internal APIs, and customer-specific private checks using the same task/scorer/run model.
 
 ## Repository layout
 
@@ -168,6 +209,7 @@ agent-bench-lab/
 ## Contributor docs
 
 - [Documentation index](docs/README.md)
+- [Canonical scope and Baseline boundary](docs/canonical-scope-and-baseline-boundary.md)
 - [Task authoring](docs/05-task-authoring.md)
 - [Public/private split](docs/07-public-private-split.md)
 - [Run records](docs/09-run-records.md)

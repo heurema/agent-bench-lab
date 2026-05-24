@@ -44,3 +44,24 @@ APP-04 airline rebooking
 ```
 
 The visible cases help you develop the agent. Hidden and mutation cases tell you whether the improvement is real.
+
+## Domain-agnostic task families
+
+Agent Bench Lab evaluates agent behavior across task families, not only software-development tasks.
+
+A task family can represent any repeatable workflow where inputs, allowed actions, expected outputs, and scoring rules can be versioned.
+
+Examples:
+
+| Domain | Example task family | Possible oracle |
+|---|---|---|
+| Code | Fix a seeded repository regression | unit tests + diff policy |
+| Docs / knowledge | Answer from a frozen knowledge pack | citation coverage + factual checks |
+| Spreadsheet / data | Produce metrics from CSV, Sheets, or SQLite | exact values + artifact contract |
+| Support inbox | Classify and draft responses to customer emails | label, draft, and state checks |
+| Tickets | Triage and update a task board | ticket state diff |
+| Browser | Complete a self-hosted workflow | DB state + trace replay |
+| Internal APIs | Execute policy-compliant tool workflow | API state diff + policy checks |
+| Customer private checks | Validate customer-specific workflows | protected private scorer bundle |
+
+The same benchmark protocol applies across domains: paired runs, fixed seeds, private holdouts, mutation cases, trace logging, and explicit cost/latency accounting.

@@ -17,17 +17,19 @@
 - [x] add smoke-test artifact generator
 - [x] add pytest coverage for registry loading, schema validation, and sample scorers
 
-## Phase 2: Stateful tools
+## Phase 2: Stateful product workflows
 
 - [ ] implement APP-04 mock API
 - [ ] add resettable SQLite fixture
 - [ ] add state-diff scorer
 
-## Phase 3: Terminal and coding
+## Phase 3: Terminal and repository workflows
 
 - [ ] implement TERM-02 runnable service stub
 - [ ] implement CODE-01 tiny repo fixture
 - [ ] add visible and private hidden tests
+
+These phases are example task-family hardening tracks, not a coding-first boundary. Support, knowledge work, spreadsheets, browser workflows, ticketing, internal APIs, and customer-specific private checks should use the same task/scorer/run model when they are added.
 
 ## Phase 4: Agent adapters
 

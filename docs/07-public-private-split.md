@@ -39,3 +39,55 @@ private/
 ```
 
 `private/` is gitignored by default.
+
+## Customer-specific private holdouts
+
+Customer-specific benchmark data must be treated as protected evaluation content.
+
+Do not commit customer fixtures, real data, private rubrics, answer keys, hidden scorer configs, prior successful traces, or private score reports to the public repository.
+
+Recommended model:
+
+```text
+public repo:
+  task family definition
+  public synthetic examples
+  scorer interface
+  public docs
+
+private customer bundle:
+  customer-specific fixtures
+  private holdout seeds
+  private answer keys
+  protected scorer config
+  sanitized or synthetic mirrors if needed
+  canary strings
+```
+
+The agent should receive only the task inputs it is allowed to use. The scorer may receive protected rubrics, answer keys, and hidden checks. The product wrapper may store references and hashes, but not expose protected content to the agent.
+
+A run record may include:
+
+```text
+customer_bundle_id
+bundle_version
+fixture_hash
+scorer_config_hash
+privacy_level
+```
+
+It should not include raw private data, answer keys, hidden rubric text, or customer-specific scorer config content.
+
+## Agent/scorer visibility boundary
+
+Keep a strict separation:
+
+| Component | May see |
+|---|---|
+| Agent | user prompt, allowed public/private input fixtures, allowed tools |
+| Runner | task metadata, fixture paths, budget, tool policy |
+| Scorer | final artifacts, trace, private answer keys, hidden checks |
+| Report | scores, deltas, summarized failures, redacted diagnostics |
+| Public repo | public synthetic examples only |
+
+Never give the agent hidden rubrics, answer keys, prior successful traces, private score reports, or customer-specific scorer configs.
