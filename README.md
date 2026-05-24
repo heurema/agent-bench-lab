@@ -117,6 +117,14 @@ agent-bench compare \
 
 The comparison is paired: same task, same case, same scorer, different agent config. Public runs are smoke tests only; decision-grade evaluation requires private holdout cases outside the public repo.
 
+## First decision-grade task family: IF-01
+
+IF-01 is the first hardened task-family pattern. It uses public synthetic cases, deterministic `check_config.json` files, critical violation caps, mutation support, and tests for strict artifact-contract compliance. See [IF-01 decision-grade pattern](docs/11-if01-decision-grade.md).
+
+```bash
+make if01-smoke
+```
+
 ## Initial core suite
 
 The recommended v0 core suite has six task families:
@@ -164,6 +172,7 @@ agent-bench-lab/
 - [Public/private split](docs/07-public-private-split.md)
 - [Run records](docs/09-run-records.md)
 - [Comparing setups](docs/10-comparing-setups.md)
+- [IF-01 decision-grade pattern](docs/11-if01-decision-grade.md)
 - [Public release checklist](docs/public-release-checklist.md)
 - [v0 roadmap](docs/roadmap-v0.md)
 

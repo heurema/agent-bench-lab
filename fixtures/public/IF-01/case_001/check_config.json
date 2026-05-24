@@ -1,0 +1,44 @@
+{
+  "case_id": "case_001",
+  "description": "Markdown launch note with exact title, three bullets, required phrases, and no extra files.",
+  "allow_extra_files": false,
+  "forbidden_files": [
+    "notes.md",
+    "draft.md"
+  ],
+  "score_caps": {
+    "missing_required_file": 0.0,
+    "banned_phrase": 0.0,
+    "forbidden_section": 0.6,
+    "forbidden_file": 0.6,
+    "extra_file": 0.75
+  },
+  "required_files": [
+    {
+      "path": "artifact.md",
+      "format": "markdown",
+      "markdown": {
+        "first_line": "# Public Launch Note",
+        "heading_order": [
+          "# Public Launch Note"
+        ],
+        "required_phrases": [
+          "versioned tasks",
+          "repeatable scoring",
+          "public templates"
+        ],
+        "banned_phrases": [
+          "benchmark answer"
+        ],
+        "forbidden_headings": [
+          "## Internal Notes",
+          "## Hidden Answers"
+        ],
+        "exact_bullet_count": 3,
+        "min_lines": 4,
+        "max_lines": 4,
+        "max_headings": 1
+      }
+    }
+  ]
+}

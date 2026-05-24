@@ -1,0 +1,41 @@
+{
+  "case_id": "case_002",
+  "description": "JSON artifact contract with exact fields, required list items, forbidden fields, and no extra files.",
+  "allow_extra_files": false,
+  "forbidden_files": [
+    "notes.md",
+    "artifact.md"
+  ],
+  "score_caps": {
+    "missing_required_file": 0.0,
+    "invalid_json": 0.0,
+    "forbidden_field": 0.6,
+    "forbidden_file": 0.6,
+    "extra_file": 0.75
+  },
+  "required_files": [
+    {
+      "path": "artifact.json",
+      "format": "json",
+      "json": {
+        "required_fields": {
+          "project": "Agent Bench Lab",
+          "artifact_type": "evaluation_contract",
+          "publishable": true
+        },
+        "required_array_items": {
+          "checks": [
+            "validation",
+            "scoring",
+            "compare-runs"
+          ]
+        },
+        "forbidden_fields": [
+          "internal_notes",
+          "private_holdout"
+        ],
+        "max_top_level_fields": 4
+      }
+    }
+  ]
+}

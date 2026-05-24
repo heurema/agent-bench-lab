@@ -1,0 +1,46 @@
+{
+  "case_id": "case_003",
+  "description": "Markdown contract brief with ordered sections, word and line limits, banned phrase, and no extra files.",
+  "allow_extra_files": false,
+  "forbidden_files": [
+    "notes.md",
+    "scratch.txt"
+  ],
+  "score_caps": {
+    "missing_required_file": 0.0,
+    "banned_phrase": 0.0,
+    "forbidden_section": 0.6,
+    "forbidden_file": 0.6,
+    "extra_file": 0.75
+  },
+  "required_files": [
+    {
+      "path": "artifact.md",
+      "format": "markdown",
+      "markdown": {
+        "first_line": "# Contract Brief",
+        "heading_order": [
+          "# Contract Brief",
+          "## Scope",
+          "## Acceptance",
+          "## Out of Scope"
+        ],
+        "required_phrases": [
+          "Northstar Review",
+          "private holdout",
+          "mutation cases"
+        ],
+        "banned_phrases": [
+          "benchmark answer"
+        ],
+        "forbidden_headings": [
+          "## Internal Notes",
+          "## Hidden Answers"
+        ],
+        "min_words": 35,
+        "max_words": 85,
+        "max_lines": 12
+      }
+    }
+  ]
+}
