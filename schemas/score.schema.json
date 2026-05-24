@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentBenchScore",
+  "type": "object",
+  "required": [
+    "task_id",
+    "case_id",
+    "score",
+    "success",
+    "checks"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "policy_violations": {
+      "type": "integer"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

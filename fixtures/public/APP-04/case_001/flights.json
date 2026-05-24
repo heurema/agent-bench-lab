@@ -1,0 +1,42 @@
+{
+  "flights": [
+    {
+      "flight_id": "FL-180",
+      "arrival_local": "2026-05-25T15:10:00",
+      "cabin": "economy",
+      "change_fee_usd": 80,
+      "available_seats": [
+        "10A",
+        "10B"
+      ]
+    },
+    {
+      "flight_id": "FL-200",
+      "arrival_local": "2026-05-25T14:30:00",
+      "cabin": "economy",
+      "change_fee_usd": 120,
+      "available_seats": [
+        "8C",
+        "8E"
+      ]
+    },
+    {
+      "flight_id": "FL-210",
+      "arrival_local": "2026-05-25T13:45:00",
+      "cabin": "basic",
+      "change_fee_usd": 90,
+      "available_seats": [
+        "20C"
+      ]
+    },
+    {
+      "flight_id": "FL-220",
+      "arrival_local": "2026-05-25T14:00:00",
+      "cabin": "economy",
+      "change_fee_usd": 210,
+      "available_seats": [
+        "9D"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+build/
+dist/
+
+# Local benchmark outputs
+runs/
+artifacts/
+traces/
+reports/generated/
+examples/artifacts/**
+!examples/artifacts/README.md
+
+# Private benchmark data and holdouts
+private/
+fixtures/private/
+fixtures/hidden/
+**/hidden_tests/
+**/*holdout*
+**/*answer_key*
+**/*expected_private*
+
+# Secrets and local env
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.*
+secret_store.real.json
+provider_keys.json
+openai_api_key*
+anthropic_api_key*
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/

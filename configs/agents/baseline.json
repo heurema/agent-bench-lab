@@ -1,0 +1,7 @@
+{
+  "agent_config_id": "baseline",
+  "description": "Single-agent baseline. No memory, no reviewer loop.",
+  "memory": "off",
+  "reviewer_loop": "off",
+  "max_tool_calls": 30
+}

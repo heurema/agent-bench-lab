@@ -1,0 +1,7 @@
+{
+  "agent_config_id": "spec_first",
+  "description": "Agent creates a checklist/contract before acting.",
+  "memory": "off",
+  "reviewer_loop": "self_check",
+  "max_tool_calls": 30
+}

@@ -1,0 +1,10 @@
+{
+  "booking_id": "BKG-PUBLIC-001",
+  "traveler": "Synthetic Traveler",
+  "current_flight_id": "FL-100",
+  "date": "2026-05-25",
+  "cabin": "economy",
+  "seat": "12C",
+  "max_change_fee_usd": 150,
+  "seat_preference": "aisle"
+}

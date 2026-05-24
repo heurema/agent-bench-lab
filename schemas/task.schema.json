@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentBenchTaskCard",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "name",
+    "category",
+    "purpose",
+    "agent_role",
+    "user_prompt",
+    "available_tools",
+    "forbidden_tools",
+    "environment_setup",
+    "input_fixtures",
+    "required_final_artifact",
+    "success_criteria",
+    "scoring_rubric",
+    "hidden_tests",
+    "partial_credit_rules",
+    "common_failure_modes",
+    "expected_trace_signals",
+    "what_to_log",
+    "how_to_compare_runs",
+    "variants",
+    "anti_overfitting_strategy",
+    "implementation_notes",
+    "meta"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "agent_role": {
+      "type": "string"
+    },
+    "user_prompt": {
+      "type": "string"
+    },
+    "available_tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbidden_tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "environment_setup": {
+      "type": "string"
+    },
+    "input_fixtures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_final_artifact": {
+      "type": "string"
+    },
+    "success_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "scoring_rubric": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "component",
+          "weight",
+          "description"
+        ],
+        "properties": {
+          "component": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "hidden_tests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "partial_credit_rules": {
+      "type": "string"
+    },
+    "common_failure_modes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "expected_trace_signals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "what_to_log": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "how_to_compare_runs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "anti_overfitting_strategy": {
+      "type": "string"
+    },
+    "implementation_notes": {
+      "type": "string"
+    },
+    "public_notes": {
+      "type": "string"
+    },
+    "meta": {
+      "type": "object",
+      "required": [
+        "difficulty",
+        "estimated_runtime_minutes",
+        "cost_sensitivity",
+        "repeatability_score",
+        "contamination_risk"
+      ],
+      "properties": {
+        "difficulty": {
+          "enum": [
+            "S",
+            "M",
+            "L",
+            "XL"
+          ]
+        },
+        "estimated_runtime_minutes": {
+          "type": "number"
+        },
+        "cost_sensitivity": {
+          "enum": [
+            "L",
+            "M",
+            "H"
+          ]
+        },
+        "repeatability_score": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "contamination_risk": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

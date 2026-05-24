@@ -1,0 +1,95 @@
+{
+  "id": "CODE-01",
+  "version": "0.1.0",
+  "name": "Local regression patch",
+  "category": "repository_repair",
+  "purpose": "Compare repository reasoning, patch discipline, and regression-fix behavior.",
+  "agent_role": "software engineer",
+  "user_prompt": "Fix the bug described in issue.md without changing intended behavior elsewhere.",
+  "available_tools": [
+    "bash",
+    "git",
+    "editor",
+    "pytest"
+  ],
+  "forbidden_tools": [
+    "internet",
+    "edit_tests",
+    "install_unpinned_dependencies"
+  ],
+  "environment_setup": "Local public sample fixture. Real runs should use private hidden variants.",
+  "input_fixtures": [
+    "fixtures/public/CODE-01/case_001"
+  ],
+  "required_final_artifact": "patch.diff and summary.json",
+  "success_criteria": [
+    "patch.diff exists",
+    "summary explains root cause",
+    "public sample issue addressed"
+  ],
+  "scoring_rubric": [
+    {
+      "component": "patch_presence",
+      "weight": 30,
+      "description": "Patch artifact exists"
+    },
+    {
+      "component": "issue_alignment",
+      "weight": 40,
+      "description": "Patch/summary addresses root cause"
+    },
+    {
+      "component": "discipline",
+      "weight": 30,
+      "description": "No forbidden changes indicated"
+    }
+  ],
+  "hidden_tests": [
+    "edge cases",
+    "import-order regression",
+    "untouched module behavior"
+  ],
+  "partial_credit_rules": "Public scorer gives partial credit by check count. Private holdout should add hard gates for critical failures.",
+  "common_failure_modes": [
+    "visible-test overfit",
+    "editing unrelated files",
+    "removing validation"
+  ],
+  "expected_trace_signals": [
+    "reproduce failure",
+    "locate root cause",
+    "patch",
+    "rerun tests"
+  ],
+  "what_to_log": [
+    "model calls",
+    "tool calls",
+    "artifact writes",
+    "latency",
+    "cost",
+    "policy violations"
+  ],
+  "how_to_compare_runs": [
+    "paired seeds",
+    "visible vs hidden score",
+    "cost delta",
+    "latency delta",
+    "tool-call delta"
+  ],
+  "variants": [
+    "paraphrased issue",
+    "renamed identifiers",
+    "moved root cause"
+  ],
+  "anti_overfitting_strategy": "Use public cases for development, private holdout cases for final comparison, and mutation cases for brittleness checks.",
+  "implementation_notes": "Public sample scorer is intentionally lightweight. Replace with executable repo + hidden tests for serious use.",
+  "implementation_status": "scorer_stub",
+  "public_notes": "Synthetic public starter task. Do not treat public case_001 as a decision-grade benchmark.",
+  "meta": {
+    "difficulty": "M",
+    "estimated_runtime_minutes": 8,
+    "cost_sensitivity": "M",
+    "repeatability_score": 5,
+    "contamination_risk": 2
+  }
+}

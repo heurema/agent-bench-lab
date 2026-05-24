@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-bench-lab"
+version = "0.1.0"
+description = "Local-first starter kit for reproducible AI-agent benchmark suites"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Agent Bench Lab contributors"}]
+dependencies = [
+  "jsonschema>=4.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "ruff>=0.4.0"
+]
+
+[project.scripts]
+agent-bench = "agent_bench_lab.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100

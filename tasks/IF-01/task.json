@@ -1,0 +1,89 @@
+{
+  "id": "IF-01",
+  "version": "0.1.0",
+  "name": "Long spec contract artifact",
+  "category": "instruction_following",
+  "purpose": "Measure strict instruction following with deterministic artifact checks.",
+  "agent_role": "general assistant",
+  "user_prompt": "Create the requested artifact exactly as specified in spec.md. Do not add anything not required.",
+  "available_tools": [
+    "file_read",
+    "file_write"
+  ],
+  "forbidden_tools": [
+    "internet",
+    "private_memory",
+    "extra_files"
+  ],
+  "environment_setup": "Local public sample fixture. Real runs should use private hidden variants.",
+  "input_fixtures": [
+    "fixtures/public/IF-01/case_001"
+  ],
+  "required_final_artifact": "artifact.md",
+  "success_criteria": [
+    "artifact.md exists",
+    "mandatory phrases are present",
+    "forbidden content is absent",
+    "section order is correct"
+  ],
+  "scoring_rubric": [
+    {
+      "component": "constraint_satisfaction",
+      "weight": 90,
+      "description": "All deterministic constraints satisfied"
+    },
+    {
+      "component": "format",
+      "weight": 10,
+      "description": "Clean minimal format"
+    }
+  ],
+  "hidden_tests": [
+    "reordered constraints",
+    "must-not clauses",
+    "private variants"
+  ],
+  "partial_credit_rules": "Public scorer gives partial credit by check count. Private holdout should add hard gates for critical failures.",
+  "common_failure_modes": [
+    "missing tail constraints",
+    "adding extra sections",
+    "ignoring must-not clauses"
+  ],
+  "expected_trace_signals": [
+    "read spec",
+    "extract constraints",
+    "write artifact",
+    "self-check"
+  ],
+  "what_to_log": [
+    "model calls",
+    "tool calls",
+    "artifact writes",
+    "latency",
+    "cost",
+    "policy violations"
+  ],
+  "how_to_compare_runs": [
+    "paired seeds",
+    "visible vs hidden score",
+    "cost delta",
+    "latency delta",
+    "tool-call delta"
+  ],
+  "variants": [
+    "paraphrased spec",
+    "different mandatory phrases",
+    "stricter no-extra-output rule"
+  ],
+  "anti_overfitting_strategy": "Use public cases for development, private holdout cases for final comparison, and mutation cases for brittleness checks.",
+  "implementation_notes": "Keep this task simple; it is the fastest prompt/system-message regression test.",
+  "implementation_status": "scorer_sample",
+  "public_notes": "Synthetic public starter task. Do not treat public case_001 as a decision-grade benchmark.",
+  "meta": {
+    "difficulty": "M",
+    "estimated_runtime_minutes": 6,
+    "cost_sensitivity": "L",
+    "repeatability_score": 5,
+    "contamination_risk": 1
+  }
+}

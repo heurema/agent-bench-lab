@@ -1,0 +1,3 @@
+2026-05-24T07:31:12Z service starting
+2026-05-24T07:31:13Z health check failed: configured port 9090 does not match expected port 8080
+2026-05-24T07:31:13Z health check failed: path /status does not match expected /health

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentBenchRun",
+  "type": "object",
+  "required": [
+    "run_id",
+    "task_id",
+    "task_version",
+    "case_id",
+    "agent_config_hash",
+    "started_at",
+    "status"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "task_version": {
+      "type": "string"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "agent_config_hash": {
+      "type": "string"
+    },
+    "model_provider": {
+      "type": "string"
+    },
+    "model_name": {
+      "type": "string"
+    },
+    "temperature": {
+      "type": "number"
+    },
+    "seed": {
+      "type": "integer"
+    },
+    "started_at": {
+      "type": "string"
+    },
+    "completed_at": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed",
+        "timeout",
+        "invalid",
+        "environment_error"
+      ]
+    },
+    "score": {
+      "type": "number"
+    },
+    "cost_usd": {
+      "type": "number"
+    },
+    "latency_ms": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": true
+}

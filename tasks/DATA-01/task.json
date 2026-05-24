@@ -1,0 +1,94 @@
+{
+  "id": "DATA-01",
+  "version": "0.1.0",
+  "name": "CSV metrics memo",
+  "category": "data_analysis",
+  "purpose": "Test exact data computation plus concise grounded reporting.",
+  "agent_role": "data analyst",
+  "user_prompt": "Calculate the metrics requested in spec.md and produce metrics.json and report.md.",
+  "available_tools": [
+    "python",
+    "sqlite",
+    "file_read",
+    "file_write"
+  ],
+  "forbidden_tools": [
+    "internet",
+    "modify_inputs"
+  ],
+  "environment_setup": "Local public sample fixture. Real runs should use private hidden variants.",
+  "input_fixtures": [
+    "fixtures/public/DATA-01/case_001"
+  ],
+  "required_final_artifact": "metrics.json and report.md",
+  "success_criteria": [
+    "metrics.json exists",
+    "metrics match fixture computation",
+    "report mentions required values"
+  ],
+  "scoring_rubric": [
+    {
+      "component": "metrics",
+      "weight": 70,
+      "description": "Exact computed metrics"
+    },
+    {
+      "component": "report",
+      "weight": 20,
+      "description": "Report grounds claims in metrics"
+    },
+    {
+      "component": "format",
+      "weight": 10,
+      "description": "Expected files and JSON keys"
+    }
+  ],
+  "hidden_tests": [
+    "null handling",
+    "duplicate rows",
+    "time-window boundary"
+  ],
+  "partial_credit_rules": "Public scorer gives partial credit by check count. Private holdout should add hard gates for critical failures.",
+  "common_failure_modes": [
+    "wrong aggregation",
+    "unsupported claim",
+    "format mismatch"
+  ],
+  "expected_trace_signals": [
+    "inspect schema",
+    "compute metrics",
+    "verify output",
+    "write concise memo"
+  ],
+  "what_to_log": [
+    "model calls",
+    "tool calls",
+    "artifact writes",
+    "latency",
+    "cost",
+    "policy violations"
+  ],
+  "how_to_compare_runs": [
+    "paired seeds",
+    "visible vs hidden score",
+    "cost delta",
+    "latency delta",
+    "tool-call delta"
+  ],
+  "variants": [
+    "renamed columns",
+    "different paid statuses",
+    "alternate grouping"
+  ],
+  "anti_overfitting_strategy": "Use public cases for development, private holdout cases for final comparison, and mutation cases for brittleness checks.",
+  "implementation_notes": "Public scorer computes expected values from CSV fixtures. Private variants should mutate data distribution.",
+  "implementation_status": "scorer_sample",
+  "public_notes": "Synthetic public starter task. Do not treat public case_001 as a decision-grade benchmark.",
+  "meta": {
+    "difficulty": "M",
+    "estimated_runtime_minutes": 8,
+    "cost_sensitivity": "M",
+    "repeatability_score": 5,
+    "contamination_risk": 1
+  }
+}

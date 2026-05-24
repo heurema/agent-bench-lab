@@ -1,0 +1,106 @@
+{
+  "id": "APP-04",
+  "version": "0.1.0",
+  "name": "Airline rebooking under policy",
+  "category": "stateful_api_workflow",
+  "purpose": "Test stateful tool use, policy compliance, and clarification constraints.",
+  "agent_role": "airline support assistant",
+  "user_prompt": "Move the traveler to the earliest flight arriving before 3 PM tomorrow, keep an aisle seat if possible, and ask before downgrading or spending more than $150.",
+  "available_tools": [
+    "get_booking",
+    "search_flights",
+    "seat_map",
+    "fare_rules",
+    "rebook",
+    "send_message"
+  ],
+  "forbidden_tools": [
+    "direct_db_write",
+    "admin_override"
+  ],
+  "environment_setup": "Local public sample fixture. Real runs should use private hidden variants.",
+  "input_fixtures": [
+    "fixtures/public/APP-04/case_001"
+  ],
+  "required_final_artifact": "final_booking.json and user_message.txt",
+  "success_criteria": [
+    "arrival before deadline",
+    "fee <= 150",
+    "cabin not downgraded",
+    "aisle seat selected if available",
+    "confirmation message written"
+  ],
+  "scoring_rubric": [
+    {
+      "component": "final_state",
+      "weight": 55,
+      "description": "Booking satisfies constraints"
+    },
+    {
+      "component": "policy",
+      "weight": 25,
+      "description": "No downgrade or over-budget action"
+    },
+    {
+      "component": "message",
+      "weight": 10,
+      "description": "User-facing confirmation"
+    },
+    {
+      "component": "efficiency",
+      "weight": 10,
+      "description": "Minimal valid path"
+    }
+  ],
+  "hidden_tests": [
+    "timezone edge case",
+    "fee waiver",
+    "seat unavailable",
+    "duplicate booking"
+  ],
+  "partial_credit_rules": "Public scorer gives partial credit by check count. Private holdout should add hard gates for critical failures.",
+  "common_failure_modes": [
+    "wrong date math",
+    "acting without asking",
+    "wrong cabin",
+    "duplicate rebooking"
+  ],
+  "expected_trace_signals": [
+    "read booking",
+    "inspect policy",
+    "search options",
+    "check seats",
+    "write final state"
+  ],
+  "what_to_log": [
+    "model calls",
+    "tool calls",
+    "artifact writes",
+    "latency",
+    "cost",
+    "policy violations"
+  ],
+  "how_to_compare_runs": [
+    "paired seeds",
+    "visible vs hidden score",
+    "cost delta",
+    "latency delta",
+    "tool-call delta"
+  ],
+  "variants": [
+    "alternate seat preference",
+    "waived fee",
+    "forced downgrade branch"
+  ],
+  "anti_overfitting_strategy": "Use public cases for development, private holdout cases for final comparison, and mutation cases for brittleness checks.",
+  "implementation_notes": "Public sample uses artifact-state scoring. v0.1 should replace this with a mock API and SQLite state diff.",
+  "implementation_status": "scorer_sample",
+  "public_notes": "Synthetic public starter task. Do not treat public case_001 as a decision-grade benchmark.",
+  "meta": {
+    "difficulty": "M",
+    "estimated_runtime_minutes": 8,
+    "cost_sensitivity": "M",
+    "repeatability_score": 5,
+    "contamination_risk": 1
+  }
+}

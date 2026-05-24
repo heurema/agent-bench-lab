@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentBenchTraceEvent",
+  "type": "object",
+  "required": [
+    "ts",
+    "run_id",
+    "event_type",
+    "actor"
+  ],
+  "properties": {
+    "ts": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "event_type": {
+      "enum": [
+        "model_call",
+        "model_result",
+        "tool_call",
+        "tool_result",
+        "artifact_write",
+        "scorer_event",
+        "error"
+      ]
+    },
+    "actor": {
+      "type": "string"
+    },
+    "input_hash": {
+      "type": "string"
+    },
+    "output_hash": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

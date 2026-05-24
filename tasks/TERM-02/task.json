@@ -1,0 +1,95 @@
+{
+  "id": "TERM-02",
+  "version": "0.1.0",
+  "name": "Log-driven config repair",
+  "category": "terminal_ops",
+  "purpose": "Measure log-driven debugging with a small config repair task.",
+  "agent_role": "on-call engineer",
+  "user_prompt": "The service stopped passing health checks after a config change. Fix it and explain the root cause.",
+  "available_tools": [
+    "bash",
+    "file_read",
+    "file_write",
+    "curl"
+  ],
+  "forbidden_tools": [
+    "internet",
+    "delete_logs",
+    "replace_service"
+  ],
+  "environment_setup": "Local public sample fixture. Real runs should use private hidden variants.",
+  "input_fixtures": [
+    "fixtures/public/TERM-02/case_001"
+  ],
+  "required_final_artifact": "fixed_config.txt, health.txt, incident_note.txt",
+  "success_criteria": [
+    "config has correct port",
+    "health check shows success",
+    "incident note explains root cause"
+  ],
+  "scoring_rubric": [
+    {
+      "component": "health",
+      "weight": 60,
+      "description": "Health output succeeds"
+    },
+    {
+      "component": "config",
+      "weight": 25,
+      "description": "Minimal correct config"
+    },
+    {
+      "component": "note",
+      "weight": 15,
+      "description": "Root-cause note"
+    }
+  ],
+  "hidden_tests": [
+    "restart persistence",
+    "unrelated config unchanged",
+    "alternate port mismatch"
+  ],
+  "partial_credit_rules": "Public scorer gives partial credit by check count. Private holdout should add hard gates for critical failures.",
+  "common_failure_modes": [
+    "editing wrong config",
+    "masking health check",
+    "deleting logs"
+  ],
+  "expected_trace_signals": [
+    "read logs",
+    "inspect config",
+    "repair minimal setting",
+    "verify health"
+  ],
+  "what_to_log": [
+    "model calls",
+    "tool calls",
+    "artifact writes",
+    "latency",
+    "cost",
+    "policy violations"
+  ],
+  "how_to_compare_runs": [
+    "paired seeds",
+    "visible vs hidden score",
+    "cost delta",
+    "latency delta",
+    "tool-call delta"
+  ],
+  "variants": [
+    "different broken key",
+    "different port",
+    "env var override"
+  ],
+  "anti_overfitting_strategy": "Use public cases for development, private holdout cases for final comparison, and mutation cases for brittleness checks.",
+  "implementation_notes": "Public sample uses artifact scoring; v0.1 should add a runnable service stub.",
+  "implementation_status": "scorer_sample",
+  "public_notes": "Synthetic public starter task. Do not treat public case_001 as a decision-grade benchmark.",
+  "meta": {
+    "difficulty": "M",
+    "estimated_runtime_minutes": 6,
+    "cost_sensitivity": "L",
+    "repeatability_score": 5,
+    "contamination_risk": 1
+  }
+}

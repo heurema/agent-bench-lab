@@ -1,0 +1,7 @@
+{
+  "agent_config_id": "critic_loop",
+  "description": "Primary agent plus review pass. Use only with equalized budgets.",
+  "memory": "off",
+  "reviewer_loop": "on",
+  "max_tool_calls": 40
+}
