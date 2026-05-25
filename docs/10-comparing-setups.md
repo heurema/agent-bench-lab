@@ -66,3 +66,22 @@ different setup
 ```
 
 Consumer applications should consume Agent Bench Lab task families and scorer outputs rather than defining parallel benchmark logic.
+
+## Feedback Safety
+
+Comparison reports should identify regressions and failure categories without revealing hidden
+labels, answer keys, canary strings, private thresholds, or exact hidden rubric text.
+
+Prefer redacted diagnostics such as:
+
+- `numeric total is incorrect`;
+- `unsupported claim found in report`;
+- `policy classification failed`.
+
+Avoid feedback such as:
+
+- `the correct hidden label is urgent_refund`;
+- `hidden row HONEY_482 triggered`;
+- `private threshold is 0.87`.
+
+See [Reporting and feedback](reporting-and-feedback.md).
