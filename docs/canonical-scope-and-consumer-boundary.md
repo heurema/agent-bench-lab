@@ -56,3 +56,17 @@ They should not be committed to public repositories, shown to the agent, or mixe
 Consumer applications can keep references, hashes, bundle versions, permissions, and result summaries. Agent Bench Lab should remain the source of truth for task-family format, scorer semantics, run records, trace expectations, comparison rules, and public/private hygiene.
 
 Agent Bench Lab should not know which consumer application uses it.
+
+## Standard Layer Contracts
+
+Agent Bench Lab should define:
+
+- private eval boundary expectations;
+- scorer type contracts;
+- normalized score records;
+- trace and report expectations;
+- redacted feedback rules;
+- decision-grade graduation criteria.
+
+The protected content itself belongs in the Private Eval Layer. User interaction, scheduling,
+permissions, task delivery, and report display belong in consumer applications.

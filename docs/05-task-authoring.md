@@ -57,3 +57,35 @@ A valid task can be any workflow with a checkable artifact or state change.
 | Customer private check | customer-owned fixtures and rubric | customer-specific artifact | protected scorer bundle |
 
 Avoid writing tasks whose only oracle is "the answer looks good".
+
+## Scorer Contracts
+
+Prefer reusable scorer contracts over family-specific hidden-check formats.
+
+Common contracts include:
+
+- `artifact_exact` for required files, forbidden files, and exact artifact checks;
+- `schema_contract` for JSON/YAML/CSV structure;
+- `numeric_metric` for exact values and tolerances;
+- `state_diff` for database, API, filesystem, or app state;
+- `claim_rubric` for factual claims and citations;
+- `trace_policy` for tool-use and action policy;
+- `security_leak` for canaries, leakage, and exfiltration checks.
+
+See [Scorer type contracts](scorer-types.md).
+
+## Decision-Grade Criteria
+
+A task family is not decision-grade just because public examples pass.
+
+Before marking a family decision-grade, require:
+
+- deterministic or audited primary oracle;
+- public synthetic examples;
+- private holdout strategy;
+- mutation strategy;
+- normalized score output;
+- documented visibility boundary;
+- redacted feedback policy;
+- exploit or leak smoke test when relevant;
+- versioning and changelog policy.

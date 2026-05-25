@@ -49,6 +49,14 @@ Recommended boundary:
 
 Agent Bench Lab should not need to know which consumer application is using it.
 
+## Private eval and scorer contracts
+
+Agent Bench Lab should define how benchmarks work without storing protected evaluation content.
+
+The Private Eval Layer holds hidden labels, private holdouts, answer keys, protected scorer configs, canaries, customer-specific checks, and redaction rules outside the public repo. Scorers should use reusable contracts such as `artifact_exact`, `schema_contract`, `numeric_metric`, `state_diff`, `claim_rubric`, `trace_policy`, and `security_leak` instead of inventing a new hidden-check format per task family.
+
+See [Private Eval Layer](docs/private-eval-layer.md), [Scorer type contracts](docs/scorer-types.md), and [Reporting and feedback](docs/reporting-and-feedback.md).
+
 ## Current status
 
 This repository is a **v0 public starter**. It contains:
@@ -210,6 +218,9 @@ agent-bench-lab/
 
 - [Documentation index](docs/README.md)
 - [Canonical scope and consumer boundary](docs/canonical-scope-and-consumer-boundary.md)
+- [Private Eval Layer](docs/private-eval-layer.md)
+- [Scorer type contracts](docs/scorer-types.md)
+- [Reporting and feedback](docs/reporting-and-feedback.md)
 - [Task authoring](docs/05-task-authoring.md)
 - [Public/private split](docs/07-public-private-split.md)
 - [Run records](docs/09-run-records.md)
