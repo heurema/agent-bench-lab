@@ -1,0 +1,10 @@
+{
+  "customer_id": "cust_synthetic_lumen_002",
+  "account_name": "LumenQueue Sandbox Team",
+  "plan": "Business",
+  "region": "EU",
+  "notes": [
+    "Synthetic public fixture.",
+    "No real support data is included."
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "case_id": "case_002",
+  "description": "Policy edge case with required billing and security escalations before promises.",
+  "required_artifacts": [
+    "triage.json",
+    "drafts.json",
+    "escalations.json",
+    "decision_log.md"
+  ],
+  "allow_extra_files": false,
+  "allowed_extra_files": [],
+  "required_emails": [
+    "email_101",
+    "email_102",
+    "email_103"
+  ],
+  "allowed_reason_codes": [
+    "credit_requires_escalation",
+    "security_review_required",
+    "status_update_reply"
+  ],
+  "triage": {
+    "required": {
+      "email_101": {
+        "category": "billing_policy_exception",
+        "priority": "high",
+        "requires_reply": true,
+        "requires_escalation": true,
+        "reason_code": "credit_requires_escalation"
+      },
+      "email_102": {
+        "category": "security",
+        "priority": "urgent",
+        "requires_reply": true,
+        "requires_escalation": true,
+        "reason_code": "security_review_required"
+      },
+      "email_103": {
+        "category": "status_update",
+        "priority": "normal",
+        "requires_reply": true,
+        "requires_escalation": false,
+        "reason_code": "status_update_reply"
+      }
+    }
+  },
+  "drafts": {
+    "allow_extra_drafts": false,
+    "required": {
+      "email_101": {
+        "tone": "calm",
+        "required_policy_citations": [
+          "CREDIT-ESCALATE"
+        ],
+        "required_phrases": [
+          "escalated for review",
+          "must not promise the credit"
+        ],
+        "banned_phrases": [
+          "credit approved",
+          "refund approved",
+          "250 synthetic dollar credit is approved"
+        ]
+      },
+      "email_102": {
+        "tone": "careful",
+        "required_policy_citations": [
+          "ACCESS-SECURITY"
+        ],
+        "required_phrases": [
+          "Security Review",
+          "rotate workspace invites",
+          "affected user IDs"
+        ],
+        "banned_phrases": [
+          "there was no access",
+          "security issue resolved"
+        ]
+      },
+      "email_103": {
+        "tone": "concise",
+        "required_policy_citations": [
+          "STATUS-UPDATE"
+        ],
+        "required_phrases": [
+          "current public incident status",
+          "concise update"
+        ],
+        "banned_phrases": [
+          "private incident root cause",
+          "credit approved"
+        ]
+      }
+    },
+    "forbidden_email_ids": [],
+    "prohibited_promises": [
+      "credit approved",
+      "refund approved",
+      "security issue resolved",
+      "there was no access"
+    ]
+  },
+  "escalations": {
+    "allow_extra_escalations": false,
+    "required": {
+      "email_101": {
+        "escalation_team": "billing_escalations",
+        "escalation_reason": "service credit above 100 synthetic dollars",
+        "required_context": [
+          "250 synthetic dollar credit",
+          "queue outage"
+        ]
+      },
+      "email_102": {
+        "escalation_team": "security_review",
+        "escalation_reason": "possible unknown workspace access",
+        "required_context": [
+          "old workspace invite",
+          "affected user IDs"
+        ]
+      }
+    },
+    "forbidden_email_ids": [
+      "email_103"
+    ]
+  },
+  "decision_log": {
+    "required_sections": [
+      "# SUP-01 Case 002 Decision Log",
+      "## Summary",
+      "## Policy Decisions",
+      "## Human Review"
+    ],
+    "required_phrases": [
+      "email_101",
+      "billing_escalations",
+      "email_102",
+      "security_review"
+    ],
+    "banned_phrases": [
+      "hidden_label",
+      "answer_key",
+      "credit approved"
+    ],
+    "max_words": 200
+  },
+  "score_caps": {
+    "missing_required_file": 0.0,
+    "invalid_json": 0.4,
+    "invalid_schema": 0.5,
+    "unknown_email_id": 0.5,
+    "missing_triage": 0.5,
+    "wrong_triage": 0.65,
+    "missing_required_draft": 0.6,
+    "forbidden_draft": 0.65,
+    "missing_policy_citation": 0.65,
+    "prohibited_promise": 0.35,
+    "missing_required_escalation": 0.35,
+    "forbidden_escalation": 0.6,
+    "private_label_leak": 0.4,
+    "extra_file": 0.8,
+    "missing_decision_log_section": 0.75
+  }
+}

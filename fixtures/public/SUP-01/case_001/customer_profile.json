@@ -1,0 +1,10 @@
+{
+  "customer_id": "cust_synthetic_harbor_001",
+  "account_name": "HarborDesk Training Workspace",
+  "plan": "Standard",
+  "region": "NA",
+  "notes": [
+    "Synthetic public fixture.",
+    "Do not treat this as real customer data."
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "customer_id": "cust_synthetic_atlas_003",
+  "account_name": "AtlasRelay Demo Group",
+  "plan": "Starter",
+  "region": "APAC",
+  "notes": [
+    "Synthetic public fixture.",
+    "The fixture intentionally omits ownership proof."
+  ]
+}

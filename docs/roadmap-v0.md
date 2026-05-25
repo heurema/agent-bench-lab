@@ -25,6 +25,13 @@
 - [x] add unsupported-claim and stale-source checks
 - [ ] add private holdout corpus guidance examples outside the public tree
 
+## Phase 1c: Operational workflows
+
+- [x] add synthetic SUP-01 public support inbox cases
+- [x] add triage, draft, escalation, and decision-log scorer
+- [x] add ops-local suite without expanding core
+- [ ] add private support holdout guidance examples outside the public tree
+
 ## Phase 2: Stateful product workflows
 
 - [ ] implement APP-04 mock API
