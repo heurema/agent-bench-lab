@@ -13,6 +13,7 @@ def test_list_tasks_has_core_tasks():
         "DATA-01",
         "DOC-01",
         "SUP-01",
+        "API-01",
         "IF-01",
         "SEC-01",
     }.issubset(ids)

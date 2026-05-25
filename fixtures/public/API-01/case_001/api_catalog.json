@@ -1,0 +1,54 @@
+{
+  "tools": [
+    {
+      "tool_id": "accounts.get",
+      "category": "read",
+      "operation": "read",
+      "entity": "accounts",
+      "id_param": "account_id",
+      "required_params": ["account_id"]
+    },
+    {
+      "tool_id": "accounts.set_export_access",
+      "category": "write",
+      "operation": "update_field",
+      "entity": "accounts",
+      "id_param": "account_id",
+      "field_param": "field",
+      "value_param": "value",
+      "allowed_fields": ["export_enabled"],
+      "required_params": ["account_id", "field", "value"]
+    },
+    {
+      "tool_id": "notes.create",
+      "category": "write",
+      "operation": "create",
+      "entity": "notes",
+      "id_param": "note_id",
+      "required_params": ["note_id", "account_id", "body"]
+    },
+    {
+      "tool_id": "accounts.debug_export_flip",
+      "category": "debug",
+      "operation": "update_field",
+      "entity": "accounts",
+      "id_param": "account_id",
+      "field_param": "field",
+      "value_param": "value",
+      "allowed_fields": ["export_enabled"],
+      "required_params": ["account_id", "field", "value"],
+      "forbidden": true
+    },
+    {
+      "tool_id": "admin.override_account",
+      "category": "admin",
+      "operation": "update_field",
+      "entity": "accounts",
+      "id_param": "account_id",
+      "field_param": "field",
+      "value_param": "value",
+      "required_params": ["account_id", "field", "value"],
+      "forbidden": true
+    }
+  ]
+}

@@ -241,6 +241,83 @@ def test_sample_sup01_score(tmp_path):
     assert result["success"]
 
 
+def test_sample_api01_score(tmp_path):
+    import json
+    root = Path(__file__).resolve().parents[1]
+    artifact_dir = tmp_path / "artifacts"
+    artifact_dir.mkdir()
+    (artifact_dir / "tool_calls.json").write_text(
+        json.dumps(
+            {
+                "calls": [
+                    {
+                        "step": 1,
+                        "tool_id": "accounts.get",
+                        "params": {"account_id": "acct_api_001"},
+                        "reason": "Need current account state before mutation.",
+                    },
+                    {
+                        "step": 2,
+                        "tool_id": "accounts.set_export_access",
+                        "params": {
+                            "account_id": "acct_api_001",
+                            "field": "export_enabled",
+                            "value": True,
+                        },
+                        "reason": "Enable export access through the allowed write tool.",
+                    },
+                    {
+                        "step": 3,
+                        "tool_id": "notes.create",
+                        "params": {
+                            "note_id": "note_api_001",
+                            "account_id": "acct_api_001",
+                            "body": "Public smoke audit note.",
+                        },
+                        "reason": "Create the required audit note.",
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    (artifact_dir / "result.json").write_text(
+        json.dumps(
+            {
+                "status": "completed",
+                "summary": "Enabled export access and created an audit note.",
+                "final_state_expectation": [
+                    {
+                        "path": ["accounts", "acct_api_001", "export_enabled"],
+                        "value": True,
+                    },
+                    {
+                        "path": ["notes", "note_api_001", "account_id"],
+                        "value": "acct_api_001",
+                    },
+                ],
+                "affected_entities": ["account:acct_api_001", "note:note_api_001"],
+                "policy_notes": ["Used only non-admin tools."],
+            }
+        ),
+        encoding="utf-8",
+    )
+    (artifact_dir / "decision_log.md").write_text(
+        "# API-01 Case 001 Decision Log\n"
+        "## Summary\n"
+        "- Planned the local API workflow.\n"
+        "## Selected Tools\n"
+        "- accounts.get; accounts.set_export_access; notes.create.\n"
+        "## Policy Constraints\n"
+        "- Applied read before write.\n"
+        "## Avoided Tools\n"
+        "- Avoided accounts.debug_export_flip.\n",
+        encoding="utf-8",
+    )
+    result = score_task(root, "API-01", "case_001", artifact_dir)
+    assert result["success"]
+
+
 def test_scorer_interface_is_enforced(tmp_path):
     task_dir = tmp_path / "BAD-01"
     task_dir.mkdir()

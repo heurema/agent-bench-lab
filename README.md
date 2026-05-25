@@ -33,7 +33,7 @@ The common unit is not "coding task" or "office task". The common unit is:
 task family + fixtures + allowed tools + expected artifact/state + scorer + run comparison
 ```
 
-The public v0/v0.4 implementation includes a small starter suite and four hardened task-family patterns. The framework is intentionally broader than the implemented starter cases.
+The public v0/v0.5 implementation includes a small starter suite and five hardened task-family patterns. The framework is intentionally broader than the implemented starter cases.
 
 ## Relationship to consumer applications
 
@@ -66,7 +66,7 @@ This repository is a **v0 public starter**. It contains:
 - JSON schemas for tasks, runs, traces, and scores;
 - minimal Python CLI scaffolding;
 - sample public fixtures;
-- sample scorers plus hardened IF-01, DATA-01, DOC-01, and SUP-01 artifact-based scorers;
+- sample scorers plus hardened IF-01, DATA-01, DOC-01, SUP-01, and API-01 artifact/state-based scorers;
 - documentation for benchmark design, metrics, and anti-overfitting.
 
 It intentionally does **not** contain private holdout tasks, production secrets, personal data, or benchmark answers for real evaluation runs.
@@ -198,6 +198,14 @@ SUP-01 is the fourth hardened task-family pattern and the first operational/cust
 make sup01-smoke
 ```
 
+## Fifth decision-grade task family: API-01
+
+API-01 is the fifth hardened task-family pattern and the first local internal API/tool-registry workflow. It uses synthetic API catalogs, local state fixtures, deterministic `tool_calls.json`, checked `result.json`, `decision_log.md`, scorer-side state simulation, mutation support, and tests for forbidden-tool avoidance without live SaaS, MCP, browser, or real APIs. See [API-01 decision-grade pattern](docs/15-api01-decision-grade.md).
+
+```bash
+make api01-smoke
+```
+
 ## Initial core suite
 
 The recommended v0 core suite has seven task families:
@@ -222,7 +230,17 @@ SUP-01 is intentionally not added to `configs/suites/core.json` by default. Oper
 configs/suites/ops-local.json
 ```
 
-This keeps core focused while allowing support, ticketing, and internal-API-style tasks to grow under an ops-oriented local suite.
+This keeps core focused while allowing support and ticketing tasks to grow under an ops-oriented local suite.
+
+## Tools local suite
+
+API-01 is intentionally not added to `configs/suites/core.json` by default. Local tool/API workflows start in:
+
+```text
+configs/suites/tools-local.json
+```
+
+This keeps live-service-free API/tool reasoning separate from the fast starter core and from operational support workflows.
 
 ## Repository layout
 
@@ -264,6 +282,7 @@ agent-bench-lab/
 - [DATA-01 decision-grade pattern](docs/12-data01-decision-grade.md)
 - [DOC-01 decision-grade pattern](docs/13-doc01-decision-grade.md)
 - [SUP-01 decision-grade pattern](docs/14-sup01-decision-grade.md)
+- [API-01 decision-grade pattern](docs/15-api01-decision-grade.md)
 - [Public release checklist](docs/public-release-checklist.md)
 - [v0 roadmap](docs/roadmap-v0.md)
 

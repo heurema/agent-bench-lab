@@ -1,0 +1,24 @@
+{
+  "accounts": {
+    "acct_api_201": {
+      "name": "BeaconFlow Sandbox Account",
+      "status": "active",
+      "plan": "standard"
+    },
+    "acct_api_999": {
+      "name": "BeaconFlow Distractor Account",
+      "status": "active",
+      "plan": "starter"
+    }
+  },
+  "tickets": {
+    "ticket_api_201": {
+      "account_id": "acct_api_201",
+      "request": "upgrade plan to business",
+      "status": "open"
+    }
+  },
+  "tasks": {},
+  "notes": {},
+  "escalations": {}
+}
