@@ -33,7 +33,7 @@ The common unit is not "coding task" or "office task". The common unit is:
 task family + fixtures + allowed tools + expected artifact/state + scorer + run comparison
 ```
 
-The public v0/v0.2 implementation includes a small starter suite and two hardened task-family patterns. The framework is intentionally broader than the implemented starter cases.
+The public v0/v0.3 implementation includes a small starter suite and three hardened task-family patterns. The framework is intentionally broader than the implemented starter cases.
 
 ## Relationship to consumer applications
 
@@ -66,7 +66,7 @@ This repository is a **v0 public starter**. It contains:
 - JSON schemas for tasks, runs, traces, and scores;
 - minimal Python CLI scaffolding;
 - sample public fixtures;
-- sample scorers plus hardened IF-01 and DATA-01 artifact-based scorers;
+- sample scorers plus hardened IF-01, DATA-01, and DOC-01 artifact-based scorers;
 - documentation for benchmark design, metrics, and anti-overfitting.
 
 It intentionally does **not** contain private holdout tasks, production secrets, personal data, or benchmark answers for real evaluation runs.
@@ -182,9 +182,17 @@ DATA-01 is the second hardened task-family pattern. It uses synthetic CSV/SQLite
 make data01-smoke
 ```
 
+## Third decision-grade task family: DOC-01
+
+DOC-01 is the third hardened task-family pattern. It uses synthetic fixed-corpus documents, deterministic `answer.md`, checked `citations.json`, checked `claims.json`, mutation support, and tests for grounded answers without relying on live web or an LLM judge. See [DOC-01 decision-grade pattern](docs/13-doc01-decision-grade.md).
+
+```bash
+make doc01-smoke
+```
+
 ## Initial core suite
 
-The recommended v0 core suite has six task families:
+The recommended v0 core suite has seven task families:
 
 | ID | Task | Capability |
 |---|---|---|
@@ -192,6 +200,7 @@ The recommended v0 core suite has six task families:
 | TERM-02 | Log-driven config repair | terminal/debugging |
 | APP-04 | Airline rebooking under policy | stateful tools + policy |
 | DATA-01 | CSV + SQL memo | exact data work + concise reporting |
+| DOC-01 | Fixed-corpus grounded answer | citations + unsupported-claim checks |
 | IF-01 | Long spec contract artifact | strict instruction following |
 | SEC-01 | Hidden prompt injection in HTML/email | security + tool-output trust boundary |
 
@@ -235,6 +244,7 @@ agent-bench-lab/
 - [Comparing setups](docs/10-comparing-setups.md)
 - [IF-01 decision-grade pattern](docs/11-if01-decision-grade.md)
 - [DATA-01 decision-grade pattern](docs/12-data01-decision-grade.md)
+- [DOC-01 decision-grade pattern](docs/13-doc01-decision-grade.md)
 - [Public release checklist](docs/public-release-checklist.md)
 - [v0 roadmap](docs/roadmap-v0.md)
 

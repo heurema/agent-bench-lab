@@ -1,0 +1,111 @@
+{
+  "id": "DOC-01",
+  "version": "0.3.0",
+  "name": "Fixed-corpus grounded document answer",
+  "category": "document_qa",
+  "purpose": "Test grounded answering from a fixed local corpus with citation and unsupported-claim checks.",
+  "agent_role": "research analyst",
+  "user_prompt": "Answer the question in spec.md using only the provided corpus and produce answer.md, citations.json, and claims.json.",
+  "available_tools": [
+    "file_read",
+    "file_write"
+  ],
+  "forbidden_tools": [
+    "internet",
+    "live_web",
+    "modify_inputs"
+  ],
+  "environment_setup": "Local synthetic public document corpora. Real evaluation should use private hidden corpus variants outside the public repo.",
+  "input_fixtures": [
+    "fixtures/public/DOC-01/case_001",
+    "fixtures/public/DOC-01/case_002",
+    "fixtures/public/DOC-01/case_003"
+  ],
+  "required_final_artifact": "answer.md, citations.json, and claims.json",
+  "success_criteria": [
+    "answer.md exists and uses required sections",
+    "citations.json and claims.json are valid JSON",
+    "claims are marked supported or unsupported correctly",
+    "citations point only to provided corpus documents",
+    "cited quotes appear in the cited source documents",
+    "answer avoids unsupported claims and stale-source conclusions"
+  ],
+  "scoring_rubric": [
+    {
+      "component": "artifact_contract",
+      "weight": 15,
+      "description": "Required files, no extra files, and valid JSON artifacts"
+    },
+    {
+      "component": "citations",
+      "weight": 30,
+      "description": "Citations reference local corpus documents and quote matching evidence"
+    },
+    {
+      "component": "claims",
+      "weight": 35,
+      "description": "Atomic claims have correct support status and evidence"
+    },
+    {
+      "component": "answer",
+      "weight": 20,
+      "description": "Concise answer uses required sections and avoids unsupported or stale claims"
+    }
+  ],
+  "hidden_tests": [
+    "distractor documents",
+    "stale source preference",
+    "unsupported claim handling",
+    "citation quote mismatch",
+    "not enough evidence branch"
+  ],
+  "partial_credit_rules": "Public scorer gives partial credit by config-driven checks. Critical failures such as missing answer.md, invalid JSON, stale-source citation, unsupported answer claim, and missing citation support cap or zero the score.",
+  "common_failure_modes": [
+    "citing a stale source",
+    "inventing facts not in the corpus",
+    "missing evidence quotes",
+    "marking unsupported claims as supported",
+    "citing documents outside the local corpus"
+  ],
+  "expected_trace_signals": [
+    "read local spec",
+    "inspect corpus documents",
+    "extract evidence",
+    "write answer and citation artifacts",
+    "verify citations against source text"
+  ],
+  "what_to_log": [
+    "model calls",
+    "tool calls",
+    "artifact writes",
+    "latency",
+    "cost",
+    "policy violations"
+  ],
+  "how_to_compare_runs": [
+    "paired cases",
+    "visible vs hidden score",
+    "unsupported-claim delta",
+    "citation accuracy delta",
+    "cost and latency delta"
+  ],
+  "variants": [
+    "renamed synthetic entities",
+    "reordered documents",
+    "paraphrased wording",
+    "changed dates with preserved current/stale logic",
+    "added distractor documents",
+    "shuffled claim order"
+  ],
+  "anti_overfitting_strategy": "Use public cases for development and smoke tests, generated mutation cases for brittleness checks, and private holdout corpora outside the public repo for final comparison.",
+  "implementation_notes": "Public scorer is config-driven and deterministic. It validates answer.md, citations.json, and claims.json against synthetic public corpora. Private variants should keep protected expected claims, hidden corpora, canaries, and scorer configs outside the public repo.",
+  "implementation_status": "decision_grade_public_pattern",
+  "public_notes": "Synthetic public cases are examples and smoke tests. Do not treat public cases as private holdout evaluation.",
+  "meta": {
+    "difficulty": "M",
+    "estimated_runtime_minutes": 8,
+    "cost_sensitivity": "M",
+    "repeatability_score": 5,
+    "contamination_risk": 2
+  }
+}
