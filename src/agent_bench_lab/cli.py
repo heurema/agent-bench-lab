@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .compare import compare_score_dirs, render_markdown_report, write_csv_report
 from .registry import list_tasks, repo_root_from, validate_all
+from .runner import run_agent_task
 from .scoring import score_task, write_score
 
 
@@ -73,6 +74,37 @@ def cmd_compare(args: argparse.Namespace) -> int:
     return 1 if result["missing_scores"] else 0
 
 
+def cmd_run(args: argparse.Namespace) -> int:
+    root = repo_root_from(args.root)
+    agent_config = Path(args.agent_config).resolve() if args.agent_config else None
+    out_dir = Path(args.out).resolve() if args.out else None
+    try:
+        run_record = run_agent_task(
+            root=root,
+            task_id=args.task,
+            case_id=args.case,
+            agent_cmd=args.agent_cmd,
+            agent_config_path=agent_config,
+            out_dir=out_dir,
+            timeout_seconds=args.timeout,
+        )
+    except (FileNotFoundError, ValueError, json.JSONDecodeError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+
+    summary = {
+        "run_id": run_record["run_id"],
+        "task_id": run_record["task_id"],
+        "case_id": run_record["case_id"],
+        "status": run_record["status"],
+        "score": run_record.get("score"),
+        "success": run_record.get("success"),
+        "output_path": str(Path(run_record["paths"]["artifacts"]).parent),
+    }
+    print(json.dumps(summary, indent=2, ensure_ascii=False))
+    return 0 if run_record["status"] == "passed" else 2
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="agent-bench")
     parser.add_argument("--root", default=".", help="Repository root")
@@ -99,6 +131,15 @@ def build_parser() -> argparse.ArgumentParser:
     p_compare.add_argument("--out")
     p_compare.add_argument("--csv")
     p_compare.set_defaults(func=cmd_compare)
+
+    p_run = sub.add_parser("run", help="Run an external command against a task case")
+    p_run.add_argument("--task", required=True)
+    p_run.add_argument("--case", default="case_001")
+    p_run.add_argument("--agent-cmd", required=True)
+    p_run.add_argument("--agent-config")
+    p_run.add_argument("--out")
+    p_run.add_argument("--timeout", type=int, default=600)
+    p_run.set_defaults(func=cmd_run)
 
     return parser
 
