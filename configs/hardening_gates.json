@@ -1,0 +1,86 @@
+{
+  "version": "0.6.0",
+  "schema_version": 1,
+  "tasks": {
+    "IF-01": {
+      "task_id": "IF-01",
+      "mutation_smoke_required": true,
+      "mutation_script": "scripts/create_if01_mutation.py",
+      "mutation_output": "artifacts/mutation-smoke/IF-01/case_mutation_001",
+      "expected_output_files": [
+        "spec.md",
+        "check_config.json"
+      ],
+      "exploit_smoke_required": true,
+      "exploit_smoke_status": "planned",
+      "reason": "IF-01 already tests extra files, forbidden sections, and banned phrases; v0.6 records the gate and future standard exploit smoke shape.",
+      "public_safe": true
+    },
+    "DATA-01": {
+      "task_id": "DATA-01",
+      "mutation_smoke_required": true,
+      "mutation_script": "scripts/create_data01_mutation.py",
+      "mutation_output": "artifacts/mutation-smoke/DATA-01/case_mutation_001",
+      "expected_output_files": [
+        "spec.md",
+        "check_config.json",
+        "data/events.csv",
+        "data/customers.csv",
+        "data/analytics.db"
+      ],
+      "exploit_smoke_required": true,
+      "exploit_smoke_status": "planned",
+      "reason": "DATA-01 already checks unsupported metrics and invalid artifacts; v0.6 keeps exploit gate status explicit without adding private data.",
+      "public_safe": true
+    },
+    "DOC-01": {
+      "task_id": "DOC-01",
+      "mutation_smoke_required": true,
+      "mutation_script": "scripts/create_doc01_mutation.py",
+      "mutation_output": "artifacts/mutation-smoke/DOC-01/case_mutation_001",
+      "expected_output_files": [
+        "spec.md",
+        "check_config.json",
+        "corpus/product_policy.md"
+      ],
+      "exploit_smoke_required": true,
+      "exploit_smoke_status": "planned",
+      "reason": "DOC-01 already checks unsupported claims, stale sources, and citation evidence; standard exploit smoke remains a declared next hardening layer.",
+      "public_safe": true
+    },
+    "SUP-01": {
+      "task_id": "SUP-01",
+      "mutation_smoke_required": true,
+      "mutation_script": "scripts/create_sup01_mutation.py",
+      "mutation_output": "artifacts/mutation-smoke/SUP-01/case_mutation_001",
+      "expected_output_files": [
+        "spec.md",
+        "check_config.json",
+        "policy.md",
+        "customer_profile.json",
+        "inbox/email_001.eml"
+      ],
+      "exploit_smoke_required": true,
+      "exploit_smoke_status": "planned",
+      "reason": "SUP-01 already checks prohibited promises and scorer-only labels; private prompt-injection and canary gates stay outside the public repo.",
+      "public_safe": true
+    },
+    "API-01": {
+      "task_id": "API-01",
+      "mutation_smoke_required": true,
+      "mutation_script": "scripts/create_api01_mutation.py",
+      "mutation_output": "artifacts/mutation-smoke/API-01/case_mutation_001",
+      "expected_output_files": [
+        "spec.md",
+        "check_config.json",
+        "api_catalog.json",
+        "api_state.json",
+        "policy.md"
+      ],
+      "exploit_smoke_required": true,
+      "exploit_smoke_status": "planned",
+      "reason": "API-01 already checks forbidden endpoints and wrong state mutations; future private gates can add trap endpoints and canaries.",
+      "public_safe": true
+    }
+  }
+}

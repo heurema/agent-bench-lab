@@ -1,0 +1,224 @@
+{
+  "version": "0.6.0",
+  "schema_version": 1,
+  "statuses": [
+    "experimental",
+    "decision-grade",
+    "verified",
+    "deprecated"
+  ],
+  "tasks": {
+    "IF-01": {
+      "task_id": "IF-01",
+      "status": "decision-grade",
+      "introduced_in": "0.1.0",
+      "current_version": "0.1.0",
+      "suite_ids": [
+        "core-v0"
+      ],
+      "primary_oracle": "artifact_exact",
+      "scorer_contracts": [
+        "artifact_exact",
+        "schema_contract",
+        "mutation_robustness"
+      ],
+      "public_cases": true,
+      "docs_reference": "docs/11-if01-decision-grade.md",
+      "private_holdout_strategy": "Private IF-01 holdouts keep hidden contract variants, answer constraints, and protected scorer configs outside the public repo.",
+      "mutation_strategy": "Use create_if01_mutation.py to reorder constraints, change synthetic names, adjust limits, and vary harmless wording.",
+      "exploit_smoke_status": "planned",
+      "has_redacted_feedback": true,
+      "verified": false,
+      "notes": "First decision-grade public pattern for strict instruction following and artifact contracts."
+    },
+    "DATA-01": {
+      "task_id": "DATA-01",
+      "status": "decision-grade",
+      "introduced_in": "0.2.0",
+      "current_version": "0.2.0",
+      "suite_ids": [
+        "core-v0"
+      ],
+      "primary_oracle": "numeric_metric",
+      "scorer_contracts": [
+        "artifact_exact",
+        "schema_contract",
+        "numeric_metric",
+        "claim_rubric",
+        "mutation_robustness"
+      ],
+      "public_cases": true,
+      "docs_reference": "docs/12-data01-decision-grade.md",
+      "private_holdout_strategy": "Private DATA-01 holdouts keep synthetic or customer-scoped data seeds, expected metrics, honey rows, and scorer configs outside the public repo.",
+      "mutation_strategy": "Use create_data01_mutation.py to alter numeric values, shift dates, reorder rows, rename categories, and add distractors.",
+      "exploit_smoke_status": "planned",
+      "has_redacted_feedback": true,
+      "verified": false,
+      "notes": "Decision-grade public pattern for exact data work, factual memos, and chart specifications."
+    },
+    "DOC-01": {
+      "task_id": "DOC-01",
+      "status": "decision-grade",
+      "introduced_in": "0.3.0",
+      "current_version": "0.3.0",
+      "suite_ids": [
+        "core-v0"
+      ],
+      "primary_oracle": "claim_rubric",
+      "scorer_contracts": [
+        "artifact_exact",
+        "schema_contract",
+        "claim_rubric",
+        "mutation_robustness"
+      ],
+      "public_cases": true,
+      "docs_reference": "docs/13-doc01-decision-grade.md",
+      "private_holdout_strategy": "Private DOC-01 holdouts keep hidden corpora, expected claim labels, citation rubrics, and canaries outside the public repo.",
+      "mutation_strategy": "Use create_doc01_mutation.py to rename synthetic entities, reorder documents, paraphrase wording, shift dates, and add distractors.",
+      "exploit_smoke_status": "planned",
+      "has_redacted_feedback": true,
+      "verified": false,
+      "notes": "Decision-grade public pattern for fixed-corpus grounded answers and citation checks."
+    },
+    "SUP-01": {
+      "task_id": "SUP-01",
+      "status": "decision-grade",
+      "introduced_in": "0.4.0",
+      "current_version": "0.4.0",
+      "suite_ids": [
+        "ops-local-v0"
+      ],
+      "primary_oracle": "schema_contract",
+      "scorer_contracts": [
+        "artifact_exact",
+        "schema_contract",
+        "claim_rubric",
+        "trace_policy",
+        "mutation_robustness"
+      ],
+      "public_cases": true,
+      "docs_reference": "docs/14-sup01-decision-grade.md",
+      "private_holdout_strategy": "Private SUP-01 holdouts keep protected support policies, hidden labels, customer-style fixtures, and canaries outside the public repo.",
+      "mutation_strategy": "Use create_sup01_mutation.py to rename synthetic customers and products, reorder emails, shift timestamps, paraphrase policy, and add distractors.",
+      "exploit_smoke_status": "planned",
+      "has_redacted_feedback": true,
+      "verified": false,
+      "notes": "Decision-grade public pattern for support inbox triage, policy-grounded drafts, and escalations."
+    },
+    "API-01": {
+      "task_id": "API-01",
+      "status": "decision-grade",
+      "introduced_in": "0.5.0",
+      "current_version": "0.5.0",
+      "suite_ids": [
+        "tools-local-v0"
+      ],
+      "primary_oracle": "state_diff",
+      "scorer_contracts": [
+        "artifact_exact",
+        "schema_contract",
+        "state_diff",
+        "trace_policy",
+        "mutation_robustness"
+      ],
+      "public_cases": true,
+      "docs_reference": "docs/15-api01-decision-grade.md",
+      "private_holdout_strategy": "Private API-01 holdouts keep protected tool registries, hidden state diffs, trap endpoints, and scorer configs outside the public repo.",
+      "mutation_strategy": "Use create_api01_mutation.py to rename synthetic IDs, reorder catalog entries, shift timestamps, add distractor tools, and paraphrase policy.",
+      "exploit_smoke_status": "planned",
+      "has_redacted_feedback": true,
+      "verified": false,
+      "notes": "Decision-grade public pattern for local API/tool orchestration with scorer-side state simulation."
+    },
+    "CODE-01": {
+      "task_id": "CODE-01",
+      "status": "experimental",
+      "introduced_in": "0.0.1",
+      "current_version": "0.1.0",
+      "suite_ids": [
+        "core-v0"
+      ],
+      "primary_oracle": "artifact_exact",
+      "scorer_contracts": [
+        "artifact_exact",
+        "schema_contract"
+      ],
+      "public_cases": true,
+      "docs_reference": "tasks/CODE-01/task.json",
+      "private_holdout_strategy": "Private executable repo fixtures and hidden tests are required before decision-grade use.",
+      "mutation_strategy": "Planned: issue paraphrases, renamed identifiers, moved root causes, and hidden regression variants.",
+      "exploit_smoke_status": "planned",
+      "has_redacted_feedback": true,
+      "verified": false,
+      "notes": "Starter scorer only; not decision-grade."
+    },
+    "TERM-02": {
+      "task_id": "TERM-02",
+      "status": "experimental",
+      "introduced_in": "0.0.1",
+      "current_version": "0.1.0",
+      "suite_ids": [
+        "core-v0"
+      ],
+      "primary_oracle": "artifact_exact",
+      "scorer_contracts": [
+        "artifact_exact",
+        "state_diff"
+      ],
+      "public_cases": true,
+      "docs_reference": "tasks/TERM-02/task.json",
+      "private_holdout_strategy": "Private runnable service fixtures and hidden health checks are required before decision-grade use.",
+      "mutation_strategy": "Planned: alternate broken keys, ports, env overrides, and log variants.",
+      "exploit_smoke_status": "planned",
+      "has_redacted_feedback": true,
+      "verified": false,
+      "notes": "Starter scorer only; not decision-grade."
+    },
+    "APP-04": {
+      "task_id": "APP-04",
+      "status": "experimental",
+      "introduced_in": "0.0.1",
+      "current_version": "0.1.0",
+      "suite_ids": [
+        "core-v0"
+      ],
+      "primary_oracle": "state_diff",
+      "scorer_contracts": [
+        "artifact_exact",
+        "state_diff",
+        "trace_policy"
+      ],
+      "public_cases": true,
+      "docs_reference": "tasks/APP-04/task.json",
+      "private_holdout_strategy": "Private mock API states and hidden policy branches are required before decision-grade use.",
+      "mutation_strategy": "Planned: alternate seat preferences, waived fees, forced downgrade branches, and policy edge cases.",
+      "exploit_smoke_status": "planned",
+      "has_redacted_feedback": true,
+      "verified": false,
+      "notes": "Starter scorer only; not decision-grade."
+    },
+    "SEC-01": {
+      "task_id": "SEC-01",
+      "status": "experimental",
+      "introduced_in": "0.0.1",
+      "current_version": "0.1.0",
+      "suite_ids": [
+        "core-v0"
+      ],
+      "primary_oracle": "security_leak",
+      "scorer_contracts": [
+        "artifact_exact",
+        "security_leak",
+        "trace_policy"
+      ],
+      "public_cases": true,
+      "docs_reference": "tasks/SEC-01/task.json",
+      "private_holdout_strategy": "Private prompt-injection variants, canaries, and hidden leak checks are required before decision-grade use.",
+      "mutation_strategy": "Planned: alternate attack carriers, rotated fake secrets, email footer injection, and tool-output injection.",
+      "exploit_smoke_status": "planned",
+      "has_redacted_feedback": true,
+      "verified": false,
+      "notes": "Starter security scorer only; not decision-grade yet."
+    }
+  }
+}

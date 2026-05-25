@@ -57,6 +57,20 @@ The Private Eval Layer holds hidden labels, private holdouts, answer keys, prote
 
 See [Private Eval Layer](docs/private-eval-layer.md), [Scorer type contracts](docs/scorer-types.md), and [Reporting and feedback](docs/reporting-and-feedback.md).
 
+## Benchmark lifecycle and hardening gates
+
+After the first five decision-grade public patterns, v0.6 adds standard-layer gates instead of another task family.
+
+Lifecycle metadata declares whether each task family is `experimental`, `decision-grade`, `verified`, or `deprecated`. Hardening metadata declares mutation smoke scripts and exploit smoke status for decision-grade families. No task is marked `verified` yet.
+
+```bash
+make lifecycle-check
+make mutation-smoke
+make hardening-check
+```
+
+See [Benchmark lifecycle](docs/16-benchmark-lifecycle.md), [Mutation and exploit gates](docs/17-mutation-and-exploit-gates.md), [Suite strategy](docs/18-suite-strategy.md), and [Report schema v1 guidance](docs/19-report-schema-v1.md).
+
 ## Current status
 
 This repository is a **v0 public starter**. It contains:
@@ -67,7 +81,7 @@ This repository is a **v0 public starter**. It contains:
 - minimal Python CLI scaffolding;
 - sample public fixtures;
 - sample scorers plus hardened IF-01, DATA-01, DOC-01, SUP-01, and API-01 artifact/state-based scorers;
-- documentation for benchmark design, metrics, and anti-overfitting.
+- documentation for benchmark design, metrics, anti-overfitting, lifecycle status, and hardening gates.
 
 It intentionally does **not** contain private holdout tasks, production secrets, personal data, or benchmark answers for real evaluation runs.
 
@@ -140,6 +154,9 @@ Without installing the package, use the source-tree Make targets:
 make validate
 make test
 make smoke
+make lifecycle-check
+make mutation-smoke
+make hardening-check
 make leak-check
 ```
 
