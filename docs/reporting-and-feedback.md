@@ -73,3 +73,16 @@ Redacted feedback should:
 
 Scorer-private reports can be more specific, but they must stay outside public repositories and
 outside agent-visible context.
+
+## Lightweight Public Gate
+
+The repository includes a small redaction utility for public-facing generated reports.
+
+This utility is a safety gate, not a private evaluation implementation and not a full data-loss
+prevention system. It catches obvious scorer-only strings such as answer-key hints, hidden labels,
+private thresholds, canary identifiers, raw traces, and protected scorer config references before
+they appear in public Markdown or CSV reports.
+
+Private scorer-only content should still be isolated at the source. Do not pass hidden labels,
+answer keys, private rubrics, customer data, or protected scorer configs into public reports and
+then rely on redaction to clean them up.
