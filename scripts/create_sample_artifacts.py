@@ -11,6 +11,47 @@ def write(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def load_json(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def expected_metrics(config: dict) -> dict:
+    return {
+        key: rule["expected"]
+        for key, rule in config["metrics"]["required"].items()
+    }
+
+
+def sample_report(config: dict) -> str:
+    sections = config["report"]["required_sections"]
+    references = [item["text"] for item in config["report"]["required_references"]]
+    lines = [
+        sections[0],
+        "",
+        sections[1],
+        *[f"- {reference}" for reference in references],
+        "",
+        sections[2],
+        "- Applied the synthetic fixture filters, joins, and tie-break rules from the public spec.",
+        "",
+        sections[3],
+        "- Public smoke fixture only; decision-grade evaluation needs private holdouts.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def write_data01_sample(case_id: str) -> None:
+    config = load_json(ROOT / "fixtures" / "public" / "DATA-01" / case_id / "check_config.json")
+    output_dir = ROOT / "examples" / "artifacts" / "DATA-01" / case_id
+    write(output_dir / "metrics.json", json.dumps(expected_metrics(config), indent=2) + "\n")
+    write(output_dir / "report.md", sample_report(config))
+    write(
+        output_dir / "chart_spec.json",
+        json.dumps(config["chart_spec"]["expected"], indent=2) + "\n",
+    )
+
+
 # IF-01
 write(ROOT / "examples/artifacts/IF-01/case_001/artifact.md", """# Public Launch Note
 - This project uses versioned tasks.
@@ -33,20 +74,8 @@ No live services, no extra files, and no private data are required.
 """)
 
 # DATA-01
-metrics = {
-    "paid_order_count": 4,
-    "total_paid_revenue_usd": 720.5,
-    "top_region_by_paid_revenue": "NA",
-    "active_customer_count": 4,
-}
-write(ROOT / "examples/artifacts/DATA-01/case_001/metrics.json", json.dumps(metrics, indent=2) + "\n")
-write(ROOT / "examples/artifacts/DATA-01/case_001/report.md", """# Metrics memo
-
-Paid order count: 4.
-Total paid revenue: 720.5.
-Top region by paid revenue: NA.
-Active customer count: 4.
-""")
+for data_case_id in ("case_001", "case_002", "case_003"):
+    write_data01_sample(data_case_id)
 
 # APP-04
 write(ROOT / "examples/artifacts/APP-04/case_001/final_booking.json", json.dumps({

@@ -1,0 +1,142 @@
+{
+  "case_id": "case_003",
+  "description": "Synthetic DATA-01 case covering CSV and SQLite joins, unmatched distractor rows, and stable tie-breaking.",
+  "required_artifacts": [
+    "metrics.json",
+    "report.md",
+    "chart_spec.json"
+  ],
+  "allow_extra_files": false,
+  "score_caps": {
+    "missing_required_file": 0.0,
+    "missing_metrics": 0.0,
+    "invalid_metrics_json": 0.0,
+    "invalid_chart_json": 0.75,
+    "missing_metric": 0.65,
+    "wrong_metric": 0.65,
+    "forbidden_metric": 0.65,
+    "missing_report_section": 0.8,
+    "unsupported_metric": 0.7,
+    "banned_phrase": 0.6,
+    "missing_chart_series": 0.75,
+    "wrong_chart_spec": 0.85,
+    "extra_metric": 0.75,
+    "extra_file": 0.8
+  },
+  "metrics": {
+    "allow_extra_keys": false,
+    "forbidden_keys": [
+      "profit_usd",
+      "margin_pct",
+      "forecast_revenue_usd",
+      "conversion_rate"
+    ],
+    "required": {
+      "join_matched_event_count": {
+        "expected": 5,
+        "tolerance": 0
+      },
+      "excluded_unmatched_event_count": {
+        "expected": 2,
+        "tolerance": 0
+      },
+      "total_revenue_usd": {
+        "expected": 340.0,
+        "tolerance": 0.01
+      },
+      "top_region_by_revenue": {
+        "expected": "EU",
+        "normalize_strings": true
+      },
+      "top_products_by_revenue": {
+        "expected": [
+          {
+            "product": "Atlas Suite",
+            "revenue_usd": 150.0
+          },
+          {
+            "product": "Beacon Desk",
+            "revenue_usd": 150.0
+          },
+          {
+            "product": "Cipher Addon",
+            "revenue_usd": 40.0
+          }
+        ],
+        "tolerance": 0.01
+      },
+      "top_category_by_revenue": {
+        "expected": "platform",
+        "normalize_strings": true
+      }
+    }
+  },
+  "report": {
+    "required_sections": [
+      "# DATA-01 Case 003 Memo",
+      "## Summary",
+      "## Join Checks",
+      "## Caveats"
+    ],
+    "required_references": [
+      {
+        "metric": "join_matched_event_count",
+        "text": "Join-matched events: 5"
+      },
+      {
+        "metric": "excluded_unmatched_event_count",
+        "text": "Excluded unmatched events: 2"
+      },
+      {
+        "metric": "total_revenue_usd",
+        "text": "Total revenue: 340.00"
+      },
+      {
+        "metric": "top_region_by_revenue",
+        "text": "Top region: EU"
+      },
+      {
+        "metric": "top_products_by_revenue",
+        "text": "Product order: Atlas Suite, Beacon Desk, Cipher Addon"
+      }
+    ],
+    "banned_phrases": [
+      "I guessed",
+      "not enough data"
+    ],
+    "unsupported_metric_phrases": [
+      "profit",
+      "margin",
+      "forecast",
+      "conversion rate"
+    ],
+    "max_words": 220
+  },
+  "chart_spec": {
+    "tolerance": 0.01,
+    "expected": {
+      "title": "Case 003 Top Products by Revenue",
+      "x_axis": "product",
+      "y_axis": "revenue_usd",
+      "series": [
+        {
+          "name": "revenue_usd",
+          "points": [
+            {
+              "label": "Atlas Suite",
+              "value": 150.0
+            },
+            {
+              "label": "Beacon Desk",
+              "value": 150.0
+            },
+            {
+              "label": "Cipher Addon",
+              "value": 40.0
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

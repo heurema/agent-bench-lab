@@ -1,7 +1,0 @@
-order_id,customer_id,region,amount_usd,status
-O-1001,C-001,EU,120.00,paid
-O-1002,C-002,NA,80.50,paid
-O-1003,C-001,EU,40.00,refunded
-O-1004,C-003,EU,220.00,paid
-O-1005,C-004,APAC,50.00,pending
-O-1006,C-005,NA,300.00,paid

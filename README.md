@@ -33,7 +33,7 @@ The common unit is not "coding task" or "office task". The common unit is:
 task family + fixtures + allowed tools + expected artifact/state + scorer + run comparison
 ```
 
-The public v0/v0.1 implementation includes a small starter suite and one hardened task-family pattern. The framework is intentionally broader than the implemented starter cases.
+The public v0/v0.2 implementation includes a small starter suite and two hardened task-family patterns. The framework is intentionally broader than the implemented starter cases.
 
 ## Relationship to consumer applications
 
@@ -66,7 +66,7 @@ This repository is a **v0 public starter**. It contains:
 - JSON schemas for tasks, runs, traces, and scores;
 - minimal Python CLI scaffolding;
 - sample public fixtures;
-- sample scorers for several simple artifact-based tasks;
+- sample scorers plus hardened IF-01 and DATA-01 artifact-based scorers;
 - documentation for benchmark design, metrics, and anti-overfitting.
 
 It intentionally does **not** contain private holdout tasks, production secrets, personal data, or benchmark answers for real evaluation runs.
@@ -174,6 +174,14 @@ IF-01 is the first hardened task-family pattern. It uses public synthetic cases,
 make if01-smoke
 ```
 
+## Second decision-grade task family: DATA-01
+
+DATA-01 is the second hardened task-family pattern. It uses synthetic CSV/SQLite fixtures, deterministic `metrics.json`, factual `report.md`, checked `chart_spec.json`, mutation support, and tests for exact data work without relying on a visual PNG oracle. See [DATA-01 decision-grade pattern](docs/12-data01-decision-grade.md).
+
+```bash
+make data01-smoke
+```
+
 ## Initial core suite
 
 The recommended v0 core suite has six task families:
@@ -226,6 +234,7 @@ agent-bench-lab/
 - [Run records](docs/09-run-records.md)
 - [Comparing setups](docs/10-comparing-setups.md)
 - [IF-01 decision-grade pattern](docs/11-if01-decision-grade.md)
+- [DATA-01 decision-grade pattern](docs/12-data01-decision-grade.md)
 - [Public release checklist](docs/public-release-checklist.md)
 - [v0 roadmap](docs/roadmap-v0.md)
 

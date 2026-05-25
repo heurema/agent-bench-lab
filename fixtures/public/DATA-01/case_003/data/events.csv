@@ -1,0 +1,9 @@
+event_id,customer_id,product_id,occurred_at,event_type,status,revenue_usd
+E-3001,C-201,P-alpha,2026-06-02T09:00:00,purchase,paid,100.00
+E-3002,C-202,P-beta,2026-06-03T09:00:00,purchase,paid,100.00
+E-3003,C-203,P-gamma,2026-06-04T09:00:00,purchase,paid,40.00
+E-3004,C-204,P-beta,2026-06-05T09:00:00,purchase,paid,50.00
+E-3005,C-205,P-alpha,2026-06-06T09:00:00,purchase,paid,50.00
+E-3006,C-206,P-alpha,2026-06-07T09:00:00,purchase,pending,1000.00
+E-3007,C-999,P-ghost,2026-06-08T09:00:00,purchase,paid,999.00
+E-3008,C-201,P-unknown,2026-06-09T09:00:00,purchase,paid,75.00

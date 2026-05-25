@@ -39,6 +39,9 @@ jobs:
       - name: Run IF-01 smoke
         run: make if01-smoke
 
+      - name: Run DATA-01 smoke
+        run: make data01-smoke
+
       - name: Run leak check
         run: make leak-check
 

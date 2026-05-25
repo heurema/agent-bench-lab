@@ -1,0 +1,9 @@
+event_id,customer_id,product_id,occurred_at,event_type,status,revenue_usd
+E-2001,C-101,P-basic,2026-05-01T00:00:00,purchase,paid,100.00
+E-2002,C-102,P-pro,2026-05-15T11:00:00,purchase,paid,150.00
+E-2002,C-102,P-pro,2026-05-15T11:00:00,purchase,paid,150.00
+E-2003,C-103,P-pro,2026-05-31T23:59:59,purchase,paid,200.00
+E-2004,C-104,P-basic,2026-04-30T23:59:59,purchase,paid,90.00
+E-2005,C-105,P-basic,2026-06-01T00:00:00,purchase,paid,80.00
+E-2006,C-106,P-addon,2026-05-20T10:00:00,purchase,paid,
+E-2007,C-107,P-addon,2026-05-21T10:00:00,refund,refunded,60.00
