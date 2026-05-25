@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from .redaction import redact_text
+
 EPSILON = 1e-9
 
 
@@ -134,9 +136,13 @@ def _format_number(value: float | None, *, signed: bool = False) -> str:
     return f"{value:.3f}"
 
 
+def _safe_cell(value: Any) -> str:
+    return redact_text(str(value))
+
+
 def _format_row_item(row: dict[str, Any]) -> str:
     delta = _format_number(row["delta"], signed=True)
-    return f"- {row['task_id']}/{row['case_id']}: {delta}"
+    return f"- {_safe_cell(row['task_id'])}/{_safe_cell(row['case_id'])}: {delta}"
 
 
 def render_markdown_report(result: dict[str, Any], title: str = "Compare") -> str:
@@ -173,12 +179,20 @@ def render_markdown_report(result: dict[str, Any], title: str = "Compare") -> st
         lines.append("- none")
     lines.extend(["", "## Policy Violations"])
     for item in result["policy_violations"][:20]:
-        lines.append(f"- {item['side']} {item['task_id']}/{item['case_id']}: {item['violation']}")
+        lines.append(
+            "- "
+            f"{_safe_cell(item['side'])} "
+            f"{_safe_cell(item['task_id'])}/{_safe_cell(item['case_id'])}: "
+            f"{_safe_cell(item['violation'])}"
+        )
     if not result["policy_violations"]:
         lines.append("- none")
     lines.extend(["", "## Missing Scores"])
     for row in result["missing_scores"][:20]:
-        lines.append(f"- {row['task_id']}/{row['case_id']}: {row['status']}")
+        lines.append(
+            f"- {_safe_cell(row['task_id'])}/{_safe_cell(row['case_id'])}: "
+            f"{_safe_cell(row['status'])}"
+        )
     if not result["missing_scores"]:
         lines.append("- none")
     lines.extend(
@@ -193,14 +207,14 @@ def render_markdown_report(result: dict[str, Any], title: str = "Compare") -> st
     for row in result["rows"]:
         lines.append(
             "| "
-            f"{row['task_id']} | "
-            f"{row['case_id']} | "
+            f"{_safe_cell(row['task_id'])} | "
+            f"{_safe_cell(row['case_id'])} | "
             f"{_format_number(row['baseline_score'])} | "
             f"{_format_number(row['candidate_score'])} | "
             f"{_format_number(row['delta'], signed=True)} | "
             f"{row['baseline_success']} | "
             f"{row['candidate_success']} | "
-            f"{row['status']} |"
+            f"{_safe_cell(row['status'])} |"
         )
     lines.extend(
         [
@@ -231,4 +245,16 @@ def write_csv_report(result: dict[str, Any], output_path: Path) -> None:
             ],
         )
         writer.writeheader()
-        writer.writerows(result["rows"])
+        for row in result["rows"]:
+            writer.writerow(
+                {
+                    "task_id": _safe_cell(row["task_id"]),
+                    "case_id": _safe_cell(row["case_id"]),
+                    "baseline_score": row["baseline_score"],
+                    "candidate_score": row["candidate_score"],
+                    "delta": row["delta"],
+                    "baseline_success": row["baseline_success"],
+                    "candidate_success": row["candidate_success"],
+                    "status": _safe_cell(row["status"]),
+                }
+            )
