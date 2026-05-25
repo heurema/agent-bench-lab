@@ -60,6 +60,9 @@ jobs:
       - name: Run hardening check
         run: make hardening-check
 
+      - name: Run local agent runner smoke
+        run: make run-smoke
+
       - name: Run leak check
         run: make leak-check
 

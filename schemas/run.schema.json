@@ -50,6 +50,7 @@
         "passed",
         "failed",
         "timeout",
+        "error",
         "invalid",
         "environment_error"
       ]

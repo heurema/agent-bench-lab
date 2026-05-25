@@ -95,6 +95,7 @@ This repository is a **v0 public starter**. It contains:
 - minimal Python CLI scaffolding;
 - sample public fixtures;
 - sample scorers plus hardened IF-01, DATA-01, DOC-01, SUP-01, and API-01 artifact/state-based scorers;
+- a local command-based runner for external agent setups;
 - documentation for benchmark design, metrics, anti-overfitting, lifecycle status, hardening gates, and research radar process.
 
 It intentionally does **not** contain private holdout tasks, production secrets, personal data, or benchmark answers for real evaluation runs.
@@ -175,6 +176,24 @@ make leak-check
 ```
 
 The examples directory intentionally starts mostly empty. Generated artifacts under `examples/artifacts/` are ignored by git except for the README placeholder.
+
+## Run an external agent setup
+
+Use `agent-bench run` to hand an agent-visible task packet to any local command and score the artifacts it writes:
+
+```bash
+agent-bench run \
+  --task IF-01 \
+  --case case_001 \
+  --agent-cmd "python3 scripts/mock_agent_write_artifacts.py" \
+  --out runs/manual/mock/IF-01_case_001
+```
+
+The command receives `AGENT_BENCH_TASK_PACKET` and `AGENT_BENCH_ARTIFACTS_DIR`. It should write final artifacts to the artifacts directory. The runner then writes `run.json`, `trace.jsonl`, and `score.json`.
+
+The task packet excludes scorer-only files such as `check_config.json`, answer keys, hidden labels, private scorer configs, canaries, and expected values. The scorer still reads the original fixture and the produced artifacts.
+
+See [Local Agent Runner MVP](docs/21-local-agent-runner.md).
 
 ## Compare two agent setups
 
@@ -314,6 +333,7 @@ agent-bench-lab/
 - [DOC-01 decision-grade pattern](docs/13-doc01-decision-grade.md)
 - [SUP-01 decision-grade pattern](docs/14-sup01-decision-grade.md)
 - [API-01 decision-grade pattern](docs/15-api01-decision-grade.md)
+- [Local Agent Runner MVP](docs/21-local-agent-runner.md)
 - [Public release checklist](docs/public-release-checklist.md)
 - [v0 roadmap](docs/roadmap-v0.md)
 
