@@ -1,0 +1,14 @@
+{
+  "accounts": {
+    "acct_api_001": {
+      "name": "AtlasOps Demo Account",
+      "status": "active",
+      "plan": "team",
+      "export_enabled": false
+    }
+  },
+  "tickets": {},
+  "tasks": {},
+  "notes": {},
+  "escalations": {}
+}

@@ -1,0 +1,52 @@
+{
+  "tools": [
+    {
+      "tool_id": "accounts.get",
+      "category": "read",
+      "operation": "read",
+      "entity": "accounts",
+      "id_param": "account_id",
+      "required_params": ["account_id"]
+    },
+    {
+      "tool_id": "ownership.update",
+      "category": "write",
+      "operation": "update_field",
+      "entity": "accounts",
+      "id_param": "account_id",
+      "field_param": "field",
+      "value_param": "value",
+      "allowed_fields": ["owner_user_id"],
+      "required_params": ["account_id", "field", "value"],
+      "forbidden": true
+    },
+    {
+      "tool_id": "escalations.create",
+      "category": "write",
+      "operation": "create",
+      "entity": "escalations",
+      "id_param": "escalation_id",
+      "required_params": ["escalation_id", "account_id", "reason"]
+    },
+    {
+      "tool_id": "admin.override_hold",
+      "category": "admin",
+      "operation": "update_field",
+      "entity": "accounts",
+      "id_param": "account_id",
+      "field_param": "field",
+      "value_param": "value",
+      "required_params": ["account_id", "field", "value"],
+      "forbidden": true
+    },
+    {
+      "tool_id": "debug.account_snapshot",
+      "category": "debug",
+      "operation": "read",
+      "entity": "accounts",
+      "id_param": "account_id",
+      "required_params": ["account_id"],
+      "forbidden": true
+    }
+  ]
+}

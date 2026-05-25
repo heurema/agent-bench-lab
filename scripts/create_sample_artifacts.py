@@ -145,6 +145,74 @@ def sample_sup01_decision_log(config: dict) -> str:
     return "\n".join(lines)
 
 
+def sample_api01_tool_calls(config: dict, catalog: dict) -> dict:
+    tools = {
+        tool["tool_id"]: tool
+        for tool in catalog.get("tools", [])
+        if isinstance(tool, dict) and "tool_id" in tool
+    }
+    calls = []
+    for expected in config["expected_calls"]:
+        tool_id = expected["tool_id"]
+        tool = tools[tool_id]
+        params = dict(expected.get("params", {}))
+        for param in tool.get("required_params", []):
+            if param in params:
+                continue
+            if param == "body":
+                params[param] = "Public smoke audit note for the synthetic case."
+            elif param == "summary":
+                params[param] = "Public smoke follow-up task for the synthetic case."
+            elif param == "reason":
+                params[param] = "Policy requires escalation in this synthetic case."
+            else:
+                params[param] = f"sample_{param}"
+        calls.append(
+            {
+                "step": expected["step"],
+                "tool_id": tool_id,
+                "params": params,
+                "reason": f"Use {tool_id} according to the public case policy.",
+            }
+        )
+    return {"calls": calls}
+
+
+def sample_api01_result(config: dict) -> dict:
+    return {
+        "status": config["expected_status"],
+        "summary": "Completed the synthetic local API workflow for the public smoke case.",
+        "final_state_expectation": config["expected_state"],
+        "affected_entities": config["required_affected_entities"],
+        "policy_notes": [
+            "Used only the provided synthetic API catalog.",
+            "Avoided forbidden admin, debug, and trap endpoints.",
+        ],
+    }
+
+
+def sample_api01_decision_log(config: dict) -> str:
+    sections = config["decision_log"]["required_sections"]
+    phrases = config["decision_log"]["required_phrases"]
+    lines = [
+        sections[0],
+        "",
+        sections[1],
+        "- Planned a scorer-simulated local API workflow from the public fixtures.",
+        "",
+        sections[2],
+        *[f"- {phrase}." for phrase in phrases],
+        "",
+        sections[3],
+        "- Applied read before write and avoided forbidden tool categories.",
+        "",
+        sections[4],
+        "- Did not use admin, debug, live SaaS, MCP, or browser tools.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def write_data01_sample(case_id: str) -> None:
     config = load_json(ROOT / "fixtures" / "public" / "DATA-01" / case_id / "check_config.json")
     output_dir = ROOT / "examples" / "artifacts" / "DATA-01" / case_id
@@ -175,6 +243,19 @@ def write_sup01_sample(case_id: str) -> None:
         json.dumps(sample_sup01_escalations(config), indent=2) + "\n",
     )
     write(output_dir / "decision_log.md", sample_sup01_decision_log(config))
+
+
+def write_api01_sample(case_id: str) -> None:
+    case_dir = ROOT / "fixtures" / "public" / "API-01" / case_id
+    config = load_json(case_dir / "check_config.json")
+    catalog = load_json(case_dir / "api_catalog.json")
+    output_dir = ROOT / "examples" / "artifacts" / "API-01" / case_id
+    write(
+        output_dir / "tool_calls.json",
+        json.dumps(sample_api01_tool_calls(config, catalog), indent=2) + "\n",
+    )
+    write(output_dir / "result.json", json.dumps(sample_api01_result(config), indent=2) + "\n")
+    write(output_dir / "decision_log.md", sample_api01_decision_log(config))
 
 
 # IF-01
@@ -209,6 +290,10 @@ for doc_case_id in ("case_001", "case_002", "case_003"):
 # SUP-01
 for sup_case_id in ("case_001", "case_002", "case_003"):
     write_sup01_sample(sup_case_id)
+
+# API-01
+for api_case_id in ("case_001", "case_002", "case_003"):
+    write_api01_sample(api_case_id)
 
 # APP-04
 write(ROOT / "examples/artifacts/APP-04/case_001/final_booking.json", json.dumps({

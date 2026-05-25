@@ -48,6 +48,9 @@ jobs:
       - name: Run SUP-01 smoke
         run: make sup01-smoke
 
+      - name: Run API-01 smoke
+        run: make api01-smoke
+
       - name: Run leak check
         run: make leak-check
 

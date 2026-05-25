@@ -1,0 +1,59 @@
+{
+  "tools": [
+    {
+      "tool_id": "tickets.get",
+      "category": "read",
+      "operation": "read",
+      "entity": "tickets",
+      "id_param": "ticket_id",
+      "required_params": ["ticket_id"]
+    },
+    {
+      "tool_id": "accounts.get",
+      "category": "read",
+      "operation": "read",
+      "entity": "accounts",
+      "id_param": "account_id",
+      "required_params": ["account_id"]
+    },
+    {
+      "tool_id": "accounts.update_plan",
+      "category": "write",
+      "operation": "update_field",
+      "entity": "accounts",
+      "id_param": "account_id",
+      "field_param": "field",
+      "value_param": "value",
+      "allowed_fields": ["plan"],
+      "required_params": ["account_id", "field", "value"]
+    },
+    {
+      "tool_id": "tasks.create",
+      "category": "write",
+      "operation": "create",
+      "entity": "tasks",
+      "id_param": "task_id",
+      "required_params": ["task_id", "ticket_id", "account_id", "summary"]
+    },
+    {
+      "tool_id": "admin.force_plan",
+      "category": "admin",
+      "operation": "update_field",
+      "entity": "accounts",
+      "id_param": "account_id",
+      "field_param": "field",
+      "value_param": "value",
+      "required_params": ["account_id", "field", "value"],
+      "forbidden": true
+    },
+    {
+      "tool_id": "tickets.debug_dump",
+      "category": "debug",
+      "operation": "read",
+      "entity": "tickets",
+      "id_param": "ticket_id",
+      "required_params": ["ticket_id"],
+      "forbidden": true
+    }
+  ]
+}

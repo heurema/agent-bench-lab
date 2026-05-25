@@ -1,0 +1,14 @@
+{
+  "accounts": {
+    "acct_api_301": {
+      "name": "ClearPort Review Account",
+      "status": "active",
+      "owner_user_id": "user_api_existing",
+      "security_hold": true
+    }
+  },
+  "tickets": {},
+  "tasks": {},
+  "notes": {},
+  "escalations": {}
+}

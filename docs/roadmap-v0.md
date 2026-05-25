@@ -32,6 +32,13 @@
 - [x] add ops-local suite without expanding core
 - [ ] add private support holdout guidance examples outside the public tree
 
+## Phase 1d: Local tool/API workflows
+
+- [x] add synthetic API-01 public tool-registry cases
+- [x] add scorer-side API simulation and state-diff checks
+- [x] add tools-local suite without expanding core
+- [ ] add private tool-registry holdout guidance examples outside the public tree
+
 ## Phase 2: Stateful product workflows
 
 - [ ] implement APP-04 mock API
