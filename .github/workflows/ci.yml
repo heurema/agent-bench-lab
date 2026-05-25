@@ -51,6 +51,15 @@ jobs:
       - name: Run API-01 smoke
         run: make api01-smoke
 
+      - name: Run lifecycle check
+        run: make lifecycle-check
+
+      - name: Run mutation smoke
+        run: make mutation-smoke
+
+      - name: Run hardening check
+        run: make hardening-check
+
       - name: Run leak check
         run: make leak-check
 
