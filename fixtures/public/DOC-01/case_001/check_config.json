@@ -1,0 +1,98 @@
+{
+  "case_id": "case_001",
+  "description": "Simple fixed-corpus answer with three supported claims and exact citations.",
+  "required_artifacts": [
+    "answer.md",
+    "citations.json",
+    "claims.json"
+  ],
+  "allow_extra_files": false,
+  "allowed_extra_files": [],
+  "stale_source_ids": [],
+  "answer": {
+    "required_sections": [
+      "# DOC-01 Case 001 Answer",
+      "## Answer",
+      "## Evidence",
+      "## Limits"
+    ],
+    "required_phrases": [
+      "email support",
+      "two business days",
+      "CSV",
+      "within 14 days",
+      "no paid data export"
+    ],
+    "banned_phrases": [
+      "phone support is included",
+      "chat support is included"
+    ],
+    "unsupported_claim_phrases": [
+      "Northstar Basic includes phone support",
+      "Refunds are always approved"
+    ],
+    "max_words": 180
+  },
+  "claims": {
+    "allow_extra_claims": false,
+    "required": {
+      "support_target": {
+        "supported": true,
+        "required_text": "email support with a target response within two business days",
+        "acceptable_citation_doc_ids": [
+          "product_policy"
+        ],
+        "required_evidence": [
+          {
+            "doc_id": "product_policy",
+            "quote": "Northstar Basic includes email support with a target response within two business days."
+          }
+        ]
+      },
+      "export_format": {
+        "supported": true,
+        "required_text": "export account activity as CSV",
+        "acceptable_citation_doc_ids": [
+          "product_policy",
+          "changelog"
+        ],
+        "required_evidence": [
+          {
+            "doc_id": "product_policy",
+            "quote": "Workspace admins can export account activity as CSV."
+          }
+        ]
+      },
+      "refund_condition": {
+        "supported": true,
+        "required_text": "within 14 days may be approved when no paid data export has been used",
+        "acceptable_citation_doc_ids": [
+          "product_policy"
+        ],
+        "required_evidence": [
+          {
+            "doc_id": "product_policy",
+            "quote": "Refund requests within 14 days may be approved when no paid data export has been used."
+          }
+        ]
+      }
+    }
+  },
+  "score_caps": {
+    "missing_required_file": 0.0,
+    "missing_answer": 0.0,
+    "missing_citations": 0.4,
+    "missing_claims": 0.4,
+    "invalid_citations_json": 0.4,
+    "invalid_claims_json": 0.4,
+    "invalid_citations_schema": 0.5,
+    "invalid_claims_schema": 0.5,
+    "missing_citation_support": 0.65,
+    "bad_citation_quote": 0.6,
+    "unknown_citation_doc": 0.5,
+    "stale_source": 0.5,
+    "unsupported_claim": 0.6,
+    "extra_file": 0.8,
+    "missing_answer_section": 0.75
+  }
+}

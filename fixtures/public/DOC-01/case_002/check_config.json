@@ -1,0 +1,98 @@
+{
+  "case_id": "case_002",
+  "description": "Conflicting source case where stale policy citations are penalized.",
+  "required_artifacts": [
+    "answer.md",
+    "citations.json",
+    "claims.json"
+  ],
+  "allow_extra_files": false,
+  "allowed_extra_files": [],
+  "stale_source_ids": [
+    "legacy_policy"
+  ],
+  "answer": {
+    "required_sections": [
+      "# DOC-01 Case 002 Answer",
+      "## Answer",
+      "## Evidence",
+      "## Limits"
+    ],
+    "required_phrases": [
+      "four hours",
+      "EU residency flag",
+      "30-day audit-log retention export"
+    ],
+    "banned_phrases": [
+      "within 24 hours",
+      "EU residency is optional"
+    ],
+    "unsupported_claim_phrases": [
+      "priority incidents are acknowledged within 24 hours",
+      "EU residency is optional"
+    ],
+    "max_words": 180
+  },
+  "claims": {
+    "allow_extra_claims": false,
+    "required": {
+      "incident_response": {
+        "supported": true,
+        "required_text": "priority incidents are acknowledged within four hours",
+        "acceptable_citation_doc_ids": [
+          "current_policy",
+          "release_notes"
+        ],
+        "required_evidence": [
+          {
+            "doc_id": "current_policy",
+            "quote": "Beacon Pro priority incidents are acknowledged within four hours."
+          }
+        ]
+      },
+      "eu_requirement": {
+        "supported": true,
+        "required_text": "requires the EU residency flag for EU workspaces",
+        "acceptable_citation_doc_ids": [
+          "current_policy"
+        ],
+        "required_evidence": [
+          {
+            "doc_id": "current_policy",
+            "quote": "The current policy requires the EU residency flag for EU workspaces before onboarding."
+          }
+        ]
+      },
+      "audit_export": {
+        "supported": true,
+        "required_text": "30-day audit-log retention export",
+        "acceptable_citation_doc_ids": [
+          "current_policy"
+        ],
+        "required_evidence": [
+          {
+            "doc_id": "current_policy",
+            "quote": "Annual plans include a 30-day audit-log retention export."
+          }
+        ]
+      }
+    }
+  },
+  "score_caps": {
+    "missing_required_file": 0.0,
+    "missing_answer": 0.0,
+    "missing_citations": 0.4,
+    "missing_claims": 0.4,
+    "invalid_citations_json": 0.4,
+    "invalid_claims_json": 0.4,
+    "invalid_citations_schema": 0.5,
+    "invalid_claims_schema": 0.5,
+    "missing_citation_support": 0.65,
+    "bad_citation_quote": 0.6,
+    "unknown_citation_doc": 0.5,
+    "stale_source": 0.5,
+    "unsupported_claim": 0.6,
+    "extra_file": 0.8,
+    "missing_answer_section": 0.75
+  }
+}

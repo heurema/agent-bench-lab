@@ -12,6 +12,7 @@ from agent_bench_lab.scoring import score_task, write_score  # noqa: E402
 CASES = {
     "IF-01": ("case_001", "case_002", "case_003"),
     "DATA-01": ("case_001", "case_002", "case_003"),
+    "DOC-01": ("case_001", "case_002", "case_003"),
 }
 AGENT_CONFIGS = {
     "baseline": ROOT / "configs" / "agents" / "baseline.json",

@@ -41,6 +41,51 @@ def sample_report(config: dict) -> str:
     return "\n".join(lines)
 
 
+def sample_doc01_answer(config: dict) -> str:
+    sections = config["answer"]["required_sections"]
+    phrases = config["answer"]["required_phrases"]
+    lines = [
+        sections[0],
+        "",
+        sections[1],
+        *[f"- {phrase}." for phrase in phrases],
+        "",
+        sections[2],
+        "- See citations.json and claims.json for the supporting source snippets.",
+        "",
+        sections[3],
+        "- Public smoke fixture only; decision-grade evaluation needs private holdouts.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def sample_doc01_citations_and_claims(config: dict) -> tuple[dict, dict]:
+    citations = []
+    claims = []
+    for claim_id, rule in config["claims"]["required"].items():
+        citation_ids = []
+        for index, evidence in enumerate(rule.get("required_evidence", []), start=1):
+            citation_id = f"c_{claim_id}_{index}"
+            citation_ids.append(citation_id)
+            citations.append(
+                {
+                    "id": citation_id,
+                    "doc_id": evidence["doc_id"],
+                    "quote": evidence["quote"],
+                }
+            )
+        claims.append(
+            {
+                "id": claim_id,
+                "text": rule["required_text"],
+                "supported": bool(rule["supported"]),
+                "citation_ids": citation_ids,
+            }
+        )
+    return {"citations": citations}, {"claims": claims}
+
+
 def write_data01_sample(case_id: str) -> None:
     config = load_json(ROOT / "fixtures" / "public" / "DATA-01" / case_id / "check_config.json")
     output_dir = ROOT / "examples" / "artifacts" / "DATA-01" / case_id
@@ -50,6 +95,15 @@ def write_data01_sample(case_id: str) -> None:
         output_dir / "chart_spec.json",
         json.dumps(config["chart_spec"]["expected"], indent=2) + "\n",
     )
+
+
+def write_doc01_sample(case_id: str) -> None:
+    config = load_json(ROOT / "fixtures" / "public" / "DOC-01" / case_id / "check_config.json")
+    output_dir = ROOT / "examples" / "artifacts" / "DOC-01" / case_id
+    citations, claims = sample_doc01_citations_and_claims(config)
+    write(output_dir / "answer.md", sample_doc01_answer(config))
+    write(output_dir / "citations.json", json.dumps(citations, indent=2) + "\n")
+    write(output_dir / "claims.json", json.dumps(claims, indent=2) + "\n")
 
 
 # IF-01
@@ -76,6 +130,10 @@ No live services, no extra files, and no private data are required.
 # DATA-01
 for data_case_id in ("case_001", "case_002", "case_003"):
     write_data01_sample(data_case_id)
+
+# DOC-01
+for doc_case_id in ("case_001", "case_002", "case_003"):
+    write_doc01_sample(doc_case_id)
 
 # APP-04
 write(ROOT / "examples/artifacts/APP-04/case_001/final_booking.json", json.dumps({

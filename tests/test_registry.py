@@ -6,7 +6,7 @@ from agent_bench_lab.registry import load_task, load_task_schema, list_tasks, va
 def test_list_tasks_has_core_tasks():
     root = Path(__file__).resolve().parents[1]
     ids = {task["id"] for task in list_tasks(root)}
-    assert {"CODE-01", "TERM-02", "APP-04", "DATA-01", "IF-01", "SEC-01"}.issubset(ids)
+    assert {"CODE-01", "TERM-02", "APP-04", "DATA-01", "DOC-01", "IF-01", "SEC-01"}.issubset(ids)
 
 
 def test_validate_all_tasks():

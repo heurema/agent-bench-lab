@@ -1,12 +1,13 @@
 {
   "suite_id": "core-v0",
-  "version": "0.1.0",
-  "description": "Six-task starter suite for local-first agent setup comparisons.",
+  "version": "0.3.0",
+  "description": "Seven-task starter suite for local-first agent setup comparisons.",
   "tasks": [
     "CODE-01",
     "TERM-02",
     "APP-04",
     "DATA-01",
+    "DOC-01",
     "IF-01",
     "SEC-01"
   ],

@@ -14,8 +14,16 @@
 
 - [x] make IF-01 scorer fully useful
 - [x] make DATA-01 scorer fully useful
+- [x] make DOC-01 scorer fully useful
 - [x] add smoke-test artifact generator
 - [x] add pytest coverage for registry loading, schema validation, and sample scorers
+
+## Phase 1b: Grounded knowledge work
+
+- [x] add fixed-corpus DOC-01 public cases
+- [x] add citation and claim-contract scorer
+- [x] add unsupported-claim and stale-source checks
+- [ ] add private holdout corpus guidance examples outside the public tree
 
 ## Phase 2: Stateful product workflows
 

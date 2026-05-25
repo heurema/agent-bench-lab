@@ -87,6 +87,80 @@ def test_sample_data01_score(tmp_path):
     assert result["success"]
 
 
+def test_sample_doc01_score(tmp_path):
+    import json
+    root = Path(__file__).resolve().parents[1]
+    artifact_dir = tmp_path / "artifacts"
+    artifact_dir.mkdir()
+    (artifact_dir / "answer.md").write_text(
+        "# DOC-01 Case 001 Answer\n"
+        "## Answer\n"
+        "- email support.\n"
+        "- two business days.\n"
+        "- CSV.\n"
+        "- within 14 days.\n"
+        "- no paid data export.\n"
+        "## Evidence\n"
+        "- See citation artifacts.\n"
+        "## Limits\n"
+        "- Public smoke fixture only.\n",
+        encoding="utf-8",
+    )
+    (artifact_dir / "citations.json").write_text(
+        json.dumps(
+            {
+                "citations": [
+                    {
+                        "id": "c_support_target_1",
+                        "doc_id": "product_policy",
+                        "quote": "Northstar Basic includes email support with a target response within two business days.",
+                    },
+                    {
+                        "id": "c_export_format_1",
+                        "doc_id": "product_policy",
+                        "quote": "Workspace admins can export account activity as CSV.",
+                    },
+                    {
+                        "id": "c_refund_condition_1",
+                        "doc_id": "product_policy",
+                        "quote": "Refund requests within 14 days may be approved when no paid data export has been used.",
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    (artifact_dir / "claims.json").write_text(
+        json.dumps(
+            {
+                "claims": [
+                    {
+                        "id": "support_target",
+                        "text": "email support with a target response within two business days",
+                        "supported": True,
+                        "citation_ids": ["c_support_target_1"],
+                    },
+                    {
+                        "id": "export_format",
+                        "text": "export account activity as CSV",
+                        "supported": True,
+                        "citation_ids": ["c_export_format_1"],
+                    },
+                    {
+                        "id": "refund_condition",
+                        "text": "within 14 days may be approved when no paid data export has been used",
+                        "supported": True,
+                        "citation_ids": ["c_refund_condition_1"],
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    result = score_task(root, "DOC-01", "case_001", artifact_dir)
+    assert result["success"]
+
+
 def test_scorer_interface_is_enforced(tmp_path):
     task_dir = tmp_path / "BAD-01"
     task_dir.mkdir()

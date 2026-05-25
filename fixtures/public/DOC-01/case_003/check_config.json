@@ -1,0 +1,98 @@
+{
+  "case_id": "case_003",
+  "description": "Negative evidence case where unsupported compliance claims must remain unsupported.",
+  "required_artifacts": [
+    "answer.md",
+    "citations.json",
+    "claims.json"
+  ],
+  "allow_extra_files": false,
+  "allowed_extra_files": [],
+  "stale_source_ids": [
+    "distractor"
+  ],
+  "answer": {
+    "required_sections": [
+      "# DOC-01 Case 003 Answer",
+      "## Answer",
+      "## Evidence",
+      "## Limits"
+    ],
+    "required_phrases": [
+      "daily scheduled syncs",
+      "CSV import",
+      "not enough evidence",
+      "SOC 2 Type II certification is not complete"
+    ],
+    "banned_phrases": [
+      "Orion Sync is HIPAA export ready",
+      "Orion Sync is SOC 2 Type II certified"
+    ],
+    "unsupported_claim_phrases": [
+      "Orion Sync is HIPAA export ready",
+      "Orion Sync is SOC 2 Type II certified"
+    ],
+    "max_words": 190
+  },
+  "claims": {
+    "allow_extra_claims": false,
+    "required": {
+      "daily_sync": {
+        "supported": true,
+        "required_text": "supports daily scheduled syncs",
+        "acceptable_citation_doc_ids": [
+          "feature_brief"
+        ],
+        "required_evidence": [
+          {
+            "doc_id": "feature_brief",
+            "quote": "Orion Sync supports daily scheduled syncs for sandbox CRM records."
+          }
+        ]
+      },
+      "csv_import": {
+        "supported": true,
+        "required_text": "supports CSV import",
+        "acceptable_citation_doc_ids": [
+          "feature_brief"
+        ],
+        "required_evidence": [
+          {
+            "doc_id": "feature_brief",
+            "quote": "Orion Sync supports CSV import for synthetic workspace records."
+          }
+        ]
+      },
+      "hipaa_export_ready": {
+        "supported": false,
+        "required_text": "not enough evidence to say Orion Sync is HIPAA export ready",
+        "acceptable_citation_doc_ids": [],
+        "required_evidence": []
+      },
+      "soc2_type2_certified": {
+        "supported": false,
+        "required_text": "SOC 2 Type II certification is not complete",
+        "acceptable_citation_doc_ids": [],
+        "required_evidence": []
+      }
+    }
+  },
+  "score_caps": {
+    "missing_required_file": 0.0,
+    "missing_answer": 0.0,
+    "missing_citations": 0.4,
+    "missing_claims": 0.4,
+    "invalid_citations_json": 0.4,
+    "invalid_claims_json": 0.4,
+    "invalid_citations_schema": 0.5,
+    "invalid_claims_schema": 0.5,
+    "missing_citation_support": 0.65,
+    "bad_citation_quote": 0.6,
+    "unknown_citation_doc": 0.5,
+    "stale_source": 0.5,
+    "unsupported_claim": 0.6,
+    "wrong_claim_status": 0.55,
+    "extra_file": 0.8,
+    "missing_answer_section": 0.75
+  }
+}
