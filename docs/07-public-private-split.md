@@ -63,6 +63,8 @@ Agent Bench Lab should not store private eval secrets.
 Consumer applications should not expose scorer-only content to agents.
 The Private Eval Layer is a boundary, not a required implementation; it can be a gitignored local folder, private repo, encrypted bundle, customer-scoped storage, or enterprise eval service.
 
+See [Private Eval Layer](private-eval-layer.md) for the recommended private bundle shape and full visibility matrix.
+
 ## Customer-specific private holdouts
 
 Customer-specific benchmark data must be treated as protected evaluation content.
