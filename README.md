@@ -35,19 +35,19 @@ task family + fixtures + allowed tools + expected artifact/state + scorer + run 
 
 The public v0/v0.1 implementation includes a small starter suite and one hardened task-family pattern. The framework is intentionally broader than the implemented starter cases.
 
-## Relationship to Baseline
+## Relationship to consumer applications
 
-Agent Bench Lab is the canonical benchmark layer.
+Agent Bench Lab is the benchmark standard layer.
 
-Baseline may use Agent Bench Lab to run benchmark suites inside a product experience, but Baseline should not define a separate mini-benchmark system.
+Consumer applications may use Agent Bench Lab to run benchmark suites inside a product, workflow, CLI, dashboard, or customer-facing experience. Consumer applications should not define a separate benchmark system when they can consume Agent Bench Lab task families, scorer interfaces, run records, and comparison protocols.
 
 Recommended boundary:
 
 - Agent Bench Lab owns task-family definitions, schemas, scorer conventions, run records, comparison protocol, and public/private benchmark rules.
-- Baseline owns product UI, customer setup, agent configuration, access control, customer-specific private bundles, and result presentation.
-- Customer-specific checks should be mounted into runs as private holdout bundles, not committed to public repositories and not exposed to the agent.
+- Private Eval Layer owns protected holdouts, answer keys, hidden labels, customer-specific checks, canaries, and private scorer configs.
+- Consumer applications own product UX, onboarding, agent setup management, access control, task delivery, artifact upload, result presentation, and customer workflows.
 
-This keeps benchmark definitions reusable across products while allowing Baseline to provide a customer-facing workflow.
+Agent Bench Lab should not need to know which consumer application is using it.
 
 ## Current status
 
@@ -209,7 +209,7 @@ agent-bench-lab/
 ## Contributor docs
 
 - [Documentation index](docs/README.md)
-- [Canonical scope and Baseline boundary](docs/canonical-scope-and-baseline-boundary.md)
+- [Canonical scope and consumer boundary](docs/canonical-scope-and-consumer-boundary.md)
 - [Task authoring](docs/05-task-authoring.md)
 - [Public/private split](docs/07-public-private-split.md)
 - [Run records](docs/09-run-records.md)

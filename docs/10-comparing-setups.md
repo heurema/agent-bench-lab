@@ -65,4 +65,4 @@ same scorer
 different setup
 ```
 
-This is why Baseline should consume Agent Bench Lab tasks instead of defining its own benchmark logic.
+Consumer applications should consume Agent Bench Lab task families and scorer outputs rather than defining parallel benchmark logic.
