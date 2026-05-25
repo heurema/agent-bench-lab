@@ -1,0 +1,14 @@
+agent benchmark language:Python
+tool-use benchmark agent
+MCP benchmark OR MCP-Bench OR MCP-Universe OR MCP-Atlas
+browser agent benchmark OR computer-use agent
+deep research benchmark OR research agent benchmark
+prompt injection benchmark agent
+agent safety benchmark tool use
+benchmark contamination agent
+benchmark exploit reward hacking
+private holdout evaluation benchmark
+state diff scorer agent benchmark
+trace policy scorer tool calls
+verified benchmark agent tasks
+replay environment agent benchmark
