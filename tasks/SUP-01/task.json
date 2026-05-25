@@ -1,0 +1,119 @@
+{
+  "id": "SUP-01",
+  "version": "0.4.0",
+  "name": "Synthetic support inbox triage",
+  "category": "support_ops",
+  "purpose": "Test support inbox triage, policy-grounded draft replies, and escalation decisions from synthetic local fixtures.",
+  "agent_role": "support operations analyst",
+  "user_prompt": "Triage the support inbox in spec.md using only the provided policy, customer profile, and inbox files. Produce triage.json, drafts.json, escalations.json, and decision_log.md.",
+  "available_tools": [
+    "file_read",
+    "file_write"
+  ],
+  "forbidden_tools": [
+    "internet",
+    "live_inbox",
+    "browser",
+    "mcp",
+    "modify_inputs"
+  ],
+  "environment_setup": "Local synthetic public support fixtures only. Real evaluation should use private support holdouts outside the public repo.",
+  "input_fixtures": [
+    "fixtures/public/SUP-01/case_001",
+    "fixtures/public/SUP-01/case_002",
+    "fixtures/public/SUP-01/case_003"
+  ],
+  "required_final_artifact": "triage.json, drafts.json, escalations.json, and decision_log.md",
+  "success_criteria": [
+    "triage.json assigns required category, priority, reply, escalation, and reason-code values",
+    "drafts.json contains only required replies and cites allowed support policies",
+    "escalations.json contains required escalation decisions and no forbidden escalations",
+    "decision_log.md uses required sections and avoids scorer-only labels",
+    "drafts avoid prohibited policy promises and invented customer facts"
+  ],
+  "scoring_rubric": [
+    {
+      "component": "artifact_contract",
+      "weight": 15,
+      "description": "Required files, no extra files, and valid JSON artifacts"
+    },
+    {
+      "component": "triage",
+      "weight": 30,
+      "description": "Email IDs, category, priority, reply, escalation, and reason-code decisions"
+    },
+    {
+      "component": "drafts",
+      "weight": 30,
+      "description": "Policy-grounded replies with required citations and no prohibited promises"
+    },
+    {
+      "component": "escalations",
+      "weight": 15,
+      "description": "Required escalation teams, reasons, and context"
+    },
+    {
+      "component": "decision_log",
+      "weight": 10,
+      "description": "Concise operational log with required sections and no private labels"
+    }
+  ],
+  "hidden_tests": [
+    "policy edge cases requiring escalation before refund or credit promises",
+    "no-reply informational messages",
+    "ambiguous requests requiring clarification or human review",
+    "unknown or invented email IDs",
+    "prohibited policy promises in drafts"
+  ],
+  "partial_credit_rules": "Public scorer gives partial credit by config-driven checks. Critical failures such as missing triage.json, invalid JSON, unknown email IDs, prohibited refund promises, missing escalation, and scorer-only label leakage cap or zero the score.",
+  "common_failure_modes": [
+    "inventing customer facts not present in the fixture",
+    "drafting a reply for an informational no-reply email",
+    "offering a refund or credit before required escalation",
+    "missing a required escalation",
+    "using unknown email IDs",
+    "leaking scorer-only labels in the decision log"
+  ],
+  "expected_trace_signals": [
+    "read local spec",
+    "inspect policy and customer profile",
+    "read inbox messages",
+    "map each email to policy rules",
+    "write triage, draft, escalation, and decision-log artifacts"
+  ],
+  "what_to_log": [
+    "model calls",
+    "tool calls",
+    "artifact writes",
+    "latency",
+    "cost",
+    "policy violations"
+  ],
+  "how_to_compare_runs": [
+    "paired cases",
+    "visible vs hidden score",
+    "triage accuracy delta",
+    "policy-grounding delta",
+    "escalation accuracy delta",
+    "cost and latency delta"
+  ],
+  "variants": [
+    "renamed synthetic customers and products",
+    "reordered emails",
+    "changed timestamps with preserved SLA logic",
+    "paraphrased policy wording",
+    "added distractor informational emails",
+    "changed category labels through a configured mapping"
+  ],
+  "anti_overfitting_strategy": "Use public cases for development and smoke tests, generated mutation cases for brittleness checks, and private support holdouts outside the public repo for final comparison.",
+  "implementation_notes": "Public scorer is config-driven and deterministic. It validates triage.json, drafts.json, escalations.json, and decision_log.md against synthetic public support fixtures. Private variants should keep protected labels, customer policies, canaries, and scorer configs outside the public repo.",
+  "implementation_status": "decision_grade_public_pattern",
+  "public_notes": "Synthetic public cases are examples and smoke tests. Do not treat public cases as private holdout evaluation.",
+  "meta": {
+    "difficulty": "M",
+    "estimated_runtime_minutes": 10,
+    "cost_sensitivity": "M",
+    "repeatability_score": 5,
+    "contamination_risk": 2
+  }
+}

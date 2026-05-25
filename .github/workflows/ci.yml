@@ -45,6 +45,9 @@ jobs:
       - name: Run DOC-01 smoke
         run: make doc01-smoke
 
+      - name: Run SUP-01 smoke
+        run: make sup01-smoke
+
       - name: Run leak check
         run: make leak-check
 

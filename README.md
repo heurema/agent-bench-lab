@@ -33,7 +33,7 @@ The common unit is not "coding task" or "office task". The common unit is:
 task family + fixtures + allowed tools + expected artifact/state + scorer + run comparison
 ```
 
-The public v0/v0.3 implementation includes a small starter suite and three hardened task-family patterns. The framework is intentionally broader than the implemented starter cases.
+The public v0/v0.4 implementation includes a small starter suite and four hardened task-family patterns. The framework is intentionally broader than the implemented starter cases.
 
 ## Relationship to consumer applications
 
@@ -66,7 +66,7 @@ This repository is a **v0 public starter**. It contains:
 - JSON schemas for tasks, runs, traces, and scores;
 - minimal Python CLI scaffolding;
 - sample public fixtures;
-- sample scorers plus hardened IF-01, DATA-01, and DOC-01 artifact-based scorers;
+- sample scorers plus hardened IF-01, DATA-01, DOC-01, and SUP-01 artifact-based scorers;
 - documentation for benchmark design, metrics, and anti-overfitting.
 
 It intentionally does **not** contain private holdout tasks, production secrets, personal data, or benchmark answers for real evaluation runs.
@@ -190,6 +190,14 @@ DOC-01 is the third hardened task-family pattern. It uses synthetic fixed-corpus
 make doc01-smoke
 ```
 
+## Fourth decision-grade task family: SUP-01
+
+SUP-01 is the fourth hardened task-family pattern and the first operational/customer-style workflow. It uses synthetic support inboxes, deterministic `triage.json`, checked `drafts.json`, checked `escalations.json`, `decision_log.md`, mutation support, and tests for policy-grounded replies without live inbox, browser, SaaS, or real customer data. See [SUP-01 decision-grade pattern](docs/14-sup01-decision-grade.md).
+
+```bash
+make sup01-smoke
+```
+
 ## Initial core suite
 
 The recommended v0 core suite has seven task families:
@@ -205,6 +213,16 @@ The recommended v0 core suite has seven task families:
 | SEC-01 | Hidden prompt injection in HTML/email | security + tool-output trust boundary |
 
 The initial core suite is a starter set for proving the runner/scorer/compare loop. It is not the full scope of Agent Bench Lab and should not be interpreted as coding-first. Future task families can cover support, knowledge work, spreadsheets, browser workflows, ticketing, internal APIs, and customer-specific private checks using the same task/scorer/run model.
+
+## Operational local suite
+
+SUP-01 is intentionally not added to `configs/suites/core.json` by default. Operational/customer-style workflows start in:
+
+```text
+configs/suites/ops-local.json
+```
+
+This keeps core focused while allowing support, ticketing, and internal-API-style tasks to grow under an ops-oriented local suite.
 
 ## Repository layout
 
@@ -245,6 +263,7 @@ agent-bench-lab/
 - [IF-01 decision-grade pattern](docs/11-if01-decision-grade.md)
 - [DATA-01 decision-grade pattern](docs/12-data01-decision-grade.md)
 - [DOC-01 decision-grade pattern](docs/13-doc01-decision-grade.md)
+- [SUP-01 decision-grade pattern](docs/14-sup01-decision-grade.md)
 - [Public release checklist](docs/public-release-checklist.md)
 - [v0 roadmap](docs/roadmap-v0.md)
 

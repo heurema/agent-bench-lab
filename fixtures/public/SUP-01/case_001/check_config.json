@@ -1,0 +1,134 @@
+{
+  "case_id": "case_001",
+  "description": "Simple synthetic support triage with one billing reply, one informational no-reply, and one export-help reply.",
+  "required_artifacts": [
+    "triage.json",
+    "drafts.json",
+    "escalations.json",
+    "decision_log.md"
+  ],
+  "allow_extra_files": false,
+  "allowed_extra_files": [],
+  "required_emails": [
+    "email_001",
+    "email_002",
+    "email_003"
+  ],
+  "allowed_reason_codes": [
+    "duplicate_charge_review",
+    "informational_no_action",
+    "export_instructions"
+  ],
+  "triage": {
+    "required": {
+      "email_001": {
+        "category": "billing",
+        "priority": "normal",
+        "requires_reply": true,
+        "requires_escalation": false,
+        "reason_code": "duplicate_charge_review"
+      },
+      "email_002": {
+        "category": "informational",
+        "priority": "low",
+        "requires_reply": false,
+        "requires_escalation": false,
+        "reason_code": "informational_no_action"
+      },
+      "email_003": {
+        "category": "how_to",
+        "priority": "normal",
+        "requires_reply": true,
+        "requires_escalation": false,
+        "reason_code": "export_instructions"
+      }
+    }
+  },
+  "drafts": {
+    "allow_extra_drafts": false,
+    "required": {
+      "email_001": {
+        "tone": "calm",
+        "required_policy_citations": [
+          "BILLING-REVIEW"
+        ],
+        "required_phrases": [
+          "billing team will review",
+          "within two business days"
+        ],
+        "banned_phrases": [
+          "refund approved",
+          "credit has been issued"
+        ]
+      },
+      "email_003": {
+        "tone": "helpful",
+        "required_policy_citations": [
+          "EXPORT-HELP"
+        ],
+        "required_phrases": [
+          "CSV activity export",
+          "account settings"
+        ],
+        "banned_phrases": [
+          "admin password",
+          "we changed your account"
+        ]
+      }
+    },
+    "forbidden_email_ids": [
+      "email_002"
+    ],
+    "prohibited_promises": [
+      "refund approved",
+      "credit has been issued",
+      "we changed your account"
+    ]
+  },
+  "escalations": {
+    "allow_extra_escalations": false,
+    "required": {},
+    "forbidden_email_ids": [
+      "email_001",
+      "email_002",
+      "email_003"
+    ]
+  },
+  "decision_log": {
+    "required_sections": [
+      "# SUP-01 Case 001 Decision Log",
+      "## Summary",
+      "## Policy Decisions",
+      "## Human Review"
+    ],
+    "required_phrases": [
+      "email_001",
+      "email_002",
+      "email_003",
+      "no escalation required"
+    ],
+    "banned_phrases": [
+      "hidden_label",
+      "answer_key",
+      "scorer-only"
+    ],
+    "max_words": 180
+  },
+  "score_caps": {
+    "missing_required_file": 0.0,
+    "invalid_json": 0.4,
+    "invalid_schema": 0.5,
+    "unknown_email_id": 0.5,
+    "missing_triage": 0.5,
+    "wrong_triage": 0.65,
+    "missing_required_draft": 0.6,
+    "forbidden_draft": 0.65,
+    "missing_policy_citation": 0.65,
+    "prohibited_promise": 0.4,
+    "missing_required_escalation": 0.4,
+    "forbidden_escalation": 0.6,
+    "private_label_leak": 0.4,
+    "extra_file": 0.8,
+    "missing_decision_log_section": 0.75
+  }
+}

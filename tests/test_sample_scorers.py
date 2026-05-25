@@ -161,6 +161,86 @@ def test_sample_doc01_score(tmp_path):
     assert result["success"]
 
 
+def test_sample_sup01_score(tmp_path):
+    import json
+    root = Path(__file__).resolve().parents[1]
+    artifact_dir = tmp_path / "artifacts"
+    artifact_dir.mkdir()
+    (artifact_dir / "triage.json").write_text(
+        json.dumps(
+            {
+                "triage": [
+                    {
+                        "email_id": "email_001",
+                        "category": "billing",
+                        "priority": "normal",
+                        "requires_reply": True,
+                        "requires_escalation": False,
+                        "reason_code": "duplicate_charge_review",
+                    },
+                    {
+                        "email_id": "email_002",
+                        "category": "informational",
+                        "priority": "low",
+                        "requires_reply": False,
+                        "requires_escalation": False,
+                        "reason_code": "informational_no_action",
+                    },
+                    {
+                        "email_id": "email_003",
+                        "category": "how_to",
+                        "priority": "normal",
+                        "requires_reply": True,
+                        "requires_escalation": False,
+                        "reason_code": "export_instructions",
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    (artifact_dir / "drafts.json").write_text(
+        json.dumps(
+            {
+                "drafts": [
+                    {
+                        "email_id": "email_001",
+                        "draft_subject": "Re: duplicate charge",
+                        "draft_body": "The billing team will review within two business days.",
+                        "policy_citations": ["BILLING-REVIEW"],
+                        "tone": "calm",
+                    },
+                    {
+                        "email_id": "email_003",
+                        "draft_subject": "Re: CSV export",
+                        "draft_body": "Use the CSV activity export from account settings.",
+                        "policy_citations": ["EXPORT-HELP"],
+                        "tone": "helpful",
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    (artifact_dir / "escalations.json").write_text(
+        json.dumps({"escalations": []}),
+        encoding="utf-8",
+    )
+    (artifact_dir / "decision_log.md").write_text(
+        "# SUP-01 Case 001 Decision Log\n"
+        "## Summary\n"
+        "- Processed email_001, email_002, and email_003.\n"
+        "## Policy Decisions\n"
+        "- email_001 billing review; email_002 no reply; email_003 export help.\n"
+        "- no escalation required.\n"
+        "## Human Review\n"
+        "- None.\n",
+        encoding="utf-8",
+    )
+    result = score_task(root, "SUP-01", "case_001", artifact_dir)
+    assert result["success"]
+
+
 def test_scorer_interface_is_enforced(tmp_path):
     task_dir = tmp_path / "BAD-01"
     task_dir.mkdir()
