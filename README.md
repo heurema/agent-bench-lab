@@ -100,6 +100,8 @@ This repository is a **v0 public starter**. It contains:
 
 It intentionally does **not** contain private holdout tasks, production secrets, personal data, or benchmark answers for real evaluation runs.
 
+Release status: `v0.7.0` is the latest published release and added Research Radar. `main` now includes the Local Agent Runner MVP; `v0.7.1` is intended to stabilize the runner contract before any `v0.8` direction is selected.
+
 ## Why this exists
 
 Most agent demos prove that an agent can succeed once. Product work needs stronger evidence:

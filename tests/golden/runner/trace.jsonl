@@ -1,0 +1,7 @@
+{"ts":"2026-05-26T00:00:00Z","run_id":"golden_IF-01_case_001_20260526T000000Z","event_type":"run_started","actor":"runner","metadata":{}}
+{"ts":"2026-05-26T00:00:00Z","run_id":"golden_IF-01_case_001_20260526T000000Z","event_type":"task_packet_created","actor":"runner","metadata":{"included_files":5}}
+{"ts":"2026-05-26T00:00:00Z","run_id":"golden_IF-01_case_001_20260526T000000Z","event_type":"agent_command_started","actor":"agent","metadata":{"agent_cmd_hash":"sha256:mock"}}
+{"ts":"2026-05-26T00:00:01Z","run_id":"golden_IF-01_case_001_20260526T000000Z","event_type":"agent_command_completed","actor":"agent","metadata":{"returncode":0,"stdout_snippet":"mock artifacts written for IF-01/case_001","stderr_snippet":""}}
+{"ts":"2026-05-26T00:00:01Z","run_id":"golden_IF-01_case_001_20260526T000000Z","event_type":"scorer_started","actor":"scorer","metadata":{}}
+{"ts":"2026-05-26T00:00:01Z","run_id":"golden_IF-01_case_001_20260526T000000Z","event_type":"scorer_completed","actor":"scorer","metadata":{"score":1.0,"success":true}}
+{"ts":"2026-05-26T00:00:01Z","run_id":"golden_IF-01_case_001_20260526T000000Z","event_type":"run_completed","actor":"runner","metadata":{"status":"passed","score":1.0,"success":true}}

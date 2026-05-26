@@ -1,0 +1,28 @@
+{
+  "run_id": "golden_IF-01_case_001_20260526T000000Z",
+  "task_id": "IF-01",
+  "case_id": "case_001",
+  "task_version": "0.1.0",
+  "task_name": "Instruction Following Contract",
+  "agent_config_id": "golden_mock",
+  "agent_config_hash": "sha256:golden",
+  "agent_cmd_hash": "sha256:mock",
+  "started_at": "2026-05-26T00:00:00Z",
+  "completed_at": "2026-05-26T00:00:01Z",
+  "status": "passed",
+  "success": true,
+  "score": 1.0,
+  "timeout_seconds": 600,
+  "paths": {
+    "task_packet": "tests/golden/runner/task_packet",
+    "artifacts": "tests/golden/runner/artifacts",
+    "score": "tests/golden/runner/score.json",
+    "trace": "tests/golden/runner/trace.jsonl"
+  },
+  "command": {
+    "returncode": 0,
+    "agent_cmd_redacted": "python3 scripts/mock_agent_write_artifacts.py",
+    "stdout_snippet": "mock artifacts written for IF-01/case_001",
+    "stderr_snippet": ""
+  }
+}

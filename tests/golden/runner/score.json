@@ -1,0 +1,41 @@
+{
+  "run_id": "golden_IF-01_case_001_20260526T000000Z",
+  "task_id": "IF-01",
+  "case_id": "case_001",
+  "task_version": "0.1.0",
+  "scorer_version": "sha256:golden",
+  "agent_config_id": "golden_mock",
+  "agent_config_hash": "sha256:golden",
+  "success": true,
+  "score": 1.0,
+  "pass_threshold": 0.85,
+  "components": {
+    "required_file:artifact.md": {
+      "passed": true,
+      "points": 0.12,
+      "max_points": 0.12,
+      "detail": ""
+    }
+  },
+  "policy_violations": [],
+  "errors": [],
+  "artifact_hashes": {
+    "artifact.md": "f95f8b15a859d4c29b12c321588ad12f13a5c74c61bda95a5b489295382a7e22"
+  },
+  "metadata": {
+    "latency_seconds": null,
+    "cost_usd": null,
+    "tool_calls": null,
+    "model_calls": null,
+    "notes": "Golden public IF-01 mock-run score fixture."
+  },
+  "checks": [
+    {
+      "name": "required_file:artifact.md",
+      "passed": true,
+      "points": 0.12,
+      "max_points": 0.12,
+      "detail": ""
+    }
+  ]
+}
