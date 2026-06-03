@@ -40,6 +40,7 @@ AGENT_BENCH_RUN_ID
 AGENT_BENCH_TASK_PACKET
 AGENT_BENCH_ARTIFACTS_DIR
 AGENT_BENCH_AGENT_CONFIG
+AGENT_BENCH_DIAGNOSTICS_FILE
 ```
 
 The agent command should write final artifacts to:
@@ -47,6 +48,32 @@ The agent command should write final artifacts to:
 ```text
 $AGENT_BENCH_ARTIFACTS_DIR
 ```
+
+## Run Validity Diagnostics
+
+Agent wrappers may write public-safe diagnostics to `$AGENT_BENCH_DIAGNOSTICS_FILE` when a run is
+not valid evidence of agent quality. This is for provider, environment, or harness failures, not
+for normal task failure.
+
+```json
+{
+  "valid": false,
+  "category": "provider_error",
+  "reason": "model endpoint returned 404 repeatedly",
+  "environment_ref": "optional public-safe snapshot/version id"
+}
+```
+
+Supported categories are:
+
+- `provider_error`
+- `environment_error`
+- `harness_error`
+
+If the diagnostics file is missing, the runner preserves normal behavior. If it contains
+`"valid": false`, the runner records `status: "environment_error"`, writes `run_validity` to
+`score.json`, skips the scorer, and emits a `run_invalidated` trace event. The wrapper is
+responsible for keeping `reason` and `environment_ref` public-safe.
 
 ## Visibility Boundary
 
@@ -85,6 +112,7 @@ The scorer still receives the original fixture directory and the produced artifa
 - status;
 - score summary;
 - paths to task packet, artifacts, score, and trace.
+- optional validity category for invalid evidence.
 
 `trace.jsonl` records minimal runner lifecycle events:
 
@@ -93,6 +121,7 @@ The scorer still receives the original fixture directory and the produced artifa
 - `agent_command_started`;
 - `agent_command_completed`;
 - `agent_command_timeout`;
+- `run_invalidated`;
 - `scorer_started`;
 - `scorer_completed`;
 - `run_completed`.

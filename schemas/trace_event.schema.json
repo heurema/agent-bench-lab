@@ -28,6 +28,7 @@
         "agent_command_started",
         "agent_command_completed",
         "agent_command_timeout",
+        "run_invalidated",
         "scorer_started",
         "scorer_completed",
         "run_completed",
