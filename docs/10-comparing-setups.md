@@ -28,7 +28,28 @@ The report includes:
 - improvements, regressions, and unchanged tasks;
 - policy violations;
 - missing scores;
+- invalid run evidence;
 - a per-task table.
+
+## Run Validity
+
+Score deltas are useful only when both sides of a pair are valid run evidence.
+
+`agent-bench compare` treats missing `run_validity` metadata as valid for backward compatibility.
+When either side has `run_validity.valid: false`, the pair is excluded from averages,
+improvements, regressions, and unchanged buckets. The report lists the invalid side under
+`Run Validity` with a redacted category and reason so the operator can rerun that setup.
+
+By default, invalid evidence does not make `compare` exit non-zero; this keeps report generation
+usable in CI. Use `--fail-on-invalid` when the comparison is a gate:
+
+```bash
+agent-bench compare \
+  --baseline runs/setup_a \
+  --candidate runs/setup_b \
+  --out reports/setup_a_vs_b.md \
+  --fail-on-invalid
+```
 
 Run the local smoke flow:
 

@@ -16,6 +16,8 @@ Reports should make comparisons useful without exposing scorer-only or private e
 | `lifecycle_status` | Lifecycle status from `configs/task_lifecycle.json` |
 | `score` | Normalized score from 0 to 1 |
 | `success` | Boolean pass/fail result |
+| `run_validity` | Optional validity object; missing means valid legacy evidence |
+| `validity_category` | Optional run-level invalidity category |
 | `pass_threshold` | Threshold used for success |
 | `cost` | Cost field or explicit null |
 | `latency` | Runtime latency field or explicit null |
@@ -39,11 +41,16 @@ Reports should make comparisons useful without exposing scorer-only or private e
 - Do not include raw canary strings.
 - Do not include raw private traces in public reports.
 - Prefer redacted component-level diagnostics.
+- Do not average or rank runs where `run_validity.valid` is `false`.
 
 ## Missing Data
 
 Missing cost, latency, or tool-call data should be explicit. Do not invent fields that were not
 captured.
+
+Invalid provider, environment, or harness evidence may use `score: null` with
+`run_validity.valid: false`. Treat that as invalid evidence to rerun, not as a zero-quality agent
+result.
 
 ## Private Bundle References
 

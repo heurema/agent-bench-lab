@@ -42,7 +42,10 @@
       "type": "string"
     },
     "score": {
-      "type": "number",
+      "type": [
+        "number",
+        "null"
+      ],
       "minimum": 0,
       "maximum": 1
     },
@@ -126,6 +129,31 @@
     },
     "notes": {
       "type": "string"
+    },
+    "run_validity": {
+      "type": "object",
+      "required": [
+        "valid"
+      ],
+      "properties": {
+        "valid": {
+          "type": "boolean"
+        },
+        "category": {
+          "enum": [
+            "provider_error",
+            "environment_error",
+            "harness_error"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "environment_ref": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": true

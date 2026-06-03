@@ -55,8 +55,18 @@
         "environment_error"
       ]
     },
+    "validity_category": {
+      "enum": [
+        "provider_error",
+        "environment_error",
+        "harness_error"
+      ]
+    },
     "score": {
-      "type": "number"
+      "type": [
+        "number",
+        "null"
+      ]
     },
     "cost_usd": {
       "type": "number"

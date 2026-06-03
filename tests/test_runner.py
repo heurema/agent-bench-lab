@@ -280,6 +280,104 @@ def test_runner_bounds_and_redacts_command_output_snippets(tmp_path):
     assert_runner_contract_outputs(out_dir)
 
 
+def test_runner_invalidates_provider_diagnostics_and_skips_scorer(tmp_path):
+    out_dir = tmp_path / "provider_invalid"
+    agent_path = tmp_path / "provider_invalid_agent.py"
+    agent_path.write_text(
+        """
+import json
+import os
+from pathlib import Path
+
+Path(os.environ["AGENT_BENCH_DIAGNOSTICS_FILE"]).write_text(
+    json.dumps(
+        {
+            "valid": False,
+            "category": "provider_error",
+            "reason": "model endpoint returned 404 repeatedly",
+            "environment_ref": "provider-snapshot-v1",
+        }
+    ),
+    encoding="utf-8",
+)
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+
+    run_record = run_agent_task(
+        root=root_dir(),
+        task_id="IF-01",
+        case_id="case_001",
+        agent_cmd=f"{sys.executable} {agent_path}",
+        agent_config_path=None,
+        out_dir=out_dir,
+        timeout_seconds=30,
+    )
+    score = load_json(out_dir / "score.json")
+    events = load_trace_events(out_dir / "trace.jsonl")
+    event_types = [event["event_type"] for event in events]
+
+    assert run_record["status"] == "environment_error"
+    assert run_record["success"] is False
+    assert run_record["validity_category"] == "provider_error"
+    assert score["score"] is None
+    assert score["success"] is False
+    assert score["run_validity"] == {
+        "valid": False,
+        "category": "provider_error",
+        "reason": "model endpoint returned 404 repeatedly",
+        "environment_ref": "provider-snapshot-v1",
+    }
+    assert "run_invalidated" in event_types
+    assert "scorer_started" not in event_types
+    assert "scorer_completed" not in event_types
+    assert_runner_contract_outputs(out_dir)
+
+
+def test_runner_reads_invalid_diagnostics_even_when_command_exits_nonzero(tmp_path):
+    out_dir = tmp_path / "harness_invalid"
+    agent_path = tmp_path / "harness_invalid_agent.py"
+    agent_path.write_text(
+        """
+import json
+import os
+from pathlib import Path
+
+Path(os.environ["AGENT_BENCH_DIAGNOSTICS_FILE"]).write_text(
+    json.dumps(
+        {
+            "valid": False,
+            "category": "harness_error",
+            "reason": "wrapper failed before handing task to agent",
+        }
+    ),
+    encoding="utf-8",
+)
+raise SystemExit(7)
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+
+    run_record = run_agent_task(
+        root=root_dir(),
+        task_id="IF-01",
+        case_id="case_001",
+        agent_cmd=f"{sys.executable} {agent_path}",
+        agent_config_path=None,
+        out_dir=out_dir,
+        timeout_seconds=30,
+    )
+    score = load_json(out_dir / "score.json")
+
+    assert run_record["status"] == "environment_error"
+    assert run_record["command"]["returncode"] == 7
+    assert run_record["validity_category"] == "harness_error"
+    assert score["run_validity"]["category"] == "harness_error"
+    assert_runner_contract_outputs(out_dir)
+
+
 def test_cli_agent_bench_run_works_with_mock_agent(tmp_path, capsys):
     out_dir = tmp_path / "cli_run"
     exit_code = cli_main(

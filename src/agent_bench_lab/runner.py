@@ -12,9 +12,10 @@ from typing import Any
 from .redaction import redact_text
 from .registry import load_task, repo_root_from
 from .run_records import load_agent_config, load_task_version
+from .run_validity import build_invalid_score_record, load_run_validity
 from .scoring import score_task, write_score
 
-RUN_STATUSES = {"passed", "failed", "timeout", "error"}
+RUN_STATUSES = {"passed", "failed", "timeout", "error", "invalid", "environment_error"}
 TRACE_SNIPPET_CHARS = 2000
 AGENT_VISIBLE_TASK_FILES = ("prompt.md", "task.json")
 SCORER_ONLY_FILENAMES = {
@@ -195,9 +196,12 @@ def run_agent_task(
     score_path = resolved_out_dir / "score.json"
     run_path = resolved_out_dir / "run.json"
     trace_path = resolved_out_dir / "trace.jsonl"
+    diagnostics_path = resolved_out_dir / "diagnostics.json"
     artifacts_dir.mkdir(parents=True, exist_ok=True)
     if trace_path.exists():
         trace_path.unlink()
+    if diagnostics_path.exists():
+        diagnostics_path.unlink()
 
     started_at = utc_now()
     append_trace_event(trace_path, run_id=run_id, event_type="run_started", actor="runner")
@@ -226,6 +230,7 @@ def run_agent_task(
             "AGENT_BENCH_TASK_PACKET": str(task_packet_dir),
             "AGENT_BENCH_ARTIFACTS_DIR": str(artifacts_dir),
             "AGENT_BENCH_AGENT_CONFIG": str(agent_config_path or ""),
+            "AGENT_BENCH_DIAGNOSTICS_FILE": str(diagnostics_path),
         }
     )
 
@@ -291,50 +296,77 @@ def run_agent_task(
             },
         )
 
-    append_trace_event(trace_path, run_id=run_id, event_type="scorer_started", actor="scorer")
-    try:
-        score = score_task(
-            root=root,
+    run_validity = load_run_validity(diagnostics_path)
+    invalid_run = run_validity.get("valid") is False
+    if invalid_run:
+        append_trace_event(
+            trace_path,
+            run_id=run_id,
+            event_type="run_invalidated",
+            actor="runner",
+            metadata={
+                "category": run_validity.get("category"),
+                "reason": run_validity.get("reason"),
+                "environment_ref": run_validity.get("environment_ref"),
+            },
+        )
+        score = build_invalid_score_record(
+            task_dir=task_dir,
+            artifacts_dir=artifacts_dir,
             task_id=task_id,
             case_id=case_id,
-            artifacts_dir=artifacts_dir,
             agent_config_path=agent_config_path,
             run_id=run_id,
+            run_validity=run_validity,
         )
-    except Exception as exc:  # noqa: BLE001 - runner must preserve local failure records.
-        score = {
-            "run_id": run_id,
-            "task_id": task_id,
-            "case_id": case_id,
-            "task_version": load_task_version(task_dir),
-            "scorer_version": "error",
-            "agent_config_id": agent_config_id,
-            "agent_config_hash": agent_config_hash,
-            "success": False,
-            "score": 0.0,
-            "pass_threshold": 0.8,
-            "components": {},
-            "policy_violations": [],
-            "errors": [redact_text(str(exc))],
-            "artifact_hashes": {},
-            "metadata": {
-                "latency_seconds": None,
-                "cost_usd": None,
-                "tool_calls": None,
-                "model_calls": None,
-                "notes": None,
-            },
-        }
+    else:
+        append_trace_event(trace_path, run_id=run_id, event_type="scorer_started", actor="scorer")
+        try:
+            score = score_task(
+                root=root,
+                task_id=task_id,
+                case_id=case_id,
+                artifacts_dir=artifacts_dir,
+                agent_config_path=agent_config_path,
+                run_id=run_id,
+            )
+        except Exception as exc:  # noqa: BLE001 - runner must preserve local failure records.
+            score = {
+                "run_id": run_id,
+                "task_id": task_id,
+                "case_id": case_id,
+                "task_version": load_task_version(task_dir),
+                "scorer_version": "error",
+                "agent_config_id": agent_config_id,
+                "agent_config_hash": agent_config_hash,
+                "success": False,
+                "score": 0.0,
+                "pass_threshold": 0.8,
+                "components": {},
+                "policy_violations": [],
+                "errors": [redact_text(str(exc))],
+                "artifact_hashes": {},
+                "metadata": {
+                    "latency_seconds": None,
+                    "cost_usd": None,
+                    "tool_calls": None,
+                    "model_calls": None,
+                    "notes": None,
+                },
+            }
     write_score(score, score_path)
-    append_trace_event(
-        trace_path,
-        run_id=run_id,
-        event_type="scorer_completed",
-        actor="scorer",
-        metadata={"score": score.get("score"), "success": score.get("success")},
-    )
+    if not invalid_run:
+        append_trace_event(
+            trace_path,
+            run_id=run_id,
+            event_type="scorer_completed",
+            actor="scorer",
+            metadata={"score": score.get("score"), "success": score.get("success")},
+        )
 
-    if status != "timeout":
+    if invalid_run:
+        status = "environment_error"
+    elif status != "timeout":
         status = "passed" if returncode == 0 and score.get("success") else "failed"
     completed_at = utc_now()
     run_record = {
@@ -365,6 +397,8 @@ def run_agent_task(
             "stderr_snippet": stderr_snippet,
         },
     }
+    if invalid_run:
+        run_record["validity_category"] = run_validity.get("category")
     write_json(run_path, run_record)
     append_trace_event(
         trace_path,

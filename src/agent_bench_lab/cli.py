@@ -71,7 +71,11 @@ def cmd_compare(args: argparse.Namespace) -> int:
         print(report)
     if args.csv:
         write_csv_report(result, Path(args.csv).resolve())
-    return 1 if result["missing_scores"] else 0
+    if result["missing_scores"]:
+        return 1
+    if args.fail_on_invalid and result["invalid_runs"]:
+        return 1
+    return 0
 
 
 def cmd_run(args: argparse.Namespace) -> int:
@@ -130,6 +134,11 @@ def build_parser() -> argparse.ArgumentParser:
     p_compare.add_argument("--candidate", required=True)
     p_compare.add_argument("--out")
     p_compare.add_argument("--csv")
+    p_compare.add_argument(
+        "--fail-on-invalid",
+        action="store_true",
+        help="Return non-zero when compared evidence contains invalid runs",
+    )
     p_compare.set_defaults(func=cmd_compare)
 
     p_run = sub.add_parser("run", help="Run an external command against a task case")
