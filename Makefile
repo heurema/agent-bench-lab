@@ -1,7 +1,7 @@
 PYTHON ?= python3
 PYTHONPATH ?= src
 
-.PHONY: validate list smoke compare-smoke if01-smoke data01-smoke doc01-smoke sup01-smoke api01-smoke lifecycle-check mutation-smoke hardening-check run-smoke leak-check test
+.PHONY: validate list smoke compare-smoke if01-smoke data01-smoke doc01-smoke sup01-smoke api01-smoke lifecycle-check mutation-smoke hardening-check run-smoke run-suite-smoke leak-check test
 
 validate:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m agent_bench_lab.cli validate
@@ -71,6 +71,10 @@ run-smoke:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m agent_bench_lab.cli run --task IF-01 --case case_001 --agent-cmd "$(PYTHON) scripts/mock_agent_write_artifacts.py" --out runs/manual/mock/IF-01_case_001
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m agent_bench_lab.cli run --task DATA-01 --case case_001 --agent-cmd "$(PYTHON) scripts/mock_agent_write_artifacts.py" --out runs/manual/mock/DATA-01_case_001
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m agent_bench_lab.cli compare --baseline runs/manual/mock --candidate runs/manual/mock --out reports/generated/compare_run_smoke.md
+
+run-suite-smoke:
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m agent_bench_lab.cli run-suite --suite tools-local --agent-cmd "$(PYTHON) scripts/mock_agent_write_artifacts.py" --out runs/manual/mock-tools-local
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m agent_bench_lab.cli compare --baseline runs/manual/mock-tools-local --candidate runs/manual/mock-tools-local --out reports/generated/compare_run_suite_smoke.md
 
 leak-check:
 	$(PYTHON) scripts/public_leak_check.py .

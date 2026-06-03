@@ -9,6 +9,7 @@ from .compare import compare_score_dirs, render_markdown_report, write_csv_repor
 from .registry import list_tasks, repo_root_from, validate_all
 from .runner import run_agent_task
 from .scoring import score_task, write_score
+from .suite_runner import run_agent_suite
 
 
 def cmd_list_tasks(args: argparse.Namespace) -> int:
@@ -109,6 +110,41 @@ def cmd_run(args: argparse.Namespace) -> int:
     return 0 if run_record["status"] == "passed" else 2
 
 
+def cmd_run_suite(args: argparse.Namespace) -> int:
+    root = repo_root_from(args.root)
+    agent_config = Path(args.agent_config).resolve() if args.agent_config else None
+    out_dir = Path(args.out).resolve() if args.out else None
+    try:
+        suite_record = run_agent_suite(
+            root=root,
+            suite=args.suite,
+            agent_cmd=args.agent_cmd,
+            agent_config_path=agent_config,
+            out_dir=out_dir,
+            timeout_seconds=args.timeout,
+            case_override=args.case,
+            fail_fast=args.fail_fast,
+        )
+    except (FileNotFoundError, ValueError, json.JSONDecodeError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+
+    summary = {
+        "suite_run_id": suite_record["suite_run_id"],
+        "suite_id": suite_record["suite_id"],
+        "suite_version": suite_record["suite_version"],
+        "status": suite_record["status"],
+        "total_tasks": suite_record["total_tasks"],
+        "completed_tasks": suite_record["completed_tasks"],
+        "failed_tasks": suite_record["failed_tasks"],
+        "success_count": suite_record["success_count"],
+        "average_score": suite_record["average_score"],
+        "output_path": suite_record["output_path"],
+    }
+    print(json.dumps(summary, indent=2, ensure_ascii=False))
+    return 0 if suite_record["status"] == "passed" else 2
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="agent-bench")
     parser.add_argument("--root", default=".", help="Repository root")
@@ -149,6 +185,16 @@ def build_parser() -> argparse.ArgumentParser:
     p_run.add_argument("--out")
     p_run.add_argument("--timeout", type=int, default=600)
     p_run.set_defaults(func=cmd_run)
+
+    p_run_suite = sub.add_parser("run-suite", help="Run an external command across a suite")
+    p_run_suite.add_argument("--suite", required=True)
+    p_run_suite.add_argument("--agent-cmd", required=True)
+    p_run_suite.add_argument("--agent-config")
+    p_run_suite.add_argument("--out")
+    p_run_suite.add_argument("--timeout", type=int, default=600)
+    p_run_suite.add_argument("--case", help="Override suite recommended cases with one case ID")
+    p_run_suite.add_argument("--fail-fast", action="store_true")
+    p_run_suite.set_defaults(func=cmd_run_suite)
 
     return parser
 
