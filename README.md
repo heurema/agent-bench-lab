@@ -96,11 +96,12 @@ This repository is a **v0 public starter**. It contains:
 - sample public fixtures;
 - sample scorers plus hardened IF-01, DATA-01, DOC-01, SUP-01, and API-01 artifact/state-based scorers;
 - a local command-based runner for external agent setups;
+- a suite runner for running one agent command across existing suite configs;
 - documentation for benchmark design, metrics, anti-overfitting, lifecycle status, hardening gates, and research radar process.
 
 It intentionally does **not** contain private holdout tasks, production secrets, personal data, or benchmark answers for real evaluation runs.
 
-Release status: `v0.7.0` is the latest published release and added Research Radar. `main` now includes the Local Agent Runner MVP; `v0.7.1` is intended to stabilize the runner contract before any `v0.8` direction is selected.
+Release status: `v0.7.1` is the latest published release and hardened Local Agent Runner contracts. `main` now includes the Suite Runner MVP; `v0.7.2` is intended to keep this as infrastructure before any `v0.8` direction is selected.
 
 ## Why this exists
 
@@ -196,6 +197,21 @@ The command receives `AGENT_BENCH_TASK_PACKET` and `AGENT_BENCH_ARTIFACTS_DIR`. 
 The task packet excludes scorer-only files such as `check_config.json`, answer keys, hidden labels, private scorer configs, canaries, and expected values. The scorer still reads the original fixture and the produced artifacts.
 
 See [Local Agent Runner MVP](docs/21-local-agent-runner.md).
+
+## Run a full suite
+
+Use `agent-bench run-suite` to run the same external command across an existing suite config:
+
+```bash
+agent-bench run-suite \
+  --suite core \
+  --agent-cmd "python3 scripts/mock_agent_write_artifacts.py" \
+  --out runs/manual/mock-core
+```
+
+The command reuses the single-task runner for every task/case. Each task run gets its own `run.json`, `trace.jsonl`, `score.json`, `artifacts/`, and `task_packet/`; the suite root gets `suite_run.json`.
+
+`run-suite` preserves the same task-packet visibility boundary as `run`: scorer-only files are not exposed to the agent command.
 
 ## Compare two agent setups
 
