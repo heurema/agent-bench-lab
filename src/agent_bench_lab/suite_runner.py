@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import json
 import shutil
-from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 from .run_records import load_agent_config
-from .runner import command_hash, run_agent_task, safe_slug, utc_now, write_json
+from .runner import command_hash, run_agent_task, safe_slug, unique_run_token, utc_now, write_json
 
 
 def load_suite_config(root: Path, suite: str | Path) -> dict[str, Any]:
@@ -28,8 +27,7 @@ def load_suite_config(root: Path, suite: str | Path) -> dict[str, Any]:
 
 
 def build_suite_run_id(agent_config_id: str, suite_id: str) -> str:
-    timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
-    return safe_slug(f"{agent_config_id}_{suite_id}_{timestamp}")
+    return safe_slug(f"{agent_config_id}_{suite_id}_{unique_run_token()}")
 
 
 def suite_cases(suite_config: dict[str, Any], case_override: str | None = None) -> list[str]:

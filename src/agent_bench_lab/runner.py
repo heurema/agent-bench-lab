@@ -7,6 +7,7 @@ import subprocess
 from datetime import UTC, datetime
 from hashlib import sha256
 from pathlib import Path
+from secrets import token_hex
 from typing import Any
 
 from .redaction import redact_text
@@ -42,6 +43,11 @@ def command_hash(agent_cmd: str) -> str:
 
 def safe_slug(value: str) -> str:
     return "".join(char if char.isalnum() or char in ("-", "_") else "_" for char in value)
+
+
+def unique_run_token() -> str:
+    timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S%fZ")
+    return f"{timestamp}_{token_hex(4)}"
 
 
 def safe_snippet(text: str | None, limit: int = TRACE_SNIPPET_CHARS) -> str:
@@ -162,8 +168,7 @@ def default_out_dir(root: Path, agent_config_id: str, task_id: str, case_id: str
 
 
 def build_run_id(agent_config_id: str, task_id: str, case_id: str) -> str:
-    timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
-    return safe_slug(f"{agent_config_id}_{task_id}_{case_id}_{timestamp}")
+    return safe_slug(f"{agent_config_id}_{task_id}_{case_id}_{unique_run_token()}")
 
 
 def run_agent_task(

@@ -7,7 +7,7 @@ from pathlib import Path
 
 from agent_bench_lab.cli import main as cli_main
 from agent_bench_lab.compare import compare_score_dirs
-from agent_bench_lab.suite_runner import load_suite_config, run_agent_suite
+from agent_bench_lab.suite_runner import build_suite_run_id, load_suite_config, run_agent_suite
 
 
 def root_dir() -> Path:
@@ -84,6 +84,12 @@ def test_load_suite_config_by_name_and_path():
     assert by_name["suite_id"] == "tools-local-v0"
     assert by_path["suite_id"] == "tools-local-v0"
     assert by_name["tasks"] == ["API-01"]
+
+
+def test_build_suite_run_id_is_unique_for_fast_repeated_runs():
+    suite_run_ids = [build_suite_run_id("unspecified", "core-v0") for _ in range(20)]
+
+    assert len(set(suite_run_ids)) == len(suite_run_ids)
 
 
 def test_run_agent_suite_creates_suite_run_and_task_outputs(tmp_path):
