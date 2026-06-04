@@ -7,7 +7,12 @@ from pathlib import Path
 from jsonschema import Draft202012Validator
 
 from agent_bench_lab.cli import main as cli_main
-from agent_bench_lab.runner import TRACE_SNIPPET_CHARS, create_task_packet, run_agent_task
+from agent_bench_lab.runner import (
+    TRACE_SNIPPET_CHARS,
+    build_run_id,
+    create_task_packet,
+    run_agent_task,
+)
 
 
 def root_dir() -> Path:
@@ -55,6 +60,12 @@ def test_golden_runner_contract_fixtures_match_schemas():
     assert_valid("score.schema.json", load_json(golden_dir / "score.json"))
     for event in load_trace_events(golden_dir / "trace.jsonl"):
         assert_valid("trace_event.schema.json", event)
+
+
+def test_build_run_id_is_unique_for_fast_repeated_runs():
+    run_ids = [build_run_id("unspecified", "IF-01", "case_001") for _ in range(20)]
+
+    assert len(set(run_ids)) == len(run_ids)
 
 
 def test_task_packet_excludes_check_config(tmp_path):
