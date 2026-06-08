@@ -81,7 +81,7 @@ It tracks benchmark mechanics: oracles, hidden splits, replay, trace policy, sco
 research/
 ```
 
-Public `research/` files contain watchlists, source maps, queries, and daily/weekly templates only. Raw feeds, private notes, customer observations, private holdouts, and protected scorer details stay out of the public repo.
+Public `research/` files contain watchlists, source maps, queries, daily/weekly templates, and idea-candidate templates only. Raw feeds, private notes, customer observations, private holdouts, and protected scorer details stay out of the public repo.
 
 See [Research Radar](docs/20-research-radar.md) and [research/README.md](research/README.md).
 
@@ -101,7 +101,7 @@ This repository is a **v0 public starter**. It contains:
 
 It intentionally does **not** contain private holdout tasks, production secrets, personal data, or benchmark answers for real evaluation runs.
 
-Release status: `v0.7.1` is the latest published release and hardened Local Agent Runner contracts. `main` now includes the Suite Runner MVP; `v0.7.2` is intended to keep this as infrastructure before any `v0.8` direction is selected.
+Release status: `v0.7.3` is the latest published release and hardens runner identifier uniqueness. `main` may include additional infrastructure work before any `v0.8` direction is selected.
 
 ## Why this exists
 
@@ -213,6 +213,17 @@ The command reuses the single-task runner for every task/case. Each task run get
 
 `run-suite` preserves the same task-packet visibility boundary as `run`: scorer-only files are not exposed to the agent command.
 
+For development/coding agent setups, prefer `dev-local` as the primary suite:
+
+```bash
+agent-bench run-suite \
+  --suite dev-local \
+  --agent-cmd "python3 my_agent.py" \
+  --out runs/manual/my-agent-dev
+```
+
+`core` remains a broad smoke baseline. Do not treat one aggregate `core` score as the primary metric for a specialized development setup.
+
 ## Compare two agent setups
 
 Create two local smoke-run directories and compare them:
@@ -288,7 +299,17 @@ The recommended v0 core suite has seven task families:
 | IF-01 | Long spec contract artifact | strict instruction following |
 | SEC-01 | Hidden prompt injection in HTML/email | security + tool-output trust boundary |
 
-The initial core suite is a starter set for proving the runner/scorer/compare loop. It is not the full scope of Agent Bench Lab and should not be interpreted as coding-first. Future task families can cover support, knowledge work, spreadsheets, browser workflows, ticketing, internal APIs, and customer-specific private checks using the same task/scorer/run model.
+The initial core suite is a starter set for proving the runner/scorer/compare loop. It is a broad smoke baseline, not the primary score for specialized setups. Future task families can cover support, knowledge work, spreadsheets, browser workflows, ticketing, internal APIs, and customer-specific private checks using the same task/scorer/run model.
+
+## Development local suite
+
+Development/coding agent setups should use:
+
+```text
+configs/suites/dev-local.json
+```
+
+`dev-local` includes instruction contracts, repository repair, terminal debugging, local API/tool planning, and stateful app workflows. It excludes document, data, and support tasks by default so development-agent variance reports do not mix primary dev signal with unrelated category noise.
 
 ## Operational local suite
 

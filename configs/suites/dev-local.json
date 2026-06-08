@@ -1,0 +1,17 @@
+{
+  "suite_id": "dev-local-v0",
+  "version": "0.7.4",
+  "description": "Local-first development agent workflows: instruction contracts, repository repair, terminal debugging, tool/API planning, and stateful app workflows.",
+  "tasks": [
+    "IF-01",
+    "CODE-01",
+    "TERM-02",
+    "API-01",
+    "APP-04"
+  ],
+  "default_repeats": 3,
+  "recommended_cases": [
+    "case_001"
+  ],
+  "notes": "Use dev-local as the primary public smoke suite for development/coding agent setups. Core remains a broad general smoke baseline, not a target-specific score."
+}
