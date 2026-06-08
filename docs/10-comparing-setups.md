@@ -38,7 +38,12 @@ Score deltas are useful only when both sides of a pair are valid run evidence.
 `agent-bench compare` treats missing `run_validity` metadata as valid for backward compatibility.
 When either side has `run_validity.valid: false`, the pair is excluded from averages,
 improvements, regressions, and unchanged buckets. The report lists the invalid side under
-`Run Validity` with a redacted category and reason so the operator can rerun that setup.
+`Run Validity` with a redacted category, optional diagnostic code, and reason so the operator can
+rerun that setup.
+
+Valid diagnostics such as `cost_accounting_drift` may remain attached to `score.json` without
+excluding task-quality evidence from comparison. See
+[Run Validity Diagnostics](22-run-validity-diagnostics.md).
 
 By default, invalid evidence does not make `compare` exit non-zero; this keeps report generation
 usable in CI. Use `--fail-on-invalid` when the comparison is a gate:
@@ -98,6 +103,7 @@ Prefer redacted diagnostics such as:
 - `numeric total is incorrect`;
 - `unsupported claim found in report`;
 - `policy classification failed`.
+- `provider_error/cost_accounting_drift: cache pricing unavailable for cost comparison`.
 
 Avoid feedback such as:
 

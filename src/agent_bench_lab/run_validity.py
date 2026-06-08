@@ -13,6 +13,24 @@ from .run_records import (
 )
 
 VALIDITY_CATEGORIES = {"provider_error", "environment_error", "harness_error"}
+DIAGNOSTIC_CODE_RULES = {
+    "provider_routing_failure": {
+        "category": "provider_error",
+        "invalidates_quality": True,
+    },
+    "cost_accounting_drift": {
+        "category": "provider_error",
+        "invalidates_quality": False,
+    },
+    "final_submit_not_executed": {
+        "category": "harness_error",
+        "invalidates_quality": True,
+    },
+    "verifier_infrastructure_failure": {
+        "category": "environment_error",
+        "invalidates_quality": True,
+    },
+}
 REASON_CHARS = 1000
 ENVIRONMENT_REF_CHARS = 300
 
@@ -31,12 +49,55 @@ def invalid_run_validity(
     category: str,
     reason: str,
     environment_ref: str | None = None,
+    diagnostic_code: str | None = None,
 ) -> dict[str, Any]:
-    normalized_category = category if category in VALIDITY_CATEGORIES else "harness_error"
+    normalized_code = diagnostic_code if diagnostic_code in DIAGNOSTIC_CODE_RULES else None
+    normalized_category = _category_for(category, normalized_code)
     result: dict[str, Any] = {
         "valid": False,
         "category": normalized_category,
         "reason": _safe_text(reason, REASON_CHARS) or "run invalidated by diagnostics",
+    }
+    if normalized_code:
+        result["diagnostic_code"] = normalized_code
+    if environment_ref:
+        result["environment_ref"] = _safe_text(environment_ref, ENVIRONMENT_REF_CHARS)
+    return result
+
+
+def _category_for(category: str | None, diagnostic_code: str | None) -> str:
+    if category in VALIDITY_CATEGORIES:
+        return str(category)
+    if diagnostic_code:
+        return str(DIAGNOSTIC_CODE_RULES[diagnostic_code]["category"])
+    return "harness_error"
+
+
+def _diagnostic_code(data: dict[str, Any]) -> str | None:
+    value = data.get("diagnostic_code")
+    if not isinstance(value, str):
+        return None
+    return value if value in DIAGNOSTIC_CODE_RULES else None
+
+
+def _diagnostic_invalidates_quality(diagnostic_code: str | None) -> bool:
+    if not diagnostic_code:
+        return False
+    return bool(DIAGNOSTIC_CODE_RULES[diagnostic_code]["invalidates_quality"])
+
+
+def diagnostic_run_validity(
+    *,
+    category: str | None,
+    diagnostic_code: str,
+    reason: str,
+    environment_ref: str | None = None,
+) -> dict[str, Any]:
+    result: dict[str, Any] = {
+        "valid": True,
+        "category": _category_for(category, diagnostic_code),
+        "diagnostic_code": diagnostic_code,
+        "reason": _safe_text(reason, REASON_CHARS) or f"{diagnostic_code} reported by wrapper",
     }
     if environment_ref:
         result["environment_ref"] = _safe_text(environment_ref, ENVIRONMENT_REF_CHARS)
@@ -58,15 +119,35 @@ def load_run_validity(diagnostics_path: Path) -> dict[str, Any]:
             category="harness_error",
             reason="diagnostics JSON must be an object",
         )
-    if data.get("valid") is not False:
+    diagnostic_code = _diagnostic_code(data)
+    invalidates_quality = data.get("valid") is False or _diagnostic_invalidates_quality(
+        diagnostic_code
+    )
+    if not invalidates_quality and not diagnostic_code:
         return valid_run_validity()
-    category = str(data.get("category") or "harness_error")
-    reason = str(data.get("reason") or f"{category} reported by wrapper")
+    category = str(data.get("category") or "")
+    reason = str(
+        data.get("reason")
+        or (
+            f"{diagnostic_code} reported by wrapper"
+            if diagnostic_code
+            else f"{_category_for(category, None)} reported by wrapper"
+        )
+    )
     environment_ref = data.get("environment_ref")
-    return invalid_run_validity(
+    normalized_environment_ref = str(environment_ref) if environment_ref is not None else None
+    if invalidates_quality:
+        return invalid_run_validity(
+            category=category,
+            reason=reason,
+            environment_ref=normalized_environment_ref,
+            diagnostic_code=diagnostic_code,
+        )
+    return diagnostic_run_validity(
         category=category,
+        diagnostic_code=str(diagnostic_code),
         reason=reason,
-        environment_ref=str(environment_ref) if environment_ref is not None else None,
+        environment_ref=normalized_environment_ref,
     )
 
 

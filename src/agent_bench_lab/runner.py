@@ -311,6 +311,7 @@ def run_agent_task(
             actor="runner",
             metadata={
                 "category": run_validity.get("category"),
+                "diagnostic_code": run_validity.get("diagnostic_code"),
                 "reason": run_validity.get("reason"),
                 "environment_ref": run_validity.get("environment_ref"),
             },
@@ -359,6 +360,8 @@ def run_agent_task(
                     "notes": None,
                 },
             }
+        if run_validity.get("diagnostic_code"):
+            score["run_validity"] = run_validity
     write_score(score, score_path)
     if not invalid_run:
         append_trace_event(
@@ -404,6 +407,8 @@ def run_agent_task(
     }
     if invalid_run:
         run_record["validity_category"] = run_validity.get("category")
+    if run_validity.get("diagnostic_code"):
+        run_record["validity_diagnostic_code"] = run_validity.get("diagnostic_code")
     write_json(run_path, run_record)
     append_trace_event(
         trace_path,

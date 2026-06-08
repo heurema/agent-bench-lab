@@ -62,6 +62,14 @@
         "harness_error"
       ]
     },
+    "validity_diagnostic_code": {
+      "enum": [
+        "provider_routing_failure",
+        "cost_accounting_drift",
+        "final_submit_not_executed",
+        "verifier_infrastructure_failure"
+      ]
+    },
     "score": {
       "type": [
         "number",

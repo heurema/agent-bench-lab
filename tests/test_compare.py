@@ -62,6 +62,7 @@ def test_compare_excludes_invalid_runs_from_score_averages(tmp_path):
         {
             "valid": False,
             "category": "provider_error",
+            "diagnostic_code": "provider_routing_failure",
             "reason": "model endpoint returned 404 repeatedly",
         },
     )
@@ -81,11 +82,12 @@ def test_compare_excludes_invalid_runs_from_score_averages(tmp_path):
             "task_id": "IF-01",
             "case_id": "case_001",
             "category": "provider_error",
+            "diagnostic_code": "provider_routing_failure",
             "reason": "model endpoint returned 404 repeatedly",
         }
     ]
     assert "## Run Validity" in report
-    assert "candidate IF-01/case_001: provider_error" in report
+    assert "candidate IF-01/case_001: provider_error/provider_routing_failure" in report
 
 
 def test_cli_compare_only_fails_on_invalid_when_flag_is_set(tmp_path):
