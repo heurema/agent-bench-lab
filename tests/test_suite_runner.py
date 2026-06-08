@@ -86,6 +86,14 @@ def test_load_suite_config_by_name_and_path():
     assert by_name["tasks"] == ["API-01"]
 
 
+def test_load_dev_local_suite_config():
+    suite = load_suite_config(root_dir(), "dev-local")
+
+    assert suite["suite_id"] == "dev-local-v0"
+    assert suite["tasks"] == ["IF-01", "CODE-01", "TERM-02", "API-01", "APP-04"]
+    assert "development" in suite["description"].lower()
+
+
 def test_build_suite_run_id_is_unique_for_fast_repeated_runs():
     suite_run_ids = [build_suite_run_id("unspecified", "core-v0") for _ in range(20)]
 

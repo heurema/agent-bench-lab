@@ -43,6 +43,15 @@ Week:
 |---|---|---|
 |  |  |  |
 
+## R&D Idea Candidates
+
+List one to three bounded candidates. Leave this section empty if evidence coverage is narrow or
+no transferable method changed.
+
+| Signal | Method Pattern | Domain Transfer | Benchmark Idea | Evidence | Action | Confidence | Timebox |
+|---|---|---|---|---|---|---|---|
+|  |  | software-engineering / browser-workflow / security / data-finance / science-bio / ops-support / research |  |  | ignore / read later / open issue / run follow-up research / prototype after review | low / medium / high |  |
+
 ## Source Quality Review
 
 | Source | Keep / downgrade / remove | Reason |
