@@ -59,6 +59,7 @@ for normal task failure.
 {
   "valid": false,
   "category": "provider_error",
+  "diagnostic_code": "provider_routing_failure",
   "reason": "model endpoint returned 404 repeatedly",
   "environment_ref": "optional public-safe snapshot/version id"
 }
@@ -70,10 +71,21 @@ Supported categories are:
 - `environment_error`
 - `harness_error`
 
+Supported diagnostic codes are:
+
+- `provider_routing_failure`
+- `cost_accounting_drift`
+- `final_submit_not_executed`
+- `verifier_infrastructure_failure`
+
 If the diagnostics file is missing, the runner preserves normal behavior. If it contains
 `"valid": false`, the runner records `status: "environment_error"`, writes `run_validity` to
 `score.json`, skips the scorer, and emits a `run_invalidated` trace event. The wrapper is
 responsible for keeping `reason` and `environment_ref` public-safe.
+
+`cost_accounting_drift` may be reported with `"valid": true` when task-quality evidence is valid but
+cost metadata should not be trusted for cost comparisons. See
+[Run Validity Diagnostics](22-run-validity-diagnostics.md).
 
 ## Visibility Boundary
 

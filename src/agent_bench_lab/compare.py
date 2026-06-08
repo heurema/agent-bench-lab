@@ -50,6 +50,7 @@ def _run_validity(score: dict[str, Any] | None) -> dict[str, Any]:
         return {
             "valid": False,
             "category": str(value.get("category") or "unknown"),
+            "diagnostic_code": str(value.get("diagnostic_code") or ""),
             "reason": str(value.get("reason") or ""),
         }
     return {"valid": True}
@@ -63,13 +64,17 @@ def _invalid_entry(
     score: dict[str, Any],
 ) -> dict[str, str]:
     validity = _run_validity(score)
-    return {
+    result = {
         "side": side,
         "task_id": task_id,
         "case_id": case_id,
         "category": str(validity.get("category") or "unknown"),
         "reason": str(validity.get("reason") or ""),
     }
+    diagnostic_code = str(validity.get("diagnostic_code") or "")
+    if diagnostic_code:
+        result["diagnostic_code"] = diagnostic_code
+    return result
 
 
 def _status(
@@ -259,11 +264,14 @@ def render_markdown_report(result: dict[str, Any], title: str = "Compare") -> st
     lines.extend(["", "## Run Validity"])
     for item in result.get("invalid_runs", [])[:20]:
         reason = f" - {_safe_cell(item['reason'])}" if item.get("reason") else ""
+        category = _safe_cell(item["category"])
+        if item.get("diagnostic_code"):
+            category = f"{category}/{_safe_cell(item['diagnostic_code'])}"
         lines.append(
             "- "
             f"{_safe_cell(item['side'])} "
             f"{_safe_cell(item['task_id'])}/{_safe_cell(item['case_id'])}: "
-            f"{_safe_cell(item['category'])}"
+            f"{category}"
             f"{reason}"
         )
     if not result.get("invalid_runs"):

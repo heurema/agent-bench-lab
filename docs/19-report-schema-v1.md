@@ -18,6 +18,7 @@ Reports should make comparisons useful without exposing scorer-only or private e
 | `success` | Boolean pass/fail result |
 | `run_validity` | Optional validity object; missing means valid legacy evidence |
 | `validity_category` | Optional run-level invalidity category |
+| `validity_diagnostic_code` | Optional stable diagnostic code for validity or cost-accounting diagnostics |
 | `pass_threshold` | Threshold used for success |
 | `cost` | Cost field or explicit null |
 | `latency` | Runtime latency field or explicit null |
@@ -48,9 +49,12 @@ Reports should make comparisons useful without exposing scorer-only or private e
 Missing cost, latency, or tool-call data should be explicit. Do not invent fields that were not
 captured.
 
-Invalid provider, environment, or harness evidence may use `score: null` with
+Invalid provider, environment, submit-protocol, or verifier evidence may use `score: null` with
 `run_validity.valid: false`. Treat that as invalid evidence to rerun, not as a zero-quality agent
 result.
+
+`cost_accounting_drift` may be reported with `run_validity.valid: true` when task-quality evidence
+is still valid but cost metadata should not be used for cost comparisons.
 
 ## Private Bundle References
 

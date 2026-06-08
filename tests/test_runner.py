@@ -389,6 +389,66 @@ raise SystemExit(7)
     assert_runner_contract_outputs(out_dir)
 
 
+def test_runner_preserves_valid_cost_diagnostic_without_invalidating_score(tmp_path):
+    out_dir = tmp_path / "cost_diagnostic"
+    agent_path = tmp_path / "cost_diagnostic_agent.py"
+    agent_path.write_text(
+        """
+import json
+import os
+from pathlib import Path
+
+artifacts = Path(os.environ["AGENT_BENCH_ARTIFACTS_DIR"])
+artifacts.mkdir(parents=True, exist_ok=True)
+(artifacts / "artifact.md").write_text(
+    "# Public Launch Note\\n"
+    "- versioned tasks\\n"
+    "- repeatable scoring\\n"
+    "- public templates\\n",
+    encoding="utf-8",
+)
+Path(os.environ["AGENT_BENCH_DIAGNOSTICS_FILE"]).write_text(
+    json.dumps(
+        {
+            "valid": True,
+            "diagnostic_code": "cost_accounting_drift",
+            "reason": "cache pricing is unavailable for cost comparison",
+            "environment_ref": "provider-pricing-snapshot-v1",
+        }
+    ),
+    encoding="utf-8",
+)
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+
+    run_record = run_agent_task(
+        root=root_dir(),
+        task_id="IF-01",
+        case_id="case_001",
+        agent_cmd=f"{sys.executable} {agent_path}",
+        agent_config_path=None,
+        out_dir=out_dir,
+        timeout_seconds=30,
+    )
+    score = load_json(out_dir / "score.json")
+
+    assert run_record["status"] == "passed"
+    assert run_record["success"] is True
+    assert run_record["validity_diagnostic_code"] == "cost_accounting_drift"
+    assert score["success"] is True
+    assert score["score"] == 1.0
+    assert score["run_validity"] == {
+        "valid": True,
+        "category": "provider_error",
+        "diagnostic_code": "cost_accounting_drift",
+        "reason": "cache pricing is unavailable for cost comparison",
+        "environment_ref": "provider-pricing-snapshot-v1",
+    }
+    assert_runner_contract_outputs(out_dir)
+
+
 def test_cli_agent_bench_run_works_with_mock_agent(tmp_path, capsys):
     out_dir = tmp_path / "cli_run"
     exit_code = cli_main(
