@@ -1,11 +1,12 @@
-# Research Radar
+# Research Radar Profile
 
-Agent Bench Lab needs a research radar because benchmark methodology changes quickly. Static
-research snapshots are useful, but they are not enough to keep a benchmark standard current.
+Status: deprecated as an active intake surface.
 
-The radar is a public-safe process for tracking benchmark mechanics, not a generic AI-news feed.
-It can also capture bounded R&D idea candidates when a public source reveals a transferable method
-pattern from another domain.
+Agent Bench Lab no longer owns a standalone research-radar loop. Workspace-level intake,
+watchlists, queries, cadence, and verdicts now belong in `heurema/lab` under `radar/`.
+
+This document preserves the benchmark-mechanics profile that `heurema/lab/radar` can consume when
+it monitors whether Agent Bench Lab should change benchmark design.
 
 ## What To Monitor
 
@@ -21,7 +22,7 @@ Monitor sources that can change Agent Bench Lab design:
 - cost, latency, pass^k, and repeatability reporting;
 - eval-framework and standards updates.
 
-## Cadence
+## Former Cadence
 
 | Loop | Timebox | Output |
 |---|---:|---|
@@ -29,9 +30,11 @@ Monitor sources that can change Agent Bench Lab design:
 | Weekly synthesis | 45 minutes | roadmap decision, explicit no-change, or bounded idea candidates |
 | Monthly pruning | 30 minutes | watchlist cleanup |
 
-Daily radar should answer: did anything important change?
+Do not run these loops from this repository. They describe the historical profile only.
 
-Weekly synthesis should answer: should Agent Bench Lab change roadmap, open issues, or run
+Daily radar used to answer: did anything important change?
+
+Weekly synthesis used to answer: should Agent Bench Lab change roadmap, open issues, or run
 follow-up research? It may also capture one to three R&D idea candidates for later review when the
 evidence is transferable and public-safe.
 
@@ -60,9 +63,9 @@ Do not commit:
 - personal notes;
 - consumer-application observations.
 
-## Action Categories
+## Former Action Categories
 
-Every item should end in one of:
+When this profile is consumed by `heurema/lab/radar`, every item should end in one of:
 
 - `ignore`
 - `read later`
@@ -72,7 +75,7 @@ Every item should end in one of:
 - `run follow-up research`
 - `prototype after review`
 
-Most items should be ignored or queued. The radar prevents stale decisions; it should not create
+Most items should be ignored or queued. The lab radar prevents stale decisions; it should not create
 constant churn.
 
 ## R&D Idea Candidates
@@ -99,7 +102,7 @@ only after a human review, not as an automatic implementation trigger.
 
 ## When To Open An Issue
 
-Open an issue when a source introduces:
+The lab radar may open an Agent Bench Lab issue when a source introduces:
 
 - a benchmark-hardening method Agent Bench Lab should adopt;
 - a new scorer/oracle pattern;
@@ -114,7 +117,7 @@ changes.
 
 ## Files
 
-Research Radar files live under:
+Deprecated profile files live under:
 
 ```text
 research/
