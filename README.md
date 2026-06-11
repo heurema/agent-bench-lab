@@ -33,7 +33,7 @@ The common unit is not "coding task" or "office task". The common unit is:
 task family + fixtures + allowed tools + expected artifact/state + scorer + run comparison
 ```
 
-The public v0/v0.7 implementation includes a small starter suite, five hardened task-family patterns, lifecycle gates, and a public-safe research radar. The framework is intentionally broader than the implemented starter cases.
+The public v0/v0.7 implementation includes a small starter suite, five hardened task-family patterns, lifecycle gates, and an archived public-safe research-radar profile. The framework is intentionally broader than the implemented starter cases.
 
 ## Relationship to consumer applications
 
@@ -71,17 +71,17 @@ make hardening-check
 
 See [Benchmark lifecycle](docs/16-benchmark-lifecycle.md), [Mutation and exploit gates](docs/17-mutation-and-exploit-gates.md), [Suite strategy](docs/18-suite-strategy.md), and [Report schema v1 guidance](docs/19-report-schema-v1.md).
 
-## Research Radar
+## Research Radar Profile
 
-Research Radar keeps Agent Bench Lab aligned with external benchmark and eval methodology without turning the repo into a news feed.
+The former Agent Bench Lab `research/` loop is deprecated as an active intake surface. New watchlists, queries, cadence decisions, and verdicts live in `heurema/lab` under `radar/`.
 
-It tracks benchmark mechanics: oracles, hidden splits, replay, trace policy, scoring contracts, exploitability, contamination, standards, and eval-framework changes.
+This repository keeps only the benchmark-mechanics profile as archived public-safe input for the shared lab radar: oracles, hidden splits, replay, trace policy, scoring contracts, exploitability, contamination, standards, and eval-framework changes.
 
 ```text
 research/
 ```
 
-Public `research/` files contain watchlists, source maps, queries, daily/weekly templates, and idea-candidate templates only. Raw feeds, private notes, customer observations, private holdouts, and protected scorer details stay out of the public repo.
+Do not add new active intake runs, daily briefs, weekly syntheses, or verdicts here. Raw feeds, private notes, customer observations, private holdouts, and protected scorer details still stay out of the public repo.
 
 See [Research Radar](docs/20-research-radar.md) and [research/README.md](research/README.md).
 
@@ -97,7 +97,7 @@ This repository is a **v0 public starter**. It contains:
 - sample scorers plus hardened IF-01, DATA-01, DOC-01, SUP-01, and API-01 artifact/state-based scorers;
 - a local command-based runner for external agent setups;
 - a suite runner for running one agent command across existing suite configs;
-- documentation for benchmark design, metrics, anti-overfitting, lifecycle status, hardening gates, and research radar process.
+- documentation for benchmark design, metrics, anti-overfitting, lifecycle status, hardening gates, and the archived research-radar profile.
 
 It intentionally does **not** contain private holdout tasks, production secrets, personal data, or benchmark answers for real evaluation runs.
 
